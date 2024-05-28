@@ -4,16 +4,18 @@
     </div>
     <nav class="nav">
         <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-        <a href="#">Community</a>
+        <a routerLink="/community" routerLinkActive="active">Community</a>
     </nav>
     <div class="search-bar">
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search Recipe">
-        </div>
+            <input type="text" placeholder="Search Recipe" [(ngModel)]="searchText" *ngIf="!showSearchComponent" (click)="toggleSearchComponent()">
+            <input type="text" placeholder="Search Recipe" [(ngModel)]="searchText" *ngIf="showSearchComponent">
+            <button *ngIf="showSearchComponent" (click)="closeSearch()">X</button>
+          </div>
     </div>
     <div class="user-actions">
         <a routerLink="/login">Log In</a>
-        <a href="#"><img src="assets/images/profile.png" alt="Profile"></a>
+        <a routerLink="/profile"><img src="assets/images/profile.png" alt="Profile"></a>
     </div>
 </header>
