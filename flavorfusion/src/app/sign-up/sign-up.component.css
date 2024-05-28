@@ -46,10 +46,11 @@ body {
     margin-bottom: 20px;
 }
 
-.signup-form p.description {
-    margin-bottom: 20px;
+.login-form p.description {
+    max-width: 315px;
+    
+    margin-bottom: 15px;
     color: #666666;
-    text-align: center;
 }
 
 .signup-form label {
@@ -88,7 +89,6 @@ body {
 }
 
 .signup-form p:last-of-type {
-    text-align: center;
     font-size: 12px;
     color: #999999;
 }
@@ -118,15 +118,17 @@ body {
     margin-right: -48px;
 }
 
-.terms {
-    text-align: center;
+.signup-form .terms {
     font-size: 12px;
     color: #999999;
-    margin-top: 10px;
+    position: absolute;
+    bottom: 25px;
+    left: 10%; 
+    text-align: center;
 }
 
-.terms a {
-    color: #ff5722;
+.signup-form .terms a {
+    color: #0292B7;
     text-decoration: none;
 }
 
@@ -153,3 +155,5 @@ body {
         display: none; 
     }
 }
+
+
