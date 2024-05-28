@@ -13,7 +13,6 @@ import { CommunityComponent } from './community/community.component';
 import { SearchComponent } from './search/search.component';
 import { ProfileComponent } from './profile/profile.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
