@@ -86,6 +86,11 @@ body {
     background-color: #e68900;
 }
 
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
 .signup-form .terms {
     font-size: 12px;
     color: #999999;
