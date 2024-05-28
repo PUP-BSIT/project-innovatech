@@ -1,6 +1,4 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
     overflow: hidden;
 }
 
@@ -20,6 +18,7 @@ body {
     width: 100%;
     height: 100vh;
     background-color: #f9f9f9;
+    padding-bottom: 0;
 }
 
 .signup-content {
@@ -27,7 +26,6 @@ body {
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-    max-width: 1200px;
     background: #ffffff;
     border-radius: 8px;
     overflow: hidden;
@@ -45,21 +43,19 @@ body {
 
 .signup-form h2 {
     font-size: 24px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
-.signup-form p.description-text {
-    max-width: 315px;
-    line-height: 1.3;
-    margin-bottom: 15px;
+.signup-form p.description {
+    margin-bottom: 20px;
     color: #666666;
+    text-align: center;
 }
 
 .signup-form label {
     display: block;
     margin-bottom: 5px;
     color: #333333;
-    width: 100%; 
 }
 
 .signup-form input {
@@ -91,25 +87,16 @@ body {
     margin-top: 10px;
 }
 
-.signup-form .terms {
+.signup-form p:last-of-type {
+    text-align: center;
     font-size: 12px;
     color: #999999;
-    position: absolute;
-    bottom: 25px;
-    left: 15%; 
-    text-align: center;
 }
 
-.signup-form .terms p {
-    margin: 0;
-    line-height: 1.2; 
-}
-
-.signup-form .terms a {
+.signup-form p a {
     color: #0292B7;
     text-decoration: none;
 }
-
 
 .signup-graphic {
     flex: 2;
@@ -129,7 +116,18 @@ body {
     margin-top: -27px;
     padding-right: 12px;
     margin-right: -48px;
-    margin-left: -5px;
+}
+
+.terms {
+    text-align: center;
+    font-size: 12px;
+    color: #999999;
+    margin-top: 10px;
+}
+
+.terms a {
+    color: #ff5722;
+    text-decoration: none;
 }
 
 @media (max-width: 767px) {
