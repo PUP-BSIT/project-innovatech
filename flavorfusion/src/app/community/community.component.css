@@ -1,0 +1,305 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+  
+.header {
+    text-align: left;
+    margin-top: -40px;
+    font-family: 'Arial';
+}
+  
+.full-width {
+    width: 100%;
+    margin: 0 10px;
+    position: relative;
+}
+  
+.mat-form-field {
+    width: 100%;
+}
+  
+.mat-form-field-flex {
+    align-items: center;
+}
+  
+.mat-form-field-infix {
+    padding: 0;
+}
+  
+button[mat-raised-button] {
+    background-color: #ffc107;
+    border-radius: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 20px;
+}
+  
+button[mat-raised-button]:hover {
+    background-color: #af9136;
+}
+  
+button[mat-icon-button] {
+    color: #888;
+    position: absolute;
+    left: -10px;
+    top: 70%;
+    transform: translateY(-50%);
+}
+  
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+  
+.post {
+    max-width: calc(30% - 20px);
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 7px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transform: scale(1);
+    background-color: #ffdbde;
+}
+  
+.post:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+  
+.post .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+.post .user-info .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+  
+.post .user-details {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    gap: 20px;
+}
+  
+.post .username {
+    font-weight: bold;
+    margin-right: 5px;
+}
+  
+.post .description {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: auto;
+    font-weight: bold;
+}
+
+.post .time {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: -15px;
+}
+  
+.post .post-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+  
+.post .post-footer {
+    display: flex;
+    flex-direction: column;
+}
+  
+.post .actions {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9em;
+    justify-content: flex-start;
+}
+  
+.post .actions span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  
+}
+
+.post .caption{
+    
+    color: #000000;
+    font-size: 1.1em;
+}
+  
+.post .actions mat-icon {
+    vertical-align: middle;
+    color: #000;
+}
+  
+.like-button mat-icon {
+    color: black; 
+    font-size: 3px; 
+}
+  
+.custom-dialog-container .mat-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.post-detail {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+  
+.post-detail .content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+  
+.post-detail .post-image {
+    width: 60%;
+    height: auto;
+    border-radius: 10px;
+}
+  
+.post-detail .comments-section {
+    width: 100%;  
+    min-width: 250px;
+    background-color: #fff3e0;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 60vh;
+}
+  
+.post-detail .comments-section .comment {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #110707; 
+    padding-bottom: 10px;
+}
+  
+.comments-section h3 {
+    margin: 0 0 10px 0;
+}
+  
+.comments-section .comment {
+    margin-bottom: 10px;
+}
+  
+.comments-section .comment .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+.comments-section .comment .user-info .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+  
+.comments-section .comment .user-details {
+    display: flex;
+    flex-direction: column;
+}
+  
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+  
+button[mat-button] {
+    background-color: #ffc107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    top: 2px;
+    right: 10px;
+}
+  
+button[mat-button]:hover {
+    background-color: #af9136;
+}
+  
+.like-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+  
+.like-button mat-icon {
+    color: red; 
+    font-size: 24px;
+}
+  
+.like-button.clicked mat-icon {
+    color: red; 
+}
+  
+.new-comment {
+    margin-top: 10px;
+    position: relative;
+}
+  
+.comment-form-field {
+    position: relative;
+}
+  
+.comment-form-field textarea {
+    padding-right: 50px; 
+    padding-bottom: 50px;
+}
+  
+.post-comment-button {
+    position: absolute;
+    margin-top: 30px;
+    padding: 100px;
+    right: 90px;
+    padding: 4px 5px; 
+    font-size: 7px; 
+    min-width: auto;
+    background-color: #ffc107;
+    border-radius: 2px;
+    cursor: pointer;
+}
+  
+.post-comment-button:hover {
+    background-color: #af9136;
+}
+  
+.new-comment mat-form-field {
+    width: 100%;
+}

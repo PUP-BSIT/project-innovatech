@@ -1,1 +1,78 @@
-<p>community works!</p>
+<div class="container">
+    <div class="header">
+      <h1>Welcome to our Community!</h1>
+      </div>   
+        <div class="post-input-container">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Write your post ...</mat-label>
+            <textarea matInput rows="2"></textarea>
+            <button mat-icon-button class="add-photo-button">
+              <mat-icon>add_a_photo</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" class="post-button">
+              Post</button>
+          </mat-form-field>
+        <div class="posts">
+        <div class="post" *ngFor="let post of posts" (click)="openPostDetail
+          (post, postDetailTemplate)">
+          <div class="user-info">
+            <img [src]="post.userAvatar" class="avatar" alt="avatar" />
+            <div class="user-details">
+              <span class="username">{{ post.username }}</span>
+              <span class="time">{{ post.time }}</span>
+              <span class="description">{{ post.description }}</span>
+            </div>
+          </div>
+          <img [src]="post.image" class="post-image" alt="post image" />
+          <div class="post-footer">
+            <div class="actions">
+              <span (click)="likePost(post, $event)" [class.liked]="post.liked">
+                {{ post.likes }} <mat-icon>{{ post.liked ? 
+                  'favorite' : 'favorite_border' }}</mat-icon>
+              </span>
+              <span (click)="commentOnPost(post, $event)">
+                {{ post.comments.length }} <mat-icon>comment</mat-icon>
+              </span>
+            </div>
+            <div class="caption"><span class="username">{{ post.username }}
+            </span>: {{ post.caption }}</div>
+          </div>
+        </div>
+      </div>
+      <ng-template #postDetailTemplate let-data>
+        <div class="post-detail">
+          <div class="content">
+            <img [src]="data.post.image" class="post-image" alt="post image" />
+            <div class="comments-section">
+              <button mat-button (click)="closeDialog()">X</button>
+              <h3>Comments</h3>
+              <div class="new-comment">
+                <mat-form-field class="full-width">
+                  <mat-label>Add a comment</mat-label>
+                  <textarea matInput [(ngModel)]="newCommentText" 
+                  rows="2"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" 
+                  (click)="addComment(data.post)" class="post-comment-button">
+                  Post Comment</button>
+              </div>
+              <div class="comment" *ngFor="let comment of data.post.comments">
+                <div class="user-info">
+                  <img [src]="comment.userAvatar" class="avatar" alt="avatar" />
+                  <div class="user-details">
+                    <span class="username">{{ comment.username }}</span>
+                    <span class="time">{{ comment.time }}</span>
+                  </div>
+                  <button class="like-button" (click)="toggleLike(comment)">
+                    <mat-icon>{{ comment.liked ? 'favorite' : 
+                      'favorite_border' }}</mat-icon>
+                  </button>
+                </div>
+              <div class="text">{{ comment.text }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>  
+  </div>
+  
