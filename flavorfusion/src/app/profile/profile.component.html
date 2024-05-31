@@ -1,1 +1,97 @@
-<p>profile works!</p>
+<div class="user-profile">
+    <div class="profile-title">
+        <h1>User Profile</h1>
+    </div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-box">
+                <img src="assets/images/profile-avatar.png" alt="User Avatar" class="avatar">
+                <div class="profile-info">
+                    <h2>Jane Dee</h2>
+                    <p>Hello fellow food enthusiasts! I'm Jane, a dedicated foodie and a weekend chef, always on the hunt for exciting new flavors and unique recipes.</p>
+                    <div class="profile-stats">
+                        <span class="ratings">
+                            <img src="assets/images/star.png" alt="Star" class="star-icon"> Ratings
+                        </span>
+                        <span class="likes">
+                            <img src="assets/images/heart.png" alt="Heart" class="heart-icon"> Likes
+                        </span>
+                        <button class="edit-profile">
+                            <img src="assets/images/edit-icon.png" alt="Edit Icon" class="edit-icon"> Edit User Profile
+                        </button>
+                    </div>                 
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <button class="section-button" (click)="toggleSavedRecipes()" [ngClass]="{'active': showSavedRecipes}">
+                <h3>Saved Recipes</h3>
+            </button>
+            <button class="section-button" (click)="toggleMealPlanning()" [ngClass]="{'active': showMealPlanning}">
+                <h3>Meal Planning</h3>
+            </button>
+            <button class="section-button" (click)="toggleActivityLog()" [ngClass]="{'active': showActivityLog}">
+                <h3>Activity Log</h3>
+            </button>
+        </div>
+
+        <div class="profile-content">
+            <div class="recipe-list" *ngIf="showSavedRecipes">
+                <div class="recipe-card">
+                    <img src="assets/images/caramel-blueberry.jpg" alt="Caramel Blueberry Scones">
+                    <p>Caramel Blueberry Scones</p>
+                </div>
+                <div class="recipe-card">
+                    <img src="assets/images/chocolate-jar.jpg" alt="Chocolate and Banana Jar Cake">
+                    <p>Chocolate and Banana Jar Cake</p>
+                </div>
+                <div class="recipe-card">
+                    <img src="assets/images/egg-toast.png" alt="Eggs and Avocado Toast">
+                    <p>Eggs and Avocado Toast</p>
+                </div>
+            </div>
+
+            <div class="meal-planning" *ngIf="showMealPlanning">
+                <div class="meal-box">
+                    <h2>Breakfast</h2>
+                    <button class="add-image-button">
+                        <img src="assets/images/add-icon.png" alt="Add Image">
+                        <span>Add meal</span>
+                    </button>
+                </div>
+                <div class="meal-box">
+                    <h2>Lunch</h2>
+                    <button class="add-image-button">
+                        <img src="assets/images/add-icon.png" alt="Add Image">
+                        <span>Add meal</span>
+                    </button>
+                </div>
+                <div class="meal-box">
+                    <h2>Dinner</h2>
+                    <button class="add-image-button">
+                        <img src="assets/images/add-icon.png" alt="Add Image">
+                        <span>Add meal</span>
+                    </button>
+                </div>
+            </div>            
+                     
+            <div class="activity-log" *ngIf="showActivityLog">
+                <div class="activity-log-entry activity-box">
+                    <div class="activity-details">
+                        <div class="activity-date">May 10, 2024</div>
+                        <div class="activity-item">
+                            <span class="activity-icon">❤️</span>
+                            <span class="activity-text">You liked apol's shared recipe - “Delicious Apple Tart”</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-icon">🔖</span>
+                            <span class="activity-text">You saved a recipe - "Spicy Thai Noodles"</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
