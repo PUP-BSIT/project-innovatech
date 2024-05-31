@@ -1,1 +1,57 @@
-<p>home works!</p>
+<div class="container">
+    <app-carousel></app-carousel>
+  
+    <hr class="section-divider">
+  
+    <div class="popular-categories">
+      <h2>Popular Categories</h2>
+      <div class="popular-categories-content">
+        <div class="category" *ngFor="let category of categories">
+          <img [src]="category.image" [alt]="category.name">
+          <h3>{{ category.name }}</h3>
+        </div>
+      </div>
+    </div>
+  
+    <hr class="section-divider">
+  
+    <div class="latest-recipes">
+      <h2>Latest Recipes You Made</h2>
+      <div class="latest-recipes-content">
+        <div class="recipe" *ngFor="let recipe of latestRecipes">
+          <img [src]="recipe.image" [alt]="recipe.name">
+          <h3>{{ recipe.name }}</h3>
+        </div>      
+      </div>
+    </div>
+  
+    <hr class="section-divider">
+    
+    <div class="personalize-taste">
+      <h2>Personalize Your Taste</h2>
+      <div class="personalize-taste-content">
+          <div class="filter" (click)="toggleDropdown()">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+            <span class="filter-label">Filter</span>
+          </div>
+          <div class="dropdown" *ngIf="showDropdown">
+              <div class="dropdown-content">
+                  <div class="dropdown-column">
+                      <label><input type="checkbox"> Option 1</label>
+                      <label><input type="checkbox"> Option 2</label>
+                  </div>
+                  <div class="dropdown-column">
+                      <label><input type="checkbox"> Option 3</label>
+                      <label><input type="checkbox"> Option 4</label>
+                  </div>
+                  <div class="dropdown-column">
+                      <label><input type="checkbox"> Option 5</label>
+                      <label><input type="checkbox"> Option 6</label>
+                  </div>
+              </div>
+              <button class="apply-btn">Apply</button>
+          </div>
+          <p>Tailor your recipe suggestions to match your taste buds. Exclude any ingredients you dislike or are allergic to, and we'll serve up a list of recipes tailored just for you.</p>
+      </div>
+    </div>
+</div>
