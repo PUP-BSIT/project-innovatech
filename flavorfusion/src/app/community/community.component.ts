@@ -1,25 +1,8 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Post } from '../../model/posts';
+import { Comment } from '../../model/comments';
 
-interface Post {
-  userAvatar: string;
-  username: string;
-  description: string;
-  time: string;
-  image: string;
-  likes: number;
-  liked: boolean;
-  comments: Comment[];
-  caption: string; 
-}
-
-interface Comment {
-  userAvatar: string;
-  username: string;
-  time: string;
-  text: string;
-  liked: boolean; 
-}
 
 @Component({
   selector: 'app-community',
