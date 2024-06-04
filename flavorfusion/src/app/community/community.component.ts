@@ -12,6 +12,7 @@ import { Comment } from '../../model/comments';
 export class CommunityComponent {
   @ViewChild('postDetailTemplate') postDetailTemplate: TemplateRef<any>;
   dialogRef: MatDialogRef<any>;
+  newCommentText: string = ''
 
   posts: Post[] = [
     {
@@ -65,9 +66,10 @@ export class CommunityComponent {
       caption: ''
     }
   ];
+//TO DO: Malaluan, Kyla ->
+//Replace this after implementing user post functionality.
 
   constructor(public dialog: MatDialog) {}
-  newCommentText: string = '';
 
   openPostDetail(post: Post, template: TemplateRef<any>) {
     this.dialogRef = this.dialog.open(template, {
@@ -111,3 +113,5 @@ export class CommunityComponent {
     }
   }
 }
+//TO DO: Malaluan, Kyla ->
+//Replace this after implementing the function for adding comments by the user.
