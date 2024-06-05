@@ -1,6 +1,9 @@
 <div class="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item" *ngFor="let slide of slides; let i = index" [class.active]="i === currentSlide">
+        <div 
+            class="carousel-item" 
+            *ngFor="let slide of slides; let i = index" 
+            [class.active]="i === currentSlide">
             <div class="carousel-content">
                 <div class="label-wrapper">
                     <div class="label">{{ slide.meal }}</div>
@@ -9,8 +12,14 @@
                     <h1>{{ slide.title }}</h1>
                     <p>{{ slide.description }}</p>
                     <div class="details">
-                        <span><i class="fas fa-clock"></i> {{ slide.time }}</span>
-                        <span><i class="fas fa-utensils"></i> {{ slide.perPerson }}</span>
+                        <span>
+                            <i class="fas fa-clock"></i> 
+                            {{ slide.time }}
+                        </span>
+                        <span>
+                            <i class="fas fa-utensils"></i> 
+                            {{ slide.perPerson }}
+                        </span>
                     </div>
                 </div>
                 <div class="image-content">
@@ -19,8 +28,12 @@
             </div>
         </div>
     </div>
-    
     <div class="carousel-indicators">
-        <span *ngFor="let slide of slides; let i = index" class="dot" [class.active]="i === currentSlide" (click)="setSlide(i)"></span>
+        <span 
+        *ngFor="let slide of slides; let i = index" 
+        class="dot" 
+        [class.active]="i === currentSlide" 
+        (click)="setSlide(i)">
+    </span>
     </div>
 </div>  
