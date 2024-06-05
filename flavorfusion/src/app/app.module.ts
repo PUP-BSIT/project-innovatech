@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
+import { CarouselService } from '../services/carousel.service';
 
 @NgModule({
   declarations: [
@@ -40,9 +42,11 @@ import { CarouselComponent } from './carousel/carousel.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    HttpClientModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    CarouselService
   ],
   bootstrap: [AppComponent]
 })

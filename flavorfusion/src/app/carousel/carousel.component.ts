@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CarouselService } from '../../services/carousel.service';
 
 @Component({
   selector: 'app-carousel',
@@ -6,39 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent implements OnInit {
-  slides = [
-    {
-      meal: 'BREAKFAST',
-      title: 'Pancakes with Maple Syrup',
-      description: 'Fluffy pancakes served with a generous drizzle of pure maple syrup and a side of fresh berries.',
-      time: '20m',
-      perPerson: '2 persons',
-      image: 'assets/images/pancakes.jpg'
-    },
-    {
-      meal: 'LUNCH',
-      title: 'Caramelised Chicken',
-      description: 'Sticky caramel sauce and oodles of noodles make this easy chicken stir-fry the whole family will enjoy.',
-      time: '40m',
-      perPerson: '3 persons',
-      image: 'assets/images/caramelised_chicken.jpg'
-    },
-    {
-      meal: 'DINNER',
-      title: 'Grilled Salmon',
-      description: 'Succulent grilled salmon served with lemon butter sauce.',
-      time: '30m',
-      perPerson: '4 persons',
-      image: 'assets/images/grilled_salmon.jpg'
-    }
-  ];
-
+  slides = [];
   currentSlide = 0;
 
-  constructor() { }
+  constructor(private carouselService: CarouselService) { }
 
   ngOnInit(): void {
-    this.showSlide(this.currentSlide);
+    // TODO(Asebuque, Chrystine Noelle): 
+    // Replace mock data with service data once the backend is ready.
+    this.carouselService.getSlides().subscribe(data => {
+      this.slides = data;
+      this.showSlide(this.currentSlide);
+    });
   }
 
   setSlide(index: number): void {
