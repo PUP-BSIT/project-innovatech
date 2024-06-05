@@ -3,7 +3,6 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Post } from '../../model/posts';
 import { Comment } from '../../model/comments';
 
-
 @Component({
   selector: 'app-community',
   templateUrl: './community.component.html',
@@ -66,7 +65,7 @@ export class CommunityComponent {
       caption: ''
     }
   ];
-//TO DO: Malaluan, Kyla ->
+//TO DO: (Malaluan, Kyla) ->
 //Replace this after implementing user post functionality.
 
   constructor(public dialog: MatDialog) {}
@@ -113,5 +112,5 @@ export class CommunityComponent {
     }
   }
 }
-//TO DO: Malaluan, Kyla ->
+//TO DO: (Malaluan, Kyla) ->
 //Replace this after implementing the function for adding comments by the user.
