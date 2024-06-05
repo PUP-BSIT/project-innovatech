@@ -14,21 +14,16 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (!this.router.url.includes('/search')) {
-          this.resetSearch();
-        }
+      if (event instanceof NavigationEnd && !this.router.url.includes('/search')) {
+        this.resetSearch();
       }
     });
   }
 
   toggleSearchComponent(): void {
     this.showSearchComponent = !this.showSearchComponent;
-    if (this.showSearchComponent) {
-      this.router.navigateByUrl('/search');
-    } else {
-      this.router.navigateByUrl('/home');
-    }
+    const url = this.showSearchComponent ? '/search' : '/home';
+    this.router.navigateByUrl(url);
   }
 
   closeSearch(): void {
@@ -37,7 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private resetSearch(): void {
-    this.searchText = ''; // Reset search text
-    this.showSearchComponent = false; // Hide search component
+    this.searchText = '';
+    this.showSearchComponent = false;
   }
 }
