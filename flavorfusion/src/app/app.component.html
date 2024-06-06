@@ -1,6 +1,6 @@
 <div class="container">
   <app-header *ngIf="showHeaderFooter"></app-header>
-  <main>
+  <main [ngClass]="{'main-margin-top': !isLoginOrSignupRoute}">
     <router-outlet></router-outlet>
   </main>
   <app-footer *ngIf="showHeaderFooter"></app-footer>
