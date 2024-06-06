@@ -7,14 +7,21 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  showHeaderFooter: boolean = true;
+  public showHeaderFooter: boolean = true;
+  public isLoginOrSignupRoute: boolean = false;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.showHeaderFooter = !this.router.url.includes('/login') && !this.router.url.includes('/sign-up');
+        this.showHeaderFooter = 
+          !this.router.url.includes('/login') && 
+          !this.router.url.includes('/sign-up');
+
+        this.isLoginOrSignupRoute = 
+          this.router.url.includes('/login') || 
+          this.router.url.includes('/sign-up');
       }
     });
   }
