@@ -52,17 +52,27 @@ export class SearchComponent {
   }
 
   toggleCategory(category: string) {
-    this.showMealTypes = category === 'MealTypes' ? !this.showMealTypes : false;
-    this.showDietaryPreferences = category === 'DietaryPreferences' ? !this.showDietaryPreferences : false;
-    this.showIngredients = category === 'Ingredients' ? !this.showIngredients : false;
+    this.showMealTypes = category === 'MealTypes' 
+      ? !this.showMealTypes 
+      : false;
+    this.showDietaryPreferences = category === 'DietaryPreferences' 
+      ? !this.showDietaryPreferences 
+      : false;
+    this.showIngredients = category === 'Ingredients' 
+      ? !this.showIngredients 
+      : false;
   }
 
   addCategory(categoryType: string, category: string) {
-    let categoryGroup = this.selectedCategories.find(group => group.title === categoryType);
+    let categoryGroup = this.selectedCategories.find(
+      group => group.title === categoryType
+    );
+
     if (!categoryGroup) {
       categoryGroup = { title: categoryType, items: [] };
       this.selectedCategories.push(categoryGroup);
     }
+
     if (!categoryGroup.items.includes(category)) {
       categoryGroup.items.push(category);
     }
@@ -74,6 +84,7 @@ export class SearchComponent {
   }
 
   isCategoryActive(category: string, subCategory: string): boolean {
-    return this.activeCategory === category && this.activeSubCategory === subCategory;
+    return this.activeCategory === category && 
+           this.activeSubCategory === subCategory;
   }
 }

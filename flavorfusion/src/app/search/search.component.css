@@ -138,7 +138,7 @@
   
 .meal-type {
     display: grid;
-    grid-template-columns: repeat(4, 120px);
+    grid-template-columns: repeat(5, 120px);
     justify-content: center;
     gap: 20px;
 }
