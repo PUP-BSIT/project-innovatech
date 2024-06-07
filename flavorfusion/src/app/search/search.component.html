@@ -1,198 +1,207 @@
 <div class="search-container">
-  <div class="header">
-    <h3 class="hoverable" (click)="openIngredientModal()">
-      Cook with what you have
-    </h3>
-    <p>Search based on ingredients</p>
-  </div>
-
-  <div class="popular-recipes">
-    <h2>Popular Recipe</h2>
-    <div class="recipe-tags">
-      <button>Spaghetti Bolognese</button>
-      <button>Chicken Parmesan</button>
-      <button>Chocolate Chip Cookie</button>
-      <button>Vegetable Stir-Fry</button>
-      <button>Chicken Alfredo</button>
-      <button>Grilled Salmon</button>
-      <button>Beef Tacos</button>
-      <button>Chocolate Cake</button>
-      <button>Caesar Salad</button>
-      <button>Beef Lasagna</button>
+    <div class="header">
+      <h3 class="hoverable" (click)="openIngredientModal()">
+        Cook with what you have
+      </h3>
+      <p>Search based on ingredients</p>
     </div>
-  </div>
-
-  <div class="search-by-categories">
-    <h2>Search By Categories</h2>
     
-    <div class="categories">
-      <div class="dropdown">
-        <button class="dropbtn" 
-          [ngClass]="{'active': showMealTypes}" 
-          (click)="toggleCategory('MealTypes')">
-        <img src="assets/images/meal_type.png" alt="Meal Icon"> 
-          Meal Type
-        </button>
+    <div class="popular-recipes">
+      <h2>Popular Recipe</h2>
+  
+      <div class="recipe-tags">
+        <button class>Spaghetti Bolognese</button>
+        <button>Chicken Parmesan</button>
+        <button>Chocolate Chip Cookie</button>
+        <button>Vegetable Stir-Fry</button>
+        <button>Chicken Alfredo</button>
+        <button>Grilled Salmon</button>
+        <button>Beef Tacos</button>
+        <button>Chocolate Cake</button>
+        <button>Caesar Salad</button>
+        <button>Beef Lasagna</button>
       </div>
-
-      <div class="dropdown">
-        <button class="dropbtn" 
-          [ngClass]="{'active': showDietaryPreferences}" 
-          (click)="toggleCategory('DietaryPreferences')">
-        <img src="assets/images/dietary.png" alt="Dietary Icon"> 
-          Dietary Preferences
-        </button>
-      </div>
-
-      <div class="dropdown">
-        <button class="dropbtn" 
-          [ngClass]="{'active': showIngredients}" 
-          (click)="toggleCategory('Ingredients')">
-        <img src="assets/images/ingredients.png" alt="Ingredients Icon"> 
-          Ingredients
-        </button>
-      </div>
-
     </div>
-  </div>
-
-  <div *ngIf="showMealTypes" class="meal-type-container">
-    <div class="meal-type">
-      <a href="#" 
-        [ngClass]="{'active': isCategoryActive('Meal Type', 'Breakfast')}" 
-        (click)="setActiveCategory('Meal Type', 'Breakfast')">
-        <img src="assets/images/breakfast.png" alt="Breakfast Icon"> 
-        <span>Breakfast</span>
-      </a>
-
-      <a href="#" 
-        [ngClass]="{'active': isCategoryActive('Meal Type', 'Lunch')}" 
-        (click)="setActiveCategory('Meal Type', 'Lunch')">
-        <img src="assets/images/lunch.png" alt="Lunch Icon"> 
-        <span>Lunch</span>
-      </a>
-
-      <a href="#" 
-        [ngClass]="{'active': isCategoryActive('Meal Type', 'Dinner')}" 
-        (click)="setActiveCategory('Meal Type', 'Dinner')">
-        <img src="assets/images/dinner.png" alt="Dinner Icon"> 
-        <span>Dinner</span>
-      </a>
-
-      <a href="#" 
-        [ngClass]="{'active': isCategoryActive('Meal Type', 'Dessert')}" 
-        (click)="setActiveCategory('Meal Type', 'Dessert')">
-        <img src="assets/images/dessert.png" alt="Dessert Icon"> 
-        <span>Dessert</span>
-      </a>
-
-      <a href="#" 
-        [ngClass]="{'active': isCategoryActive('Meal Type', 'Snacks')}" 
-        (click)="setActiveCategory('Meal Type', 'Snacks')">
-        <img src="assets/images/snacks.png" alt="Snacks Icon"> 
-        <span>Snacks</span>
-      </a>
-
-    </div>
-  </div>
-
-  <div *ngIf="showDietaryPreferences" class="meal-type-container">
-    <div class="meal-type">
-      <a href="#" (click)="addCategory('Dietary Preferences', 'Vegetarian')">
-        <img src="assets/images/vegetarian.png" 
-             alt="Vegetarian Icon"> 
-             Vegetarian
-      </a>
-
-      <a href="#" (click)="addCategory('Dietary Preferences', 'Vegan')">
-        <img src="assets/images/vegan.png" 
-             alt="Vegan Icon"> 
-             Vegan
-      </a>
-
-      <a href="#" (click)="addCategory('Dietary Preferences', 'Gluten-Free')">
-        <img src="assets/images/gluten.png" 
-             alt="Gluten-Free Icon"> 
-             Gluten-Free
-      </a>
-
-      <a href="#" (click)="addCategory('Dietary Preferences', 'Low-Carb')">
-        <img src="assets/images/lowcarb.png" 
-             alt="Low-Carb Icon"> 
-             Low-Carb
-      </a>
-
-      <a href="#" (click)="addCategory('Dietary Preferences', 'Nut-Free')">
-        <img src="assets/images/nutfree.png" 
-             alt="Nut-Free Icon"> 
-             Nut-Free
-      </a>
-
-    </div>
-  </div>
-
-  <div *ngIf="showIngredients" class="meal-type-container">
-    <div class="meal-type">
-      <a href="#" (click)="addCategory('Ingredients', 'Chicken')">
-        <img src="assets/images/chicken.png" 
-             alt="Chicken Icon"> 
-             Chicken
-      </a>
-
-      <a href="#" (click)="addCategory('Ingredients', 'Beef')">
-        <img src="assets/images/beef.png" 
-             alt="Beef Icon"> 
-             Beef
-      </a>
-
-      <a href="#" (click)="addCategory('Ingredients', 'Seafood')">
-        <img src="assets/images/seafood.png" 
-             alt="Seafood Icon"> 
-             Seafood
-      </a>
-
-      <a href="#" (click)="addCategory('Ingredients', 'Pasta')">
-        <img src="assets/images/pasta-ingre.png" 
-             alt="Pasta Icon"> 
-             Pasta
-      </a>
-
-      <a href="#" (click)="addCategory('Ingredients', 'Vegetables')">
-        <img src="assets/images/vegetables.png" 
-             alt="Vegetables Icon"> 
-             Vegetables
-      </a>
-
-    </div>
-  </div>
-
-  <div id="my_modal" class="modal">
-    <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <p>{{ modalText }}</p>
-          <input type="text" placeholder="Input here">
-          <input type="text" placeholder="Input here">
-          <input type="text" placeholder="Input here">
-      
-      <div *ngFor="let field of inputFields">
-        <input type="text" [placeholder]="'Input ' + 'here'">
-      </div>
-      
-      <div class="clicked">
-        <div class="add-more-ingredients-container">
-          <a href="#" class="add-more-ingredients" 
-             (click)="addInputField()">
-             Click here
-          </a> 
-              to add more ingredients
+    
+    <div class="search-by-categories">
+      <h2>Search By Categories</h2>
+        
+      <div class="categories"> 
+        <div class="dropdown">
+          <button class="dropbtn"
+            [ngClass]="{'active': showMealTypes}"
+            (click)="toggleCategory('MealTypes')">
+          <img src="assets/images/meal_type.png" alt="Meal Icon"> 
+            Meal Type
+          <i [ngClass]="showMealTypes ? 
+              'fas fa-caret-up' : 
+              'fas fa-caret-down'">
+          </i>
+          </button>
         </div>
-        <div class="search-recipe">
-          <button (click)="searchRecipes()">
-            Search
+    
+        <div class="dropdown">
+          <button class="dropbtn" 
+            [ngClass]="{'active': showDietaryPreferences}" 
+            (click)="toggleCategory('DietaryPreferences')">
+          <img src="assets/images/dietary.png" alt="Dietary Icon"> 
+            Dietary Preferences
+          <i [ngClass]="showDietaryPreferences ? 
+              'fas fa-caret-up' : 
+              'fas fa-caret-down'">
+          </i>
+          </button>
+        </div>
+    
+        <div class="dropdown">
+          <button class="dropbtn" 
+            [ngClass]="{'active': showIngredients}" 
+            (click)="toggleCategory('Ingredients')">
+          <img src="assets/images/ingredients.png" alt="Ingredients Icon"> 
+            Ingredients
+            <i [ngClass]="showIngredients ? 
+                'fas fa-caret-up' : 
+                'fas fa-caret-down'">
+            </i>
           </button>
         </div>
       </div>
-
-    </div>          
-  </div>
-</div>
+    </div>
+    
+    <div *ngIf="showMealTypes" class="meal-type-container">
+      <div class="meal-type">
+        <a href="#" 
+          [ngClass]="{'active': isCategoryActive('Meal Type', 'Breakfast')}" 
+          (click)="setActiveCategory('Meal Type', 'Breakfast')">
+          <img src="assets/images/breakfast.png" alt="Breakfast Icon"> 
+          <span>Breakfast</span>
+        </a>
+  
+        <a href="#" 
+          [ngClass]="{'active': isCategoryActive('Meal Type', 'Lunch')}" 
+          (click)="setActiveCategory('Meal Type', 'Lunch')">
+          <img src="assets/images/lunch.png" alt="Lunch Icon"> 
+          <span>Lunch</span>
+        </a>
+    
+        <a href="#" 
+          [ngClass]="{'active': isCategoryActive('Meal Type', 'Dinner')}" 
+          (click)="setActiveCategory('Meal Type', 'Dinner')">
+          <img src="assets/images/dinner.png" alt="Dinner Icon"> 
+          <span>Dinner</span>
+        </a>
+    
+        <a href="#" 
+          [ngClass]="{'active': isCategoryActive('Meal Type', 'Dessert')}" 
+          (click)="setActiveCategory('Meal Type', 'Dessert')">
+          <img src="assets/images/dessert.png" alt="Dessert Icon"> 
+          <span>Dessert</span>
+        </a>
+    
+        <a href="#" 
+          [ngClass]="{'active': isCategoryActive('Meal Type', 'Snacks')}" 
+          (click)="setActiveCategory('Meal Type', 'Snacks')">
+          <img src="assets/images/snacks.png" alt="Snacks Icon"> 
+          <span>Snacks</span>
+        </a>
+      </div>
+    </div>
+  
+    <div *ngIf="showDietaryPreferences" class="meal-type-container">
+      <div class="meal-type">
+        <a href="#" (click)="addCategory('Dietary Preferences', 'Vegetarian')">
+          <img src="assets/images/vegetarian.png" 
+            alt="Vegetarian Icon"> 
+            Vegetarian
+        </a>
+    
+        <a href="#" (click)="addCategory('Dietary Preferences', 'Vegan')">
+          <img src="assets/images/vegan.png" 
+            alt="Vegan Icon"> 
+            Vegan
+        </a>
+    
+        <a href="#" (click)="addCategory('Dietary Preferences', 'Gluten-Free')">
+          <img src="assets/images/gluten.png" 
+            alt="Gluten-Free Icon"> 
+            Gluten-Free
+        </a>
+  
+        <a href="#" (click)="addCategory('Dietary Preferences', 'Low-Carb')">
+          <img src="assets/images/lowcarb.png" 
+            alt="Low-Carb Icon"> 
+            Low-Carb
+        </a>
+  
+        <a href="#" (click)="addCategory('Dietary Preferences', 'Nut-Free')">
+          <img src="assets/images/nutfree.png" 
+            alt="Nut-Free Icon"> 
+            Nut-Free
+        </a>
+      </div>
+    </div>
+    
+    <div *ngIf="showIngredients" class="meal-type-container">
+      <div class="meal-type">
+        <a href="#" (click)="addCategory('Ingredients', 'Chicken')">
+          <img src="assets/images/chicken.png" 
+            alt="Chicken Icon"> 
+            Chicken
+        </a>
+    
+        <a href="#" (click)="addCategory('Ingredients', 'Beef')">
+          <img src="assets/images/beef.png" 
+            alt="Beef Icon"> 
+            Beef
+        </a>
+  
+        <a href="#" (click)="addCategory('Ingredients', 'Seafood')">
+          <img src="assets/images/seafood.png" 
+            alt="Seafood Icon"> 
+            Seafood
+        </a>
+  
+        <a href="#" (click)="addCategory('Ingredients', 'Pasta')">
+          <img src="assets/images/pasta-ingre.png" 
+            alt="Pasta Icon"> 
+            Pasta
+        </a>
+    
+        <a href="#" (click)="addCategory('Ingredients', 'Vegetables')">
+          <img src="assets/images/vegetables.png" 
+            alt="Vegetables Icon"> 
+            Vegetables
+        </a>
+      </div>
+    </div>
+    
+    <div id="my_modal" class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <p>{{ modalText }}</p>
+          <input type="text" placeholder="Input here">
+          <input type="text" placeholder="Input here">
+          <input type="text" placeholder="Input here">
+          
+        <div *ngFor="let field of inputFields">
+          <input type="text" [placeholder]="'Input ' + 'here'">
+        </div>
+          
+        <div class="clicked">
+          <div class="add-more-ingredients-container">
+            <a href="#" class="add-more-ingredients" 
+              (click)="addInputField()">
+              Click here
+            </a> 
+              to add more ingredients
+          </div>
+            
+          <div class="search-recipe">
+            <button (click)="searchRecipes()">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>          
+    </div>
+  </div>  
