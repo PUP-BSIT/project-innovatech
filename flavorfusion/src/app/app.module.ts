@@ -48,8 +48,7 @@ import { RecipeFormComponent } from './recipe-form/recipe-form.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    HttpClientModule, 
-    // ReactiveFormsModule
+    HttpClientModule,
   ],
   providers: [
     provideAnimationsAsync(),
