@@ -1,12 +1,13 @@
 .container {
     width: 80%;
     margin: auto;
-    padding: 20px;
     background-color: #fff;
 }
 
-.popular-categories, .latest-recipes {
-    margin: 38px 0;
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #0E194D;
 }
 
 .category, .recipe {
@@ -20,8 +21,9 @@
 .category img, .recipe img {
     width: 100%;
     height: 200px;
-    border-radius: 10px;
+    border-radius: 23px;
     object-fit: cover;
+    border: 3px solid #FFCE38;
 }
 
 .popular-categories-content, .latest-recipes-content {
@@ -32,6 +34,8 @@
 .category h3, .recipe h3 {
     margin-top: 10px;
     margin-bottom: 5px;
+    font-family: math;
+    font-size: larger;
 }
 
 .category p, .recipe p {
@@ -46,25 +50,33 @@
     height: 180px;
     border: 5px solid rgb(255, 167, 0, 0.3 );
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.personalize-taste h2 {
-    margin-top: 0;
+.personalize-taste    {
+    margin-bottom: 26px;
 }
 
 .personalize-taste p {
     margin: 0;
-    color: #555;
+    color: #55555585;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    width: 73%;
+    font-style: italic;
+    margin: auto;
 }
 
 .filter {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
+    align-self: flex-end;
+}
+
+.filter-label {
+    font-family: math, sans-serif;
+    padding-left: 6px;
 }
 
 .dropdown {
@@ -76,8 +88,43 @@
     justify-content: flex-end;
     flex-direction: column;
     align-items: flex-end;
-    margin-right: 53px;
-    padding: 13px;
+    margin-right: 30px;
+    padding: 8px;
+    margin-top: 30px;
+}
+
+.dropdown-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.dropdown-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-column label {
+    font-family: math, sans-serif;
+}
+
+.dropdown-column input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.apply-btn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    font-family: math;
+    color: #D82B1E;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.apply-btn:hover {
+    background-color: rgb(230, 132, 72, 0.3);
+    border-radius: 8px;
 }
 
 .section-divider {

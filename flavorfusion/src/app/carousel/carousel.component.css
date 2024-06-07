@@ -40,7 +40,7 @@
     font-weight: bold;
     background-color: rgb(255 0 0 / 10%);
     padding: 10px;
-    color: lemonchiffon;
+    color: #8f813a7a;
     display: flex;
     justify-content: center;
     border-radius: 28px 0;
@@ -48,18 +48,34 @@
 
 .text-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .text-content h1 {
-    margin-top: 58px;
-    font-family: Poppins;
-    font-weight: lighter;
+    margin: 50px 0 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: normal;
+    width: 80%;
 }
 
 .text-content p {
-    width: 76%;
-    font-family: Canva Sans;
+    width: 80%;
+    font-family: math, sans-serif;
     display: flex;
+}
+
+.details {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+span {
+    font-family: math, sans-serif;
 }
 
 .image-content {
@@ -98,4 +114,28 @@
 
 .carousel-indicators .dot.active {
     background-color: #333;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #333;
+    z-index: 10;
+}
+
+.carousel-btn.prev {
+    left: 10px;
+}
+
+.carousel-btn.next {
+    right: 10px;
+}
+
+.carousel-btn i {
+    pointer-events: none;
 }

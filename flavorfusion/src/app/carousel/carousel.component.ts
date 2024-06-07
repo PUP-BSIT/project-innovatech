@@ -9,6 +9,7 @@ import { CarouselService } from '../../services/carousel.service';
 export class CarouselComponent implements OnInit {
   slides = [];
   currentSlide = 0;
+  slideInterval: any;
 
   constructor(private carouselService: CarouselService) { }
 
@@ -19,6 +20,14 @@ export class CarouselComponent implements OnInit {
       this.slides = data;
       this.showSlide(this.currentSlide);
     });
+
+    this.slideInterval = setInterval(() => {
+      this.moveToNextSlide();
+    }, 8000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.slideInterval);
   }
 
   setSlide(index: number): void {
@@ -46,5 +55,23 @@ export class CarouselComponent implements OnInit {
 
     const carouselInner = document.querySelector('.carousel-inner') as HTMLElement;
     carouselInner.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  moveToPrevSlide(): void {
+    if (this.currentSlide > 0) {
+        this.currentSlide--;
+    } else {
+        this.currentSlide = this.slides.length - 1;
+    }
+    this.showSlide(this.currentSlide);
+  }
+
+  moveToNextSlide(): void {
+      if (this.currentSlide < this.slides.length - 1) {
+          this.currentSlide++;
+      } else {
+          this.currentSlide = 0;
+      }
+      this.showSlide(this.currentSlide);
   }
 }
