@@ -28,12 +28,20 @@
             </div>
         </div>
     </div>
+
+    <button class="carousel-btn prev" (click)="moveToPrevSlide()">
+        <i class="fa">&#xf053;</i>
+    </button>
+    <button class="carousel-btn next" (click)="moveToNextSlide()">
+        <i class="fa">&#xf054;</i>
+    </button>
+
     <div class="carousel-indicators">
         <span 
-        *ngFor="let slide of slides; let i = index" 
-        class="dot" 
-        [class.active]="i === currentSlide" 
-        (click)="setSlide(i)">
-    </span>
+            *ngFor="let slide of slides; let i = index" 
+            class="dot" 
+            [class.active]="i === currentSlide" 
+            (click)="setSlide(i)">
+        </span>
     </div>
 </div>  
