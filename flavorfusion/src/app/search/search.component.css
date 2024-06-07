@@ -8,10 +8,12 @@
 .header {
     text-align: right;
     margin-bottom: 10px;
+    position: relative; 
 }
   
 .header h3 {
     margin: 0;
+    display: inline-block; 
 }
   
 .header p {
@@ -33,24 +35,27 @@
 }
   
 .recipe-tags {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
 }
   
 .recipe-tags button {
-    background-color: #fcaf9d;
+    background-color: rgba(255, 87, 51, 0.35);
     border: 3px solid #ccccccd9;
     color: black;
-    padding: 15px;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    margin-bottom: 10px;
 }
   
 .recipe-tags button:hover {
-    background-color: #f88166;
+    background-color: #FF5733;
 }
   
 .search-by-categories {
@@ -73,7 +78,7 @@
 }
   
 .dropbtn {
-    background-color: #ffd490;
+    background-color: rgba(255, 166, 77, 0.5);
     color: black;
     padding: 10px 30px;
     border-radius: 10px;
@@ -87,17 +92,28 @@
 }
   
 .dropbtn:hover {
-    background-color: #ffbd53;
+    background-color: rgba(255, 206, 56, 0.5);
 }
   
 .dropbtn.active {
-    background-color: #ffbd53;
+    background-color: rgba(255, 206, 56, 0.5);
 }
   
 .dropdown img {
     margin-right: 10px;
     width: 100px;
     height: 100px;
+}
+
+.dropdown .dropbtn {
+    position: relative;
+}
+
+.dropdown .dropbtn i {
+    position: absolute;
+    bottom: 20px;
+    transform: translateX(-50%);
+    left: 70%;
 }
   
 .dropdown-content {
@@ -155,7 +171,7 @@
 }
   
 .meal-type a:hover{
-    background-color: #ffbd53;
+    background-color: rgba(255, 206, 56, 0.5);
 }
   
 .meal-type img {
@@ -185,11 +201,12 @@
     padding: 20px;
     border: 2px solid black;
     border-radius: 10px;
-    width: 60%;
+    width: 30%;
 }
   
 .modal-content p {
     font-weight: bold;
+    font-family: 'Poppins', sans-serif; 
 }
   
 .close {
@@ -216,24 +233,27 @@
 }
   
 .modal button {
-    background-color: #fcaf9d;
-    border: 3px solid #ccccccd9;
-    color: black;
+    background-color: #FFA64D;
+    border: 3px white;
+    color: white;
     padding: 10px;
-    border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold;
     width: 100px;
 }
   
 .modal button:hover {
-    background-color: #f88166;
+    background-color: #f8912b;
 }
   
 .add-more-ingredients-container {
     margin-right: auto;
     text-align: right;
     margin-bottom: 20px;
+    padding-bottom: 50px;
+    color: #0292B7;
+    font-size: 13px;
 }
   
 .add-more-ingredients {
@@ -255,4 +275,4 @@ a.active {
     background-color: #ffbd53;
     padding: 10px;
     border-radius: 10px;
-}
+} 
