@@ -22,6 +22,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 
 import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
+import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { LoginAuthentication } from '../services/login-authentication.service';
     SearchComponent,
     ProfileComponent,
     CarouselComponent,
+    SearchRecipeComponent,
   ],
   imports: [
     BrowserModule,

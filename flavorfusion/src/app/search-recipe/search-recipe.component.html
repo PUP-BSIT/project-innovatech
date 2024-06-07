@@ -1,0 +1,15 @@
+<div class="cake-container">
+    <div class="cake-card" *ngFor="let cake of cakes">
+      <img [src]="cake.image" alt="{{cake.name}}">
+      <h3>{{cake.name}}</h3>
+      
+      <div class="rating">
+        <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+          <i class="fa" [ngClass]="{'fa-star': i < cake.rating, 
+                                    'fa-star-o': i >= cake.rating}">
+          </i>
+        </span>
+      </div>
+    </div>
+  </div>
+  

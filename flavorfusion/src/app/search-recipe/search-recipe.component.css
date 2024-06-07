@@ -1,0 +1,31 @@
+.cake-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+  
+.cake-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+  
+.cake-card img {
+    width: 100%;
+    height: 200px;
+}
+  
+.cake-card h3 {
+    margin: 10px 0;
+}
+  
+.rating {
+    margin: 10px 0;
+}
+  
+.rating .fa {
+    color: gold;
+}
