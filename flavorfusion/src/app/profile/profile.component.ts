@@ -9,6 +9,17 @@ export class ProfileComponent {
   showSavedRecipes: boolean = false;
   showMealPlanning: boolean = false;
   showActivityLog: boolean = false;
+  showEditModal: boolean = false;
+  showAvatarModal: boolean = false;
+  selectedFile: File | null = null;
+
+  user = {
+    name: 'Jane Dee',
+    description: 'Hello fellow food enthusiasts! I\'m Jane, \
+    a dedicated foodie and a weekend chef, \
+    always on the hunt for exciting new flavors and unique recipes.',    
+    password: ''
+  };
 
   toggleSavedRecipes() {
     this.showSavedRecipes = !this.showSavedRecipes;
@@ -26,5 +37,37 @@ export class ProfileComponent {
     this.showActivityLog = !this.showActivityLog;
     this.showSavedRecipes = false;
     this.showMealPlanning = false;
+  }
+
+  openEditModal() {
+    this.showEditModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+  }
+
+  saveChanges() {
+    console.log('Saving changes:', this.user);
+    this.closeEditModal();
+  }
+
+  changeAvatar() {
+    this.showAvatarModal = true;
+  }
+
+  closeAvatarModal() {
+    this.showAvatarModal = false;
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadAvatar() {
+    if (this.selectedFile) {
+      console.log('Uploading file:', this.selectedFile);
+      this.closeAvatarModal();
+    }
   }
 }
