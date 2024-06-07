@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
 import { CarouselService } from '../services/carousel.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -52,11 +52,28 @@
     margin: 0 auto; 
 }
 
+.avatar-container {
+    position: relative;
+    display: inline-block;
+}
+
 .avatar {
-    width: 110px;
-    height: 120px;
+    width: 120px;
+    height: 130px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
+}
+
+.change-avatar-icon {
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;  
+    width: 20px;
+    height: 20px; 
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
 }
 
 .profile-info {
@@ -107,6 +124,7 @@
     align-items: center;
     font-size: 15px;
     margin-left: auto;
+    font-family: 'Poppins', sans-serif;
 }
 
 .edit-icon {
@@ -151,7 +169,6 @@
     gap: 10px; 
     margin-top: 5px; 
 }
-
 
 .recipe-list {
     display: flex;
@@ -280,4 +297,85 @@
 .activity-text {
     font-size: 16px;
     color: #0E194D;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000; /* Adjust as needed to be higher than other content */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    width: 60%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1010; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #fcaf9d;
+    border: 3px solid #ccccccd9;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+button[type="submit"]:hover {
+    background-color: #f88166;
 }

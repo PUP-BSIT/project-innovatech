@@ -3,21 +3,38 @@
         <h1>User Profile</h1>
     </div>
     <div class="profile-container">
-        <div class="profile-header">
+        <div class="profile-header"> 
             <div class="profile-box">
-                <img src="assets/images/profile-avatar.png" alt="User Avatar" class="avatar">
+                <div class="avatar-container">
+                    <img src="assets/images/profile-avatar.png" 
+                         alt="User Avatar" 
+                         class="avatar">
+                    <img src="/assets/images/avatar-icon.png" 
+                         alt="Change Avatar Icon" 
+                         class="change-avatar-icon" 
+                         (click)="changeAvatar()">
+                </div>
                 <div class="profile-info">
                     <h2>Jane Dee</h2>
-                    <p>Hello fellow food enthusiasts! I'm Jane, a dedicated foodie and a weekend chef, always on the hunt for exciting new flavors and unique recipes.</p>
+                    <p>Hello fellow food enthusiasts! I'm Jane, a dedicated 
+                        foodie and a weekend chef, always on the hunt for 
+                        exciting new flavors and unique recipes.</p>
                     <div class="profile-stats">
                         <span class="ratings">
-                            <img src="assets/images/star.png" alt="Star" class="star-icon"> Ratings
+                            <img src="assets/images/star.png" 
+                                 alt="Star" 
+                                 class="star-icon"> Ratings
                         </span>
                         <span class="likes">
-                            <img src="assets/images/heart.png" alt="Heart" class="heart-icon"> Likes
+                            <img src="assets/images/heart.png" 
+                                 alt="Heart" 
+                                 class="heart-icon"> Likes
                         </span>
-                        <button class="edit-profile">
-                            <img src="assets/images/edit-icon.png" alt="Edit Icon" class="edit-icon"> Edit User Profile
+                           
+                        <button class="edit-profile" (click)="openEditModal()">
+                            <img src="assets/images/edit-icon.png" 
+                            alt="Edit Icon" 
+                            class="edit-icon"> Edit User Profile
                         </button>
                     </div>                 
                 </div>
@@ -25,13 +42,19 @@
         </div>
         
         <div class="section">
-            <button class="section-button" (click)="toggleSavedRecipes()" [ngClass]="{'active': showSavedRecipes}">
+            <button class="section-button" 
+                    (click)="toggleSavedRecipes()" 
+                    [ngClass]="{'active': showSavedRecipes}">
                 <h3>Saved Recipes</h3>
             </button>
-            <button class="section-button" (click)="toggleMealPlanning()" [ngClass]="{'active': showMealPlanning}">
+            <button class="section-button" 
+                    (click)="toggleMealPlanning()" 
+                    [ngClass]="{'active': showMealPlanning}">
                 <h3>Meal Planning</h3>
             </button>
-            <button class="section-button" (click)="toggleActivityLog()" [ngClass]="{'active': showActivityLog}">
+            <button class="section-button" 
+                    (click)="toggleActivityLog()" 
+                    [ngClass]="{'active': showActivityLog}">
                 <h3>Activity Log</h3>
             </button>
         </div>
@@ -39,15 +62,18 @@
         <div class="profile-content">
             <div class="recipe-list" *ngIf="showSavedRecipes">
                 <div class="recipe-card">
-                    <img src="assets/images/caramel-blueberry.jpg" alt="Caramel Blueberry Scones">
+                    <img src="assets/images/caramel-blueberry.jpg" 
+                         alt="Caramel Blueberry Scones">
                     <p>Caramel Blueberry Scones</p>
                 </div>
                 <div class="recipe-card">
-                    <img src="assets/images/chocolate-jar.jpg" alt="Chocolate and Banana Jar Cake">
+                    <img src="assets/images/chocolate-jar.jpg" 
+                         alt="Chocolate and Banana Jar Cake">
                     <p>Chocolate and Banana Jar Cake</p>
                 </div>
                 <div class="recipe-card">
-                    <img src="assets/images/egg-toast.png" alt="Eggs and Avocado Toast">
+                    <img src="assets/images/egg-toast.png" 
+                         alt="Eggs and Avocado Toast">
                     <p>Eggs and Avocado Toast</p>
                 </div>
             </div>
@@ -55,43 +81,91 @@
             <div class="meal-planning" *ngIf="showMealPlanning">
                 <div class="meal-box">
                     <h2>Breakfast</h2>
-                    <button class="add-image-button">
+                    <button class="add-image-button" routerLink="/search">
                         <img src="assets/images/add-icon.png" alt="Add Image">
                         <span>Add meal</span>
                     </button>
                 </div>
                 <div class="meal-box">
                     <h2>Lunch</h2>
-                    <button class="add-image-button">
+                    <button class="add-image-button" routerLink="/search">
                         <img src="assets/images/add-icon.png" alt="Add Image">
                         <span>Add meal</span>
                     </button>
                 </div>
                 <div class="meal-box">
                     <h2>Dinner</h2>
-                    <button class="add-image-button">
+                    <button class="add-image-button" routerLink="/search">
                         <img src="assets/images/add-icon.png" alt="Add Image">
                         <span>Add meal</span>
                     </button>
                 </div>
-            </div>            
-                     
+            </div>
+                            
             <div class="activity-log" *ngIf="showActivityLog">
                 <div class="activity-log-entry activity-box">
                     <div class="activity-details">
                         <div class="activity-date">May 10, 2024</div>
                         <div class="activity-item">
                             <span class="activity-icon">❤️</span>
-                            <span class="activity-text">You liked apol's shared recipe - “Delicious Apple Tart”</span>
+                            <span class="activity-text">You liked apol's shared 
+                                recipe - “Delicious Apple Tart”</span>
                         </div>
                         <div class="activity-item">
                             <span class="activity-icon">🔖</span>
-                            <span class="activity-text">You saved a recipe - "Spicy Thai Noodles"</span>
+                            <span class="activity-text">You saved a recipe - 
+                                "Spicy Thai Noodles"</span>
                         </div>
-                    </div>
-                    
+                    </div>               
                 </div>
-            </div>            
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal" *ngIf="showEditModal">
+        <div class="modal-content">
+            <span class="close" (click)="closeEditModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form (ngSubmit)="saveChanges()">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           [(ngModel)]="user.name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" 
+                              name="description" 
+                              [(ngModel)]="user.description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           [(ngModel)]="user.password" required>
+                </div>
+
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" *ngIf="showAvatarModal">
+        <div class="modal-content">
+            <span class="close" (click)="closeAvatarModal()">&times;</span>
+            <h2>Change Avatar</h2>
+            <form (ngSubmit)="uploadAvatar()">
+                <div class="form-group">
+                    <input type="file" 
+                           id="avatar" (change)="onFileSelected($event)">
+                </div>
+                <button type="submit">Upload</button>
+            </form>
         </div>
     </div>
 </div>
