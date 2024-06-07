@@ -19,10 +19,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
-
 import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
+import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 
 
 @NgModule({
@@ -38,6 +38,7 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
     ProfileComponent,
     CarouselComponent,
     SearchRecipeComponent,
+    RecipeFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +48,7 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     provideAnimationsAsync(),
