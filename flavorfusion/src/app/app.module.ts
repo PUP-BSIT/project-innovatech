@@ -19,7 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
+
 import { CarouselService } from '../services/carousel.service';
+import { LoginAuthentication } from '../services/login-authentication.service';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { CarouselService } from '../services/carousel.service';
   ],
   providers: [
     provideAnimationsAsync(),
-    CarouselService
+    CarouselService,
+    LoginAuthentication
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { LoginAuthentication } from '../services/login-authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ export class AppComponent implements OnInit {
   public showHeaderFooter: boolean = true;
   public isLoginOrSignupRoute: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, 
+      private loginAuthService: LoginAuthentication) {}
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -24,5 +26,8 @@ export class AppComponent implements OnInit {
           this.router.url.includes('/sign-up');
       }
     });
+
+    // Check authentication status
+    this.loginAuthService.checkAuthentication();
   }
 }
