@@ -7,14 +7,20 @@
             <div class="profile-box">
                 <div class="avatar-container">
                     <img src="assets/images/profile-avatar.png" 
-                         alt="User Avatar" 
-                         class="avatar">
+                        alt="User Avatar" 
+                        class="avatar">
                     <img src="/assets/images/avatar-icon.png" 
-                         alt="Change Avatar Icon" 
-                         class="change-avatar-icon" 
-                         (click)="changeAvatar()">
+                        alt="Change Avatar Icon" 
+                        class="change-avatar-icon" 
+                        (click)="changeAvatar()">
                 </div>
                 <div class="profile-info">
+                    <div class="share-recipe-container">
+                        <button class="share-recipe-button" 
+                                routerLink="/recipe-form">
+                            + Share Recipe
+                        </button>
+                    </div>
                     <h2>Jane Dee</h2>
                     <p>Hello fellow food enthusiasts! I'm Jane, a dedicated 
                         foodie and a weekend chef, always on the hunt for 
@@ -22,13 +28,13 @@
                     <div class="profile-stats">
                         <span class="ratings">
                             <img src="assets/images/star.png" 
-                                 alt="Star" 
-                                 class="star-icon"> Ratings
+                                alt="Star" 
+                                class="star-icon"> Ratings
                         </span>
                         <span class="likes">
                             <img src="assets/images/heart.png" 
-                                 alt="Heart" 
-                                 class="heart-icon"> Likes
+                                alt="Heart" 
+                                class="heart-icon"> Likes
                         </span>
                            
                         <button class="edit-profile" (click)="openEditModal()">
@@ -63,17 +69,17 @@
             <div class="recipe-list" *ngIf="showSavedRecipes">
                 <div class="recipe-card">
                     <img src="assets/images/caramel-blueberry.jpg" 
-                         alt="Caramel Blueberry Scones">
+                        alt="Caramel Blueberry Scones">
                     <p>Caramel Blueberry Scones</p>
                 </div>
                 <div class="recipe-card">
                     <img src="assets/images/chocolate-jar.jpg" 
-                         alt="Chocolate and Banana Jar Cake">
+                        alt="Chocolate and Banana Jar Cake">
                     <p>Chocolate and Banana Jar Cake</p>
                 </div>
                 <div class="recipe-card">
                     <img src="assets/images/egg-toast.png" 
-                         alt="Eggs and Avocado Toast">
+                        alt="Eggs and Avocado Toast">
                     <p>Eggs and Avocado Toast</p>
                 </div>
             </div>
@@ -108,13 +114,16 @@
                         <div class="activity-date">May 10, 2024</div>
                         <div class="activity-item">
                             <span class="activity-icon">❤️</span>
-                            <span class="activity-text">You liked apol's shared 
-                                recipe - “Delicious Apple Tart”</span>
+                            <span class="activity-text">
+                                You liked apol's shared recipe 
+                                - “Delicious Apple Tart”
+                            </span>
                         </div>
                         <div class="activity-item">
                             <span class="activity-icon">🔖</span>
-                            <span class="activity-text">You saved a recipe - 
-                                "Spicy Thai Noodles"</span>
+                            <span class="activity-text">
+                                You saved a recipe - "Spicy Thai Noodles"
+                            </span>
                         </div>
                     </div>               
                 </div>
@@ -129,25 +138,29 @@
             <form (ngSubmit)="saveChanges()">
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" 
-                           id="name" 
-                           name="name" 
-                           [(ngModel)]="user.name" required>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        [(ngModel)]="user.name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea id="description" 
-                              name="description" 
-                              [(ngModel)]="user.description"></textarea>
+                    <textarea 
+                        id="description" 
+                        name="description" 
+                        [(ngModel)]="user.description">
+                    </textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" 
-                           id="password" 
-                           name="password" 
-                           [(ngModel)]="user.password" required>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        [(ngModel)]="user.password" required>
                 </div>
 
                 <button type="submit">Save Changes</button>
@@ -161,8 +174,9 @@
             <h2>Change Avatar</h2>
             <form (ngSubmit)="uploadAvatar()">
                 <div class="form-group">
-                    <input type="file" 
-                           id="avatar" (change)="onFileSelected($event)">
+                    <input 
+                        type="file" 
+                        id="avatar" (change)="onFileSelected($event)">
                 </div>
                 <button type="submit">Upload</button>
             </form>
