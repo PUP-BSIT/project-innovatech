@@ -7,7 +7,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginAuthentication } from '../services/login-authentication.service';
-import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,7 +16,6 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'search', component: SearchComponent },
   { path: 'sign-up', component: SignUpComponent },
-  { path: 'recipe-form', component: RecipeFormComponent}
 ];
 
 @NgModule({
