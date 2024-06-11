@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   showSavedRecipes: boolean = false;
   showMealPlanning: boolean = false;
   showActivityLog: boolean = false;
@@ -20,6 +21,18 @@ export class ProfileComponent {
     always on the hunt for exciting new flavors and unique recipes.',    
     password: ''
   };
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['showSavedRecipes']) {
+        this.showSavedRecipes = true;
+        this.showMealPlanning = false;
+        this.showActivityLog = false;
+      }
+    });
+  }
 
   toggleSavedRecipes() {
     this.showSavedRecipes = !this.showSavedRecipes;
