@@ -26,7 +26,8 @@
     <div class="user-actions">
         <a routerLink="/login">Log In</a>
         <a 
-            routerLink="/profile">
+            [routerLink]="['/profile']"
+            [queryParams]="{ showSavedRecipes: true }">
             <img src="assets/images/profile.png" alt="Profile">
         </a>
     </div>

@@ -1,16 +1,13 @@
 .user-profile {
-    padding: 20px;
-    height: 100vh; 
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .profile-container {
-    background-color: #feecca;
+    background-color: #ffc28aa3;
     background-size: cover; 
     background-repeat: no-repeat; 
-    height: 600px; 
     padding: 20px;
     border-radius: 25px;
     width: 90%; 
@@ -28,24 +25,24 @@
 }
 
 .profile-title {
-    display: flex;
-    justify-content: flex-start; 
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     width: 100%; 
+    font-family: monospace;
+    font-style: italic;
 }
 
 .profile-title h1 {
     margin: 0;
-    font-size: 24px;
     color: #0E194D;
     text-align: left; 
+    padding-left: 33px;
 }
 
 .profile-box {
     display: flex;
     align-items: flex-start;
-    border: 1px solid #000000;
-    padding: 20px;
+    border: 2px solid #000000;
+    padding: 16px;
     border-radius: 25px;
     background-color: #FFF9C7;
     max-width: 1000px;
@@ -78,7 +75,9 @@
 
 .profile-info {
     text-align: left;
-    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-info h2 {
@@ -133,9 +132,30 @@
     margin-right: 5px;
 }
 
+.share-recipe-container {
+    align-self: flex-end;
+}
+
+.share-recipe-button {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.share-recipe-button:hover {
+    background-color: #ff5a4c;
+}
+
 .section {
     text-align: center;
-    margin-bottom: 10px; 
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .section-button {
@@ -154,13 +174,14 @@
     padding: 5px 15px; 
     border-radius: 10px;
     border: 1px solid #000000;
-    background-color: #D9D9D9;
+    background-color: #F4E5D7;
     transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 .section-button.active h3, 
 .section-button h3:hover {
-    background-color: #FFC28A;
+    background-color: #ff7a0066;
 }
 
 .profile-content {
@@ -168,6 +189,7 @@
     flex-wrap: wrap;
     gap: 10px; 
     margin-top: 5px; 
+    position: relative;
 }
 
 .recipe-list {
@@ -187,13 +209,15 @@
     width: 100%;
     height: 200px; 
     object-fit: cover; 
-    border-radius: 10px;
+    border-radius: 23px;
+    border: 3px solid #FFCE38;
 }
 
 .recipe-card p {
     margin: 5px 0;
     font-size: 15px;
     color: #0E194D;
+    font-family: 'Poppins', sans-serif;
 }
 
 .meal-planning {
@@ -214,6 +238,7 @@
     padding: 70px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    font-family: 'Poppins',sans-serif;
 }
 
 .meal-box h2 {
@@ -248,6 +273,7 @@
     margin-top: 5px;
     font-size: 14px;
     color: #737373; 
+    font-weight: bold;
 }
 
 .add-image-button:hover img {
@@ -257,22 +283,20 @@
 
 .activity-box {
     background-color: #ffffff;
-    border: 1px solid #d3d3d3;
+    border: 3px solid #C2B7B7;
     border-radius: 25px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: flex-start;
+    margin-top: 10px;
 }
 
 .activity-date {
     font-weight: bold;
     color: #0E194D;
     margin-bottom: 10px;
-    text-align: left;
-    flex-direction: column;
-    flex: 0 0 auto; 
-    width: 100px; 
+    font-size: 18px;
 }
 
 .activity-details {
@@ -281,6 +305,7 @@
     margin-left: 20px;
     width: 800px;
     flex-direction: column;
+    font-family: 'Poppins', sans-serif;
 }
 
 .activity-item {
@@ -314,13 +339,14 @@
 
 .modal-content {
     background-color: #fefefe;
-    padding: 20px;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    width: 60%;
+    padding: 16px;
+    border: 3px solid #6e6262;
+    border-radius: 16px;
+    width: 30%;
     max-width: 600px;
     position: relative;
     z-index: 1010; 
+    font-family: 'Poppins', sans-serif;
 }
 
 .close {
@@ -367,13 +393,14 @@ button[type="submit"] {
     background-color: #fcaf9d;
     border: 3px solid #ccccccd9;
     color: black;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 4px;
+    border-radius: 18px;
     cursor: pointer;
-    font-size: 14px;
-    width: 200px;
+    font-size: 13px;
+    width: 100px;
     margin: 0 auto;
     display: block;
+    font-weight: bold;
 }
 
 button[type="submit"]:hover {
