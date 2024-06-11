@@ -1,39 +1,41 @@
 .search-container {
-    font-family: "Holla", Arial, sans-serif;
-    margin: 20px;
-    margin-left: 60px;
-    margin-right: 60px;
+    font-family: math;
+    margin: 20px 60px;
 }
-  
+
 .header {
     text-align: right;
     margin-bottom: 10px;
     position: relative; 
+    padding-right: 50px;
 }
-  
+
 .header h3 {
     margin: 0;
     display: inline-block; 
+    text-shadow: 2px 0px 8px #f79797;
 }
-  
+
 .header p {
     margin: 0;
-    font-size: 16px; 
+    padding-right: 8px;
 }
 
 .hoverable:hover {
     cursor: pointer;
     text-decoration: underline;
 }
-  
+
 .popular-recipes {
     margin-bottom: 20px;
 }
-  
+
 .popular-recipes h2 {
     margin-bottom: 20px;
+    margin-top: 0;
+    padding-left: 50px;
 }
-  
+
 .recipe-tags {
     display: flex;
     flex-wrap: wrap;
@@ -42,67 +44,74 @@
     padding-left: 50px;
     padding-right: 50px;
 }
-  
+
 .recipe-tags button {
     background-color: rgba(255, 87, 51, 0.35);
     border: 3px solid #ccccccd9;
     color: black;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 3px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
 }
-  
+
 .recipe-tags button:hover {
-    background-color: #FF5733;
+    background-color: #ff7353;
 }
-  
+
 .search-by-categories {
     margin-top: 20px;
 }
-  
+
 .search-by-categories h2 {
     margin-bottom: 20px;
+    padding-left: 50px;
 }
-  
+
 .categories {
     display: flex;
     justify-content: center;
     gap: 50px;
 }
-  
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
-  
+
 .dropbtn {
     background-color: rgba(255, 166, 77, 0.5);
     color: black;
-    padding: 10px 30px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 23px;
     font-size: 20px;
     font-weight: bold;
-    border: 3px solid black;
+    border: 3px solid #0000008a;
     cursor: pointer;
     display: flex;
     align-items: center;
     transition: background-color 0.3s;
+    width: 249px;
+    height: 100px;
+    justify-content: center;
+    text-align: center;
+    font-family: math;
 }
-  
+
 .dropbtn:hover {
     background-color: rgba(255, 206, 56, 0.5);
 }
-  
+
 .dropbtn.active {
     background-color: rgba(255, 206, 56, 0.5);
 }
-  
+
 .dropdown img {
-    margin-right: 10px;
-    width: 100px;
-    height: 100px;
+    margin-right: 13px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
 }
 
 .dropdown .dropbtn {
@@ -111,11 +120,13 @@
 
 .dropdown .dropbtn i {
     position: absolute;
-    bottom: 20px;
+    bottom: -3px;
     transform: translateX(-50%);
-    left: 70%;
+    left: 68%;
+    font-size: 38px;
+    color: #60554e;
 }
-  
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -124,32 +135,33 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-  
+
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
-  
+
 .dropdown-content a:hover {
     background-color: #f1f1f1
 }
-  
+
 .show {
     display: block;
 }
-  
+
 .meal-type-container {
-    background-color: #FEECCA;
+    background-color: #feeccaab;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    border-radius: 10px; 
-    padding: 30px 50px;
+    border-radius: 13px; 
+    padding: 23px;
     width: fit-content; 
     box-sizing: border-box; 
+    border: 3px solid #be8f8f;
 }
   
 .meal-type {
@@ -162,12 +174,12 @@
 .meal-type a {
     background-color: #F6DDAF;
     text-align: center;
-    color: black;
+    color: #571515bd;
     text-decoration: none;
-    font-size: 15px;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 18px;
     padding: 10px;
+    font-family: math;
 }
   
 .meal-type a:hover{
@@ -196,12 +208,12 @@
 }
   
 .modal-content {
-    background-color: #fefefe;
+    background-color: #f1e6e6;
     margin: 5% auto;
     padding: 20px;
-    border: 2px solid black;
-    border-radius: 10px;
-    width: 30%;
+    border: 3px solid #d0b2b2;
+    border-radius: 16px;
+    width: 23%;
 }
   
 .modal-content p {
@@ -234,13 +246,13 @@
   
 .modal button {
     background-color: #FFA64D;
-    border: 3px white;
+    border: none;
     color: white;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    width: 100px;
+    border-radius: 8px;
 }
   
 .modal button:hover {
@@ -248,10 +260,8 @@
 }
   
 .add-more-ingredients-container {
-    margin-right: auto;
     text-align: right;
-    margin-bottom: 20px;
-    padding-bottom: 50px;
+    margin-bottom: 30px;
     color: #0292B7;
     font-size: 13px;
 }
@@ -276,3 +286,32 @@ a.active {
     padding: 10px;
     border-radius: 10px;
 } 
+
+.input-field-container {
+    position: relative;
+}
+
+.input-field-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-right: 40px;
+}
+
+.remove-btn {
+    position: absolute;
+    right: 12px;
+    top: 43%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #b89f9f;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    color: darkred;
+}
