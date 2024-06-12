@@ -26,7 +26,7 @@
     <div class="user-actions">
         <a routerLink="/login">Log In</a>
         <a 
-            [routerLink]="['/profile']"
+            [routerLink]="(getProfileRouterlink() | async)"
             [queryParams]="{ showSavedRecipes: true }">
             <img src="assets/images/profile.png" alt="Profile">
         </a>
