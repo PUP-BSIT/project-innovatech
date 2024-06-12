@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { LoginAuthentication } from '../../services/login-authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +14,8 @@ export class HeaderComponent implements OnInit {
   showSearchComponent: boolean = false;
   searchText: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private loginAuthService: LoginAuthentication) {}
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -34,5 +39,11 @@ export class HeaderComponent implements OnInit {
   private resetSearch(): void {
     this.searchText = '';
     this.showSearchComponent = false;
+  }
+
+  getProfileRouterlink(): Observable<string> {
+    return this.loginAuthService.isLoggedIn$.pipe(
+      map((isLoggedIn: boolean) => (isLoggedIn ? '/profile': '/login'))
+    );
   }
 }

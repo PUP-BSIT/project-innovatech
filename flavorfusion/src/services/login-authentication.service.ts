@@ -16,15 +16,13 @@ export class LoginAuthentication {
   constructor(private router: Router) {}
 
   checkAuthentication(): void {
-    //TO DO: implement login logout logic 
-    let isLoggedIn = false;
+    // TODO: implement login logout logic
+    let isLoggedIn = true;
     this.isLoggedInSubject.next(isLoggedIn);
 
-    if (!isLoggedIn) {
-      this.router.navigateByUrl('/login');
-    } else {
+    if (isLoggedIn) {
       this.resetSessionTimeout();
-    }
+    } 
   }
 
   private resetSessionTimeout(): void {

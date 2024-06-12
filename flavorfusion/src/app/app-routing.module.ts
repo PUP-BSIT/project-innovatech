@@ -6,7 +6,6 @@ import { CommunityComponent } from './community/community.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { LoginAuthentication } from '../services/login-authentication.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -23,23 +22,6 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
-  constructor(private loginAuthService: 
-    LoginAuthentication, private router: Router) {
-    
-    this.checkAuthentication();
-  }
-
-  private checkAuthentication(): void {
-    this.loginAuthService.checkAuthentication();
-
-    this.loginAuthService.isLoggedIn$.subscribe((isLoggedIn: boolean) => {
-      if (!isLoggedIn) {
-    
-        this.router.navigateByUrl('/login');
-      }
-      else {
-        this.router.navigateByUrl('/home');
-      }
-    });
+  constructor(private router: Router) {
   }
 }
