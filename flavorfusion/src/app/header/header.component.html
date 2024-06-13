@@ -24,11 +24,16 @@
           </div>
     </div>
     <div class="user-actions">
-        <a routerLink="/login">Log In</a>
+        <button #logInLogOut (click)="handleLoginLogout()"></button>
         <a 
             [routerLink]="(getProfileRouterlink() | async)"
             [queryParams]="{ showSavedRecipes: true }">
             <img src="assets/images/profile.png" alt="Profile">
         </a>
+    </div>
+    <div *ngIf="isShown" class="modal-background">
+        <div class="modal">
+          <p>Log Out Successful</p>
+        </div>
     </div>
 </header>
