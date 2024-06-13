@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
 }
-
 .profile-container {
     background-color: #ffc28aa3;
     background-size: cover; 
@@ -363,6 +362,12 @@
     text-decoration: none;
 }
 
+.form-row {
+    display: flex;
+    gap: 20px; /* Add space between the fields */
+    margin-bottom: 15px;
+}
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -405,4 +410,302 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #f88166;
+}
+
+.modal-add {
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.4); 
+    overflow-y: auto;
+}
+
+.form-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    right: 200px;
+    width: 100%;
+}
+
+.form-section {
+    width: calc(70% - 10px); 
+}
+
+.image-section {
+    width:100%;
+    margin-bottom: 1rem; 
+}
+
+.image-section img {
+    max-width: 100%;
+    margin-top: 1rem;
+    border-radius: 4px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    text-align: center;
+    margin-top: 1rem; /* Adjust margin */
+}
+
+.material-icons {
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group-inline div {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.form-group-inline div:last-child {
+    margin-right: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    margin-right: 0.6rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.small-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.small-input-group span {
+    margin-left: 1.1rem;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    margin-left: 1rem;
+}
+
+.form-group input.ng-touched.ng-invalid,
+.form-group textarea.ng-touched.ng-invalid {
+    border-color: red;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon input {
+    padding-right: 2.0rem; 
+}
+
+.input-with-icon button {
+    position: absolute;
+    left: 25rem;
+    top: 0;
+    bottom: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-with-icon button i {
+    color: #888;
+}
+
+.input-with-icon button:hover i {
+    color: #333;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1rem;
+    color: #333;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #4caf50;
+}
+
+.form-group select.ng-touched.ng-invalid {
+    border-color: red;
+}
+
+.time-servings-container {
+    display: flex;
+    align-items: center;
+}
+
+.time-servings-container .form-group {
+    display: flex;
+    align-items: center;
+}
+
+.time-inputs input {
+    width: 30px;
+    margin: 0 5px;
+    text-align: center;
+}
+
+.servings-input {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.servings-input input {
+    width: 30px;
+    margin-left: 0.5rem;
+    text-align: center;
+}
+
+.modal-add .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.actions {
+    margin-top: 1rem;
+}
+
+.actions button {
+    background-color: #fcaf9d;
+    border: 3px solid #ccccccd9;
+    color: black;
+    padding: 4px;
+    border-radius: 18px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100px;
+    font-weight: bold;
+}
+
+.add-button {
+    background-color: #f88166;
+    color: white;
+    padding: 7px 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.add-button:hover {
+    background-color: #fcaf9d;
+}
+
+.title-description-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.title-description-container label {
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.title-description-container input,
+.title-description-container textarea {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-add .modal-content input[type="number"][formControlName="quantity"] {
+    width: 60px;
+    padding: 6px;
+}
+
+.ingredients-quantity {
+    margin-bottom: 20px;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input[formControlName="name"] {
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 2;
+}
+
+.input-with-icon input[formControlName="quantity"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -35px;
+    display: flex;
+    align-items: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
 }
