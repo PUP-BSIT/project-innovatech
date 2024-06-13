@@ -42,7 +42,23 @@
   font-size: 14px;
   color: black;
   font-family: 'Open Sans';
-  margin-bottom: 60px;
+  margin-bottom: 20px;
+  text-indent: 20px;
+}
+
+.recipe-header p.prep-time {
+  text-indent: 0; 
+}
+
+.prep-time {
+  font-size: 14px;
+  color: black;
+  font-family: 'Poppins';
+  align-items: center;
+}
+
+.prep-time i {
+  margin-right: 5px;
 }
   
 .recipe-content {
