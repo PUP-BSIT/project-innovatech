@@ -25,6 +25,10 @@ export class LoginAuthentication {
     } 
   }
 
+  setIsLoggedIn(value: boolean): void {
+    this.isLoggedInSubject.next(value);
+  }
+
   private resetSessionTimeout(): void {
    
     setTimeout(() => {
