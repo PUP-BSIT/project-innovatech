@@ -1,0 +1,158 @@
+.recipe-container {
+  font-family: 'Arial', sans-serif;
+}
+  
+.recipe-header {
+  border-radius: 40px;
+  display: flex; 
+  margin: 50px auto;
+  max-width: 1000px;
+  overflow: hidden;
+  background-color: rgba(255, 87, 51, 0.35);
+  align-items: stretch;
+  margin-bottom: 20px;
+}
+
+.recipe-image {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+} 
+
+.recipe-image img {
+  display: block;
+  height: 100%;
+  max-width: 300px;
+  object-fit: cover;
+
+}
+  
+.recipe-text {
+  flex: 1;
+  padding: 20px;
+}
+
+.recipe-header h1 {
+  font-size: 30px;
+  color: black;
+  margin-bottom: 10px;
+  font-family: 'Times New Roman', Times, serif;
+}
+  
+.recipe-header p {
+  font-size: 14px;
+  color: black;
+  font-family: 'Open Sans';
+  margin-bottom: 60px;
+}
+  
+.recipe-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+  
+.recipe-details,
+.recipe-procedures {
+  flex: 2;
+  padding-left: 30px;
+}
+  
+.recipe-details h2,
+.recipe-procedures h2 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+  
+.recipe-details ul,
+.recipe-procedures ol {
+  padding: 0;
+  margin: 0;
+}
+
+.recipe-details ul {
+  columns: 3; 
+  column-gap: 20px; 
+}
+
+.recipe-details ul li {
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+  
+.recipe-details ul li {
+  font-size: 17px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.recipe-procedures ol li {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.recipe-procedures ol li {
+  margin-left: 50px;
+  margin-bottom: 10px;
+}
+  
+.recipe-procedures ol li strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.recipe-procedures ol li ul {
+  margin-left: 20px; 
+}
+
+.recipe-procedures ol li ul li {
+  list-style-type: disc; 
+  margin-left: 0;
+  margin-bottom: 0;
+}
+  
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actions button {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actions button i {
+  font-size: 16px;
+  color: white;
+}
+
+.actions button.save {
+  font-weight: bold;
+} 
+
+.actions button.rate {
+  font-weight: bold;
+}
+
+.actions button.share {
+  font-weight: bold;
+}
+
+.actions button:hover {
+  border-radius: 0%;
+  color: white;
+  background-color: #FFC55A;
+  opacity: 0.8;
+}
