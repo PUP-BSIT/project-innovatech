@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,10 @@ export class ProfileComponent implements OnInit {
   showActivityLog: boolean = false;
   showEditModal: boolean = false;
   showAvatarModal: boolean = false;
+  showShareRecipeModal: boolean = false;
   selectedFile: File | null = null;
+
+  recipeForm: FormGroup;
 
   user = {
     name: 'Jane Dee',
@@ -22,9 +26,14 @@ export class ProfileComponent implements OnInit {
     password: ''
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private fb: FormBuilder, 
+  ){}
 
   ngOnInit() {
+    this.initRecipeForm();
+    
     this.route.queryParams.subscribe(params => {
       if (params['showSavedRecipes']) {
         this.showSavedRecipes = true;
@@ -32,6 +41,60 @@ export class ProfileComponent implements OnInit {
         this.showActivityLog = false;
       }
     });
+  }
+
+  openShareRecipeModal() {
+    this.showShareRecipeModal = true;
+  }
+
+  closeShareRecipeModal() {
+    this.showShareRecipeModal = false;
+  }
+
+  initRecipeForm(): void {
+    this.recipeForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      mealType: ['', Validators.required],
+      dietaryPreferences: ['', Validators.required],
+      hours: [null, Validators.required],
+      minutes: [null, Validators.required],
+      servings: ['', Validators.required],
+      ingredients: this.fb.array([]),
+      instructions: this.fb.array([]),
+      image: [null]
+    });
+    this.addIngredient();
+    this.addInstruction();
+  }
+
+  get ingredients(): FormArray {
+    return this.recipeForm.get('ingredients') as FormArray;
+  }
+
+  get instructions(): FormArray {
+    return this.recipeForm.get('instructions') as FormArray;
+  }
+
+  addIngredient(): void {
+    this.ingredients.push(this.fb.group({
+      name: ['', Validators.required],
+      quantity: [null, [Validators.required, Validators.min(0)]]
+    }));
+  }
+
+  removeIngredient(index: number): void {
+    this.ingredients.removeAt(index);
+  }
+
+  addInstruction(): void {
+    this.instructions.push(this.fb.group({
+      step: ['', Validators.required]
+    }));
+  }
+
+  removeInstruction(index: number): void {
+    this.instructions.removeAt(index);
   }
 
   toggleSavedRecipes() {
