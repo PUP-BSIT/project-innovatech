@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -21,12 +22,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
+import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
+import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 
 import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
-import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 import { SignupService } from '../services/signup.service';
-import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
+
+
 
 
 @NgModule({
@@ -55,10 +58,14 @@ import { RecipeDetailsComponent } from './recipe-details/recipe-details.componen
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync(),
     CarouselService,
+    LoginAuthentication,
+    SignupService,
     LoginAuthentication,
     SignupService,
   ],
