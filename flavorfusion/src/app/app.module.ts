@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,9 +21,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CarouselComponent } from './carousel/carousel.component';
+
 import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
+import { SignupService } from '../services/signup.service';
 
 
 @NgModule({
@@ -47,11 +51,14 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
     MatInputModule,
     MatIconModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync(),
     CarouselService,
-    LoginAuthentication
+    LoginAuthentication,
+    SignupService,
   ],
   bootstrap: [AppComponent]
 })
