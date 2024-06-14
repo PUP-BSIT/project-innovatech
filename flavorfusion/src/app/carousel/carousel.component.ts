@@ -14,12 +14,11 @@ export class CarouselComponent implements OnInit {
   constructor(private carouselService: CarouselService) { }
 
   ngOnInit(): void {
-    // TODO(Asebuque, Chrystine Noelle): 
-    // Replace mock data with service data once the backend is ready.
-    this.carouselService.getSlides().subscribe(data => {
-      this.slides = data;
-      this.showSlide(this.currentSlide);
-    });
+    this.fetchDailyMeals();
+
+    setInterval(() => {
+      this.fetchDailyMeals();
+    }, 86400000);
 
     this.slideInterval = setInterval(() => {
       this.moveToNextSlide();
@@ -28,6 +27,18 @@ export class CarouselComponent implements OnInit {
 
   ngOnDestroy(): void {
     clearInterval(this.slideInterval);
+  }
+
+  fetchDailyMeals(): void {
+    this.carouselService.getDailyMeals()
+      .subscribe(data => {
+        this.slides = [
+          { meal: 'BREAKFAST', ...data.Breakfast },
+          { meal: 'LUNCH', ...data.Lunch },
+          { meal: 'DINNER', ...data.Dinner }
+        ];
+        this.showSlide(this.currentSlide);
+      });
   }
 
   setSlide(index: number): void {
