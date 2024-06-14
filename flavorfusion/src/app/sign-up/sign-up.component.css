@@ -154,3 +154,46 @@ body {
         display: none; 
     }
 }
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+  
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+.signup-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+  
+.signup-form {
+    width: 50%;
+    padding: 2em;
+}
+  
+.signup-form form {
+    display: flex;
+    flex-direction: column;
+}
+  
+.signup-form label {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+  
+.signup-form input {
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+  
+
+  
+
+  
