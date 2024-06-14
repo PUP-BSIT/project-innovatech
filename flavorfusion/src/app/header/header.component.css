@@ -134,13 +134,16 @@ header {
     transform: translate(-50%, -50%);
     background-color: #FEECCA;
     border: 1px solid #FEECCA;
-    border-radius: 25px;
+    border-radius: 10px; /* Adjust border-radius as needed */
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    max-width: 90%; /* Limit max-width for responsiveness */
+    max-height: 90%; /* Limit max-height for responsiveness */
+    overflow-y: auto; /* Enable scrolling if content exceeds max-height */
     transition: opacity 0.3s ease;
 }
-  
+
 .modal p {
     font-size: 20px;
     text-align: center;
@@ -158,6 +161,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
+
  
   
