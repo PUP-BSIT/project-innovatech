@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-profile',
@@ -17,21 +18,24 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
 
   recipeForm: FormGroup;
+  userProfile: any = {};
 
-  user = {
-    name: 'Jane Dee',
-    description: 'Hello fellow food enthusiasts! I\'m Jane, \
-    a dedicated foodie and a weekend chef, \
-    always on the hunt for exciting new flavors and unique recipes.',    
-    password: ''
-  };
+  // user = {
+  //   name: 'Jane Dee',
+  //   description: 'Hello fellow food enthusiasts! I\'m Jane, \
+  //   a dedicated foodie and a weekend chef, \
+  //   always on the hunt for exciting new flavors and unique recipes.',    
+  //   password: ''
+  // };
 
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder, 
+    private userService: UserService
   ){}
 
   ngOnInit() {
+    this.getUserProfile();
     this.initRecipeForm();
     
     this.route.queryParams.subscribe(params => {
@@ -39,6 +43,18 @@ export class ProfileComponent implements OnInit {
         this.showSavedRecipes = true;
         this.showMealPlanning = false;
         this.showActivityLog = false;
+      }
+    });
+  }
+
+  getUserProfile(): void {
+    this.userService.getUserProfile().subscribe({
+      next: (data: any) => {
+        this.userProfile = data;
+        console.log(this.userProfile);
+      },
+      error: (error: any) => {
+        console.error("Error fetching user profile:", error);  
       }
     });
   }
@@ -124,7 +140,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log('Saving changes:', this.user);
+    console.log('Saving changes:', this.userProfile);
     this.closeEditModal();
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class LoginAuthentication {
@@ -13,11 +14,11 @@ export class LoginAuthentication {
       
   private sessionTimeout: number = 3600000; // 1 hr
 
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   checkAuthentication(): void {
     // TODO: implement login logout logic
-    let isLoggedIn = true;
+    let isLoggedIn = false;
     this.isLoggedInSubject.next(isLoggedIn);
 
     if (isLoggedIn) {
@@ -35,4 +36,6 @@ export class LoginAuthentication {
       this.router.navigateByUrl('/login');
     }, this.sessionTimeout);
   }
+  
+  
 }
