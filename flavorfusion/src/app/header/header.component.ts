@@ -18,9 +18,10 @@ export class HeaderComponent implements OnInit {
   loginLogoutText: string = 'Log In';
   isShown: boolean = false;
 
-  constructor(private router: Router, 
-              private loginAuthService: LoginAuthentication) {
-    this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
+  constructor(
+    private router: Router, 
+    private loginAuthService: LoginAuthentication) {
+          this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
   }
   ngOnInit() {
     this.router.events.subscribe(event => {
