@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class SearchComponent {
   modalText: string = '';
   inputFields: any[] = []; 
-  selectedCategories: {title: string, items: string[]}[] = [];
+  selectedCategories: { title: string, items: string[] }[] = [];
   showMealTypes: boolean = false;
   showDietaryPreferences: boolean = false;
   showIngredients: boolean = false;
@@ -46,20 +46,24 @@ export class SearchComponent {
     console.log('Searching recipes...');
   }
 
-  addInputField() {
-    this.inputFields.push('');
+  addInputField(event: Event) {
     event.preventDefault();
+    this.inputFields.push('');
+  }
+
+  removeInputField(index: number) {
+    this.inputFields.splice(index, 1);
   }
 
   toggleCategory(category: string) {
-    this.showMealTypes = category === 'MealTypes' 
-      ? !this.showMealTypes 
+    this.showMealTypes = category === 'MealTypes'
+      ? !this.showMealTypes
       : false;
-    this.showDietaryPreferences = category === 'DietaryPreferences' 
-      ? !this.showDietaryPreferences 
+    this.showDietaryPreferences = category === 'DietaryPreferences'
+      ? !this.showDietaryPreferences
       : false;
-    this.showIngredients = category === 'Ingredients' 
-      ? !this.showIngredients 
+    this.showIngredients = category === 'Ingredients'
+      ? !this.showIngredients
       : false;
   }
 
@@ -84,7 +88,7 @@ export class SearchComponent {
   }
 
   isCategoryActive(category: string, subCategory: string): boolean {
-    return this.activeCategory === category && 
-           this.activeSubCategory === subCategory;
+    return this.activeCategory === category &&
+      this.activeSubCategory === subCategory;
   }
 }
