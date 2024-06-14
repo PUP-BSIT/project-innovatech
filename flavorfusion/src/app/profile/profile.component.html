@@ -6,38 +6,24 @@
         <div class="profile-header"> 
             <div class="profile-box">
                 <div class="avatar-container">
-                    <img src="assets/images/profile-avatar.png" 
-                     alt="User Avatar" class="avatar">
-                    <img src="/assets/images/avatar-icon.png" 
-                    alt="Change Avatar Icon" class="change-avatar-icon" 
-                    (click)="changeAvatar()">
+                    <img src="assets/images/profile-avatar.png" alt="User Avatar" class="avatar">
+                    <img src="/assets/images/avatar-icon.png" alt="Change Avatar Icon" class="change-avatar-icon" (click)="changeAvatar()">
                 </div>
                 <div class="profile-info">
                     <div class="share-recipe-container">
-                        <button class="share-recipe-button" 
-                        (click)="openShareRecipeModal()">+ 
-                        Share Recipe</button>
+                        <button class="share-recipe-button" (click)="openShareRecipeModal()">+ Share Recipe</button>
                     </div>
-                    <!-- <h2>Jane Dee</h2>
-                    <p>Hello fellow food enthusiasts! I'm Jane, a dedicated 
-                        foodie and a weekend chef, always on the hunt for 
-                        exciting new flavors and unique recipes.</p> -->
-                    <h2>{{ userProfile.email }}</h2> 
+                    <h2>{{ userProfile.email }}</h2>
                     <p>{{ userProfile.bio }}</p> 
                     <div class="profile-stats">
                         <span class="ratings">
-                            <img src="assets/images/star.png"
-                             alt="Star" class="star-icon"> 
-                             Ratings
+                            <img src="assets/images/star.png" alt="Star" class="star-icon"> Ratings
                         </span>
                         <span class="likes">
-                            <img src="assets/images/heart.png" alt="Heart" 
-                            class="heart-icon"> Likes
+                            <img src="assets/images/heart.png" alt="Heart" class="heart-icon"> Likes
                         </span>
                         <button class="edit-profile" (click)="openEditModal()">
-                            <img src="assets/images/edit-icon.png"
-                             alt="Edit Icon" class="edit-icon"> 
-                             Edit User Profile
+                            <img src="assets/images/edit-icon.png" alt="Edit Icon" class="edit-icon"> Edit User Profile
                         </button>
                     </div>                 
                 </div>
@@ -45,16 +31,13 @@
         </div>
         
         <div class="section">
-            <button class="section-button" (click)="toggleSavedRecipes()" 
-                [ngClass]="{'active': showSavedRecipes}">
+            <button class="section-button" (click)="toggleSavedRecipes()" [ngClass]="{'active': showSavedRecipes}">
                 <h3>Saved Recipes</h3>
             </button>
-            <button class="section-button" (click)="toggleMealPlanning()" 
-                [ngClass]="{'active': showMealPlanning}">
+            <button class="section-button" (click)="toggleMealPlanning()" [ngClass]="{'active': showMealPlanning}">
                 <h3>Meal Planning</h3>
             </button>
-            <button class="section-button" (click)="toggleActivityLog()" 
-                [ngClass]="{'active': showActivityLog}">
+            <button class="section-button" (click)="toggleActivityLog()" [ngClass]="{'active': showActivityLog}">
                 <h3>Activity Log</h3>
             </button>
         </div>
@@ -130,20 +113,19 @@
             <form (ngSubmit)="saveChanges()">
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" 
-                    [(ngModel)]="user.name" required>
+                    <input type="text" id="name" name="name" [(ngModel)]="user.name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description" 
-                    [(ngModel)]="user.description"></textarea>
+                    <textarea id="description" name="description"
+                     [(ngModel)]="user.description"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" 
-                    [(ngModel)]="user.password" required>
+                    <input type="password" id="password" name="password"
+                     [(ngModel)]="user.password" required>
                 </div>
 
                 <button type="submit">Save Changes</button>
@@ -155,142 +137,180 @@
         <div class="modal-content">
             <span class="close" (click)="closeAvatarModal()">&times;</span>
             <h2>Change Avatar</h2>
-            <input type="file" (change)="onFileSelected($event)">
-        <button type="submit" (click)="uploadAvatar()">Upload</button>
+            <input type="file" (change)="onAvatarSelected($event)">
+            <button type="submit" (click)="uploadAvatar()">Upload</button>
         </div>
     </div>
 
     <!-- for add recipe modal-->
     <div class="modal-add" *ngIf="showShareRecipeModal">
         <div class="modal-content">
-        <span class="close" (click)="closeShareRecipeModal()">&times;</span>
-        <h2>Share Recipe</h2>
-        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-            <div class="container">
-            <div class="header"></div>
-            <div class="form-body"> 
-            <div class="form-section">
-                <div class="title-description-container">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" formControlName="title" 
-                    required>
-                </div>
-                <div class="title-description-container"> 
-                    <label for="description">Description:</label>
-                    <textarea id="description" formControlName="description">
-                    </textarea>
-                </div>
-                <div class="form-group">
-                    <label>Meal Type</label>
-                        <select formControlName="mealType">
-                            <option value="">Select Meal Type</option>
-                            <option value="breakfast">Breakfast</option>
-                            <option value="lunch">Lunch</option>
-                            <option value="dinner">Dinner</option>
-                            <option value="dessert">Dessert</option>
-                            <option value="snacks">Snacks</option>
-                        </select>
-                    <div class="error-message" *ngIf="recipeForm.get('mealType')
-                        .hasError('required') && recipeForm.get('mealType')
-                            .touched"> Meal type is required
+            <span class="close" (click)="closeShareRecipeModal()">&times;</span>
+            <h2>Share Recipe</h2>
+            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+                <div class="container">
+                    <div class="header"></div>
+                    <div class="form-body">
+                        <div class="form-section">
+                            <div class="title-description-container">
+                                <label for="title">Title:</label>
+                                <input type="text" id="title"
+                                 formControlName="title" required>
+                            </div>
+                            <div class="title-description-container">
+                                <label for="description">Description:</label>
+                                <textarea id="description"
+                                 formControlName="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Meal Type</label>
+                                <select formControlName="mealType">
+                                    <option value="">Select Meal Type</option>
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="dessert">Dessert</option>
+                                    <option value="snacks">Snacks</option>
+                                </select>
+                                <div class="error-message" 
+                                    *ngIf="recipeForm.get('mealType')
+                                    .hasError('required') && recipeForm.get
+                                    ('mealType').touched">
+                                    Meal type is required
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Dietary Preferences</label>
+                                <select formControlName="dietaryPreferences">
+                                    <option value="">
+                                        Select Dietary Preference</option>
+                                    <option value="vegetarian">
+                                        Vegetarian</option>
+                                    <option value="vegan">
+                                        Vegan</option>
+                                    <option value="glutenFree">
+                                        Gluten Free</option>
+                                    <option value="lowCarb">
+                                        Low Carb</option>
+                                    <option value="nutFree">
+                                        Nut Free</option>
+                                </select>
+                                <div class="error-message"
+                                 *ngIf="recipeForm.get('dietaryPreferences')
+                                 .hasError('required') && recipeForm.get
+                                 ('dietaryPreferences').touched">
+                                    Dietary preference is required
+                                </div>
+                            </div>
+                            <div class="form-group form-group-inline 
+                                time-servings-container">
+                                <div class="form-group">
+                                    <label>Time:</label>
+                                    <input type="number" formControlName="hours"
+                                     class="small-input" 
+                                     required placeholder="HH">
+                                    <span>:</span>
+                                    <input type="number" 
+                                    formControlName="minutes" 
+                                    class="small-input"
+                                     required placeholder="MM">
+                                </div>
+                                <div class="form-group">
+                                    <label>Servings:</label>
+                                    <input type="number"
+                                     formControlName="servings" 
+                                     class="small-input" required>
+                                </div>
+                            </div>
+                            <div class="ingredients-quantity">
+                                <div formArrayName="ingredients">
+                                    <div *ngFor="let ingredient of 
+                                        ingredients.controls; 
+                                        let i = index" [formGroupName]="i" 
+                                        class="form-group">
+                                        <label>Ingredients</label>
+                                        <div class="input-with-icon">
+                                            <input formControlName="name"
+                                            required placeholder=
+                                            "Enter ingredient">
+                                            <input type="number" 
+                                            formControlName="quantity"
+                                             placeholder="Quantity" required>
+                                            <button type="button"
+                                             (click)="removeIngredient(i)" 
+                                             class="delete-button">
+                                                <i class="material-icons">
+                                                    delete</i>
+                                            </button>
+                                        </div>
+                                        <div class="error-message"
+                                         *ngIf="ingredient.get('name')
+                                         .hasError('required') 
+                                         && ingredient.get('name').touched">
+                                            Ingredient name is required
+                                        </div>
+                                        <div class="error-message"
+                                         *ngIf="ingredient.get('quantity')
+                                         .hasError('required') && ingredient.get
+                                         ('quantity').touched">
+                                            Quantity is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-button" 
+                                (click)="addIngredient()">
+                                Add Ingredient</button>
+                                <div formArrayName="instructions">
+                                    <div *ngFor="let instruction of 
+                                    instructions.controls; let i = index"
+                                     [formGroupName]="i" class="form-group">
+                                        <label>Instruction</label>
+                                        <div class="input-with-icon">
+                                            <input formControlName="step"
+                                             required>
+                                            <button type="button" 
+                                            (click)="removeInstruction(i)" 
+                                            class="delete-button">
+                                                <i class="material-icons">
+                                                    delete</i>
+                                            </button>
+                                        </div>
+                                        <div class="error-message"
+                                         *ngIf="instruction.get('step')
+                                         .hasError('required') && 
+                                         instruction.get('step').touched">
+                                            Instruction step is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-button" 
+                                (click)="addInstruction()">
+                                Add Instruction</button>
+                            </div>
+                            <div class="form-group">
+                                <!-- TO DO (Malaluan) Will update this -->
+                                <!-- <label>Image:</label>
+                                <input type="file" formControlName="image"
+                                 (change)="onImageSelected($event)"
+                                  accept="image/*">
+                                <div *ngIf="imageUrl">
+                                    <img [src]="imageUrl" alt="Recipe Image">
+                                </div> -->
+                                <div class="error-message" 
+                                *ngIf="!recipeForm.valid && recipeForm.touched">
+                                    Mandatory information is missing. 
+                                    Please update before saving.
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button type="submit" 
+                                [disabled]="!recipeForm.valid" 
+                                class="publish">Publish</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Dietary Preferences</label>
-                    <select formControlName="dietaryPreferences">
-                        <option value=""> Select Dietary Preference</option>
-                            <option value="vegetarian"> Vegetarian</option>
-                            <option value="vegan"> Vegan</option>
-                            <option value="glutenFree"> Gluten Free</option>
-                            <option value="lowCarb"> Low Carb</option>
-                            <option value="nutFree"> Nut Free</option>
-                    </select>
-                    <div class="error-message" 
-                    *ngIf="recipeForm.get('dietaryPreferences')
-                        .hasError('required') && recipeForm.get
-                        ('dietaryPreferences').touched">
-                         Dietary preference is required
-                    </div>
-                </div>
-                <div class="form-group form-group-inline 
-                    time-servings-container">
-                <div class="form-group">
-                    <label>Time: </label> <input type="number" 
-                        formControlName="hours" class="small-input" 
-                        required placeholder="HH">
-                        <span>:</span>
-                        <input type="number" 
-                        ormControlName="minutes"
-                        class="small-input" 
-                        required placeholder="MM">
-                </div>
-                    <div class="form-group">
-                    <label>Servings: </label>
-                        <input type="number"formControlName="servings"
-                            class="small-input" required>
-                    </div>
-            </div>
-            <div class="ingredients-quantity">
-                <div formArrayName="ingredients">
-                    <div *ngFor="let ingredient of ingredients.controls; 
-                        let i = index" [formGroupName]="i" class="form-group">
-                    <label>Ingredients</label>
-                <div class="input-with-icon">
-                    <input formControlName="name"required placeholder=
-                        "Enter ingredient"><input type="number" 
-                        formControlName="quantity" 
-                        placeholder="Quantity" required>
-                    <button type="button" (click)="removeIngredient(i)" 
-                        class="delete-button">
-                        <i class="material-icons">delete</i>
-                    </button>
-                </div>
-                <div class="error-message" 
-                    *ngIf="ingredient.get('name').hasError('required') 
-                    && ingredient.get('name').touched">
-                    Ingredient name is required
-                </div>
-                <div class="error-message" 
-                    *ngIf="ingredient.get('quantity').hasError('required') 
-                    && ingredient.get('quantity').touched">
-                    Quantity is required
-                </div>
-                </div>
+            </form>
         </div>
     </div>
-    <button type="button" class="add-button" (click)="addIngredient()">Add Ingredient</button>
-        <div formArrayName="instructions">
-        <div *ngFor="let instruction of instructions.controls; let i = index" [formGroupName]="i" class="form-group">
-        <label>Instruction</label>
-        <div class="input-with-icon"><input formControlName="step" required>
-        <button type="button" (click)="removeInstruction(i)" class="delete-button">
-        <i class="material-icons">delete</i>
-    </button>
-    </div>
-    <div class="error-message"
-     *ngIf="instruction.get('step').hasError('required') 
-        && instruction.get('step').touched">Instruction step is required
-    </div>
-    </div>
-    </div>
-    <button type="button" class="add-button" (click)="addInstruction()">
-        Add Instruction</button>
-    </div>
-    <div class="form-group"> <label>Image:</label>
-    <input type="file" formControlName="image" 
-    (change)="onImageSelected($event)">
-    <div *ngIf="imageUrl"> <img [src]="imageUrl" alt="Recipe Image">
-    </div>
-    <div class="error-message" *ngIf="!recipeForm.valid && recipeForm.touched">
-        Mandatory information is missing. Please update before saving.
-    </div>
-    </div>
-    <div class="actions">
-        <button type="submit" [disabled]="!recipeForm.valid" class="publish">Publish</button>
-    </div>
-    </div>
-    </div>
-</form>
-</div>
-</div>
 </div>
