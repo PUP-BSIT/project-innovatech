@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -25,7 +24,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 
-import { CarouselService } from '../services/carousel.service';
+import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 
@@ -63,7 +62,7 @@ import { SignupService } from '../services/signup.service';
   ],
   providers: [
     provideAnimationsAsync(),
-    CarouselService,
+    HomeService,
     LoginAuthentication,
     SignupService,
     LoginAuthentication,

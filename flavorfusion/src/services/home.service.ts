@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CarouselService {
+export class HomeService {
   private dailyMealsUrl = 'http://localhost/flavorfusion/controller/get_daily_meals.php';
 
   constructor(private http: HttpClient) { }
