@@ -13,6 +13,7 @@ import { LoginAuthentication } from '../../services/login-authentication.service
 export class HeaderComponent implements OnInit {
   showSearchComponent: boolean = false;
   searchText: string = '';
+  isSearchMode: boolean = false;
 
   isLoggedIn$: Observable<boolean>;
   loginLogoutText: string = 'Log In';
@@ -21,21 +22,24 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router, 
     private loginAuthService: LoginAuthentication) {
-          this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
-  }
+      this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
+    }
+
   ngOnInit() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd && !this.router.url.includes('/search')) {
         this.resetSearch();
       }
-    this.getLoginLogoutText();
+      this.getLoginLogoutText();
     });
   }
 
   toggleSearchComponent(): void {
     this.showSearchComponent = !this.showSearchComponent;
-    const url = this.showSearchComponent ? '/search' : '/home';
-    this.router.navigateByUrl(url);
+    this.isSearchMode = false;
+    if (this.showSearchComponent) {
+      this.router.navigateByUrl('/search');
+    }
   }
 
   closeSearch(): void {
@@ -46,6 +50,7 @@ export class HeaderComponent implements OnInit {
   private resetSearch(): void {
     this.searchText = '';
     this.showSearchComponent = false;
+    this.isSearchMode = false;
   }
 
   getProfileRouterlink(): Observable<string> {
@@ -78,7 +83,7 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
- }  
+  }  
 
   showModal() {
     this.isLoggedIn$.subscribe(isLoggedIn => {
@@ -91,4 +96,4 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-}// close class HeaderComponent
+}

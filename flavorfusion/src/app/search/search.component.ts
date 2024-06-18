@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SearchService } from '../../services/search.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -6,7 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./search.component.css']
 })
 
-export class SearchComponent {
+export class SearchComponent implements OnInit{
   modalText: string = '';
   inputFields: any[] = []; 
   selectedCategories: { title: string, items: string[] }[] = [];
@@ -15,12 +17,29 @@ export class SearchComponent {
   showIngredients: boolean = false;
   activeCategory: string = '';
   activeSubCategory: string = '';
+  searchResults: any[] = [];
+  query: string = '';
 
-  ngOnInit() {
+  constructor(
+    private route: ActivatedRoute, 
+    private searchService: SearchService, 
+    private router: Router) {}
+
+  //edited
+  ngOnInit(): void{
     window.addEventListener('click', (event: Event) => {
       const modal = document.getElementById('my_modal') as HTMLElement;
       if (event.target === modal) {
         this.closeModal();
+      }
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.query = params['query'] || '';
+      if (this.query) {
+        this.searchService.searchRecipes(this.query).subscribe(results => {
+          this.searchResults = results;
+        });
       }
     });
   }
@@ -44,6 +63,12 @@ export class SearchComponent {
 
   searchRecipes() {
     console.log('Searching recipes...');
+  }
+
+  onSearch(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && this.query) {
+      this.router.navigate(['/search-recipe'], { queryParams: { query: this.query } });
+    }
   }
 
   addInputField(event: Event) {
