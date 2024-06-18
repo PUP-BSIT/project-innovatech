@@ -25,7 +25,6 @@ export class SearchComponent implements OnInit{
     private searchService: SearchService, 
     private router: Router) {}
 
-  //edited
   ngOnInit(): void{
     window.addEventListener('click', (event: Event) => {
       const modal = document.getElementById('my_modal') as HTMLElement;

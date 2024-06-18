@@ -53,6 +53,17 @@ export class HeaderComponent implements OnInit {
     this.isSearchMode = false;
   }
 
+  onSearch(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const trimmedQuery = this.searchText.trim();
+    if (trimmedQuery) {
+      this.router.navigate(['/search-recipe'], { queryParams: { query: trimmedQuery } });
+    }
+  }
+
   getProfileRouterlink(): Observable<string> {
     return this.loginAuthService.isLoggedIn$.pipe(
       map((isLoggedIn: boolean) => (isLoggedIn ? '/profile': '/login'))
