@@ -22,7 +22,17 @@ export class ProfileComponent implements OnInit {
   recipeForm: FormGroup;
   // imageUrl: string | ArrayBuffer | null = null;
   // imageUrl: string | ArrayBuffer = '';
-  userProfile: any = {};
+  userProfile: any = {
+    user_id: null,
+    email: '',
+    username: '',
+    bio: '',
+  };
+  // showEditModal: boolean = false;
+
+
+
+  profileForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute, 
@@ -31,6 +41,10 @@ export class ProfileComponent implements OnInit {
     private userService: UserService
   ) {
     this.recipeForm = this.createRecipeForm();
+    this.profileForm = this.fb.group({
+      username: ['', Validators.required],
+      bio: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
@@ -96,17 +110,34 @@ export class ProfileComponent implements OnInit {
     this.instructions.removeAt(index);
   }
 
+  // getUserProfile(): void {
+  //   this.userService.getUserProfile().subscribe({
+  //     next: (data: any) => {
+  //       this.userProfile = data;
+  //       console.log(this.userProfile);
+  //     },
+  //     error: (error: any) => {
+  //       console.error("Error fetching user profile:", error);  
+  //     }
+  //   });
+  // }
+
   getUserProfile(): void {
     this.userService.getUserProfile().subscribe({
-      next: (data: any) => {
-        this.userProfile = data;
-        console.log(this.userProfile);
-      },
-      error: (error: any) => {
-        console.error("Error fetching user profile:", error);  
-      }
+        next: (data: any) => {
+            // Set email as username if username is not set
+            this.userProfile = data;
+            if (!this.userProfile.username) {
+                this.userProfile.username = this.userProfile.email;
+            }
+            console.log(this.userProfile);
+        },
+        error: (error: any) => {
+            console.error("Error fetching user profile:", error);  
+        }
     });
-  }
+}
+
 
   // handleRouteParams(): void {
   //   this.route.queryParams.subscribe(params => {
@@ -134,43 +165,45 @@ export class ProfileComponent implements OnInit {
 //     }
 // }
 
-  onSubmit(): void {
-    if (this.recipeForm.valid) {
-      console.log("Form is valid, submitting...");
-      const formData = this.createFormData(this.recipeForm.value);
+//tsaka na baguhin after push the edit
+onSubmit(): void {
+  if (this.recipeForm.valid) {
+    console.log("Form is valid, submitting...");
+    const formData = this.createFormData(this.recipeForm.value);
 
-      this.recipeService.addRecipe(formData).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          if (response.success) {
-            this.recipeForm.reset();
-            this.closeShareRecipeModal();
-          } else {
-            console.error('Error adding recipe:', response);
-            alert('Error adding recipe. Please try again later.');
-          }
-        },
-        error: (error: any) => {
-          console.error('Error adding recipe:', error);
+    this.recipeService.addRecipe(formData).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        if (response.success) {
+          this.recipeForm.reset();
+          this.closeShareRecipeModal();
+        } else {
+          console.error('Error adding recipe:', response);
           alert('Error adding recipe. Please try again later.');
         }
-      });
-    }
-  }
-
-  private createFormData(formValue: any): FormData {
-    const formData = new FormData();
-    Object.keys(formValue).forEach(key => {
-      if (key === 'ingredients' || key === 'instructions') {
-        formData.append(key, JSON.stringify(formValue[key]));
-      } else if (key === 'image' && formValue[key]) {
-        formData.append('image', formValue[key], formValue[key].name);
-      } else {
-        formData.append(key, formValue[key]);
+      },
+      error: (error: any) => {
+        console.error('Error adding recipe:', error);
+        alert('Error adding recipe. Please try again later.');
       }
     });
-    return formData;
   }
+}
+
+private createFormData(formValue: any): FormData {
+  const formData = new FormData();
+  Object.keys(formValue).forEach(key => {
+    if (key === 'ingredients' || key === 'instructions') {
+      formData.append(key, JSON.stringify(formValue[key]));
+    } else if (key === 'image' && formValue[key]) {
+      formData.append('image', formValue[key], formValue[key].name);
+    } else {
+      formData.append(key, formValue[key]);
+    }
+  });
+  return formData;
+}
+
 
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
@@ -197,6 +230,7 @@ export class ProfileComponent implements OnInit {
     this.showSavedRecipes = false;
     this.showMealPlanning = false;
   }
+  // editProfileModalOpen = false;
 
   openEditModal(): void {
     this.showEditModal = true;
@@ -207,9 +241,39 @@ export class ProfileComponent implements OnInit {
   }
 
   saveChanges(): void {
-    console.log('Saving changes:', this.userProfile);
-    this.closeEditModal();
+    this.userService.updateUserProfile(this.userProfile).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          console.log('Profile updated successfully');
+          // Dapat ma-refresh ang user profile data mula sa backend
+          this.userProfile = response.user; // Assign updated profile data
+          this.closeEditModal(); // Isara ang modal pagkatapos ng pag-update
+        } else {
+          console.error('Error updating profile:', response.message);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error updating profile:', error);
+      }
+    });
   }
+
+  //for edit user 
+//   this.userService.updateUserProfile(profileData).subscribe({
+//     next: (response: any) => {
+//     if(response.success) {
+//       console.log('Profile is edited successfully'); //for testing
+//       this.getUserProfile();
+//       this.closeEditModal();
+//     } else {
+//       console.error('Error updating profile', response.message);
+//     }
+//   },
+//     error: (error: any) => {
+//       console.error('Error updating profile', error);
+//     }
+//   });
+// }
 
   changeAvatar(): void {
     this.showAvatarModal = true;

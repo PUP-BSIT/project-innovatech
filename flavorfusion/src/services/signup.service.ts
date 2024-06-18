@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class SignupService {
-  private apiUrl = 'http://localhost/api_flavorfusion/signup.php';
+  private apiUrl = 'http://localhost/controller/signup.php';
 
   constructor(private http: HttpClient) {}
 

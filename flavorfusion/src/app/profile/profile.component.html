@@ -6,38 +6,54 @@
         <div class="profile-header"> 
             <div class="profile-box">
                 <div class="avatar-container">
-                    <img src="assets/images/profile-avatar.png" alt="User Avatar" class="avatar">
-                    <img src="/assets/images/avatar-icon.png" alt="Change Avatar Icon" class="change-avatar-icon" (click)="changeAvatar()">
+                    <img src="assets/images/profile-avatar.png"
+                         alt="User Avatar" class="avatar">
+                    <img src="/assets/images/avatar-icon.png"
+                     alt="Change Avatar Icon" class="change-avatar-icon"
+                    (click)="changeAvatar()">
                 </div>
+
                 <div class="profile-info">
                     <div class="share-recipe-container">
-                        <button class="share-recipe-button" (click)="openShareRecipeModal()">+ Share Recipe</button>
+                        <button class="share-recipe-button" 
+                        (click)="openShareRecipeModal()">
+                        + Share Recipe</button>
                     </div>
-                    <h2>{{ userProfile.email }}</h2>
-                    <p>{{ userProfile.bio }}</p> 
+                    <h2>{{ userProfile?.username }}</h2>
+                    <p>{{ userProfile?.bio }}</p> 
                     <div class="profile-stats">
                         <span class="ratings">
-                            <img src="assets/images/star.png" alt="Star" class="star-icon"> Ratings
+                            <img src="assets/images/star.png"
+                             alt="Star" class="star-icon"> Ratings
                         </span>
                         <span class="likes">
-                            <img src="assets/images/heart.png" alt="Heart" class="heart-icon"> Likes
+                            <img src="assets/images/heart.png" 
+                            alt="Heart" class="heart-icon"> Likes
                         </span>
+                
                         <button class="edit-profile" (click)="openEditModal()">
-                            <img src="assets/images/edit-icon.png" alt="Edit Icon" class="edit-icon"> Edit User Profile
+                            <img src="assets/images/edit-icon.png" 
+                            alt="Edit Icon" class="edit-icon"> Edit User Profile
                         </button>
                     </div>                 
-                </div>
+                </div>                
             </div>
         </div>
         
         <div class="section">
-            <button class="section-button" (click)="toggleSavedRecipes()" [ngClass]="{'active': showSavedRecipes}">
+            <button class="section-button" 
+                (click)="toggleSavedRecipes()" 
+                [ngClass]="{'active': showSavedRecipes}">
                 <h3>Saved Recipes</h3>
             </button>
-            <button class="section-button" (click)="toggleMealPlanning()" [ngClass]="{'active': showMealPlanning}">
+            <button class="section-button" 
+                (click)="toggleMealPlanning()" 
+                [ngClass]="{'active': showMealPlanning}">
                 <h3>Meal Planning</h3>
             </button>
-            <button class="section-button" (click)="toggleActivityLog()" [ngClass]="{'active': showActivityLog}">
+            <button class="section-button" 
+                (click)="toggleActivityLog()" 
+                [ngClass]="{'active': showActivityLog}">
                 <h3>Activity Log</h3>
             </button>
         </div>
@@ -106,32 +122,27 @@
     </div>
     
     <!-- for edit modal-->
-    <div class="modal" *ngIf="showEditModal">
-        <div class="modal-content">
-            <span class="close" (click)="closeEditModal()">&times;</span>
-            <h2>Edit Profile</h2>
-            <form (ngSubmit)="saveChanges()">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" [(ngModel)]="user.name" required>
-                </div>
+        <div class="modal" *ngIf="showEditModal">
+            <div class="modal-content">
+                <span class="close" (click)="closeEditModal()">&times;</span>
+                <h2>Edit Profile</h2>
+                <form (ngSubmit)="saveChanges()">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" 
+                        name="username" 
+                        [(ngModel)]="userProfile.username" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description"
-                     [(ngModel)]="user.description"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"
-                     [(ngModel)]="user.password" required>
-                </div>
-
-                <button type="submit">Save Changes</button>
-            </form>
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea id="bio" name="bio"
+                        [(ngModel)]="userProfile.bio"></textarea>
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
         </div>
-    </div>
 
     <div class="modal" *ngIf="showAvatarModal">
         <div class="modal-content">
