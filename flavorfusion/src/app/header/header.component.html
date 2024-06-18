@@ -2,6 +2,7 @@
     <div class="logo">
         <img src="assets/images/logo.png" alt="Logo">
     </div>
+
     <nav class="nav">
         <a 
             routerLink="/home" 
@@ -10,19 +11,20 @@
         </a>
         <a routerLink="/community" routerLinkActive="active">Community</a>
     </nav>
+
     <div class="search-bar">
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search Recipe" 
-                [(ngModel)]="searchText" *ngIf="!showSearchComponent" 
-                (click)="toggleSearchComponent()">
-            <input 
-                type="text" placeholder="Search Recipe" 
-                [(ngModel)]="searchText" *ngIf="showSearchComponent">
+            <input type="text"
+            placeholder="Search Recipe"
+            [(ngModel)]="searchText"
+            (click)="toggleSearchComponent()"
+            (keyup.enter)="onSearch()">
             <button *ngIf="showSearchComponent" 
             (click)="closeSearch()">X</button>
-          </div>
+        </div>
     </div>
+
     <div class="user-actions">
         <button #logInLogOut (click)="handleLoginLogout()"></button>
         <a 
@@ -31,6 +33,7 @@
             <img src="assets/images/profile.png" alt="Profile">
         </a>
     </div>
+    
     <div *ngIf="isShown" class="modal-background">
         <div class="modal">
           <p>Log Out Successful</p>
