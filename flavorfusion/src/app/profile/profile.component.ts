@@ -124,21 +124,32 @@ export class ProfileComponent implements OnInit {
         }
     });
 }
+  onSubmit(): void {
+    if (this.recipeForm.valid) {
+      console.log("Form is valid, submitting...");
+      const formData = this.createFormData(this.recipeForm.value);
 
-onSubmit(): void {
-  if (this.recipeForm.valid) {
-    console.log("Form is valid, submitting...");
-    const formData = this.createFormData(this.recipeForm.value);
+      formData.append('user_id', this.userProfile.user_id);
 
-    this.recipeService.addRecipe(formData).subscribe({
-      next: (response: any) => {
-        console.log(response);
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      this.recipeService.addRecipe(formData).subscribe({
+        next: (response: any) => {
+          console.log(response);
         if (response.success) {
           this.recipeForm.reset();
           this.closeShareRecipeModal();
+          this.snackBar.open('Recipe successfully added', 'Close', {
+            duration: 4000,
+          });
         } else {
           console.error('Error adding recipe:', response);
-          alert('Error adding recipe. Please try again later.');
+          this.snackBar.open('Failed to add. Please fill out missing fields.', 
+            'Close', {
+            duration: 4000,
+          });
         }
       },
       error: (error: any) => {
@@ -153,16 +164,18 @@ onSubmit(): void {
     const formData = new FormData();
     Object.keys(formValue).forEach(key => {
       if (key === 'ingredients' || key === 'instructions') {
-      formData.append(key, JSON.stringify(formValue[key]));
+        formData.append(key, JSON.stringify(formValue[key]));
     } else if (key === 'image' && formValue[key]) {
-      formData.append('image', formValue[key], formValue[key].name);
+        formData.append('image', formValue[key], formValue[key].name);
     } else {
-      formData.append(key, formValue[key]);
+       formData.append(key, formValue[key]);
     }
   });
-    return formData;
-}
 
+  formData.append('user_id', this.userProfile.user_id);
+
+  return formData;
+}
 
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
@@ -197,6 +210,7 @@ onSubmit(): void {
   closeEditModal(): void {
     this.showEditModal = false;
   }
+
   saveChanges(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: (response: any) => {
@@ -212,7 +226,8 @@ onSubmit(): void {
      },
       error: (error: any) => {
         console.error('Error updating profile:', error);
-        this.snackBar.open('Error updating profile. Please try again.', 'Close', {
+        this.snackBar.open('Error updating profile. Please try again.',
+           'Close', {
           duration: 4000,
         });
       }
