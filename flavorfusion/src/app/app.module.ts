@@ -29,6 +29,7 @@ import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -60,6 +61,7 @@ import { SignupService } from '../services/signup.service';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
     provideAnimationsAsync(),

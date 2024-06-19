@@ -58,18 +58,7 @@ export class SignUpComponent {
       email: this.signupForm.get('email').value,
       password: this.signupForm.get('password').value
     };
-  
-  //   this.signupService.signup(user).subscribe(response => {
-  //     console.log('Signup response:', response);
-  //     // Handle success, redirect to login page
-  //     this.router.navigate(['/login']);
-  //   }, error => {
-  //     console.error('Signup error:', error);
-  //     // Handle error
-  //   });
-  // }
-  
-  //kyla added
+   
   this.signupService.signup(user).subscribe({
     next: (response) => {
       console.log('Signup response:', response);

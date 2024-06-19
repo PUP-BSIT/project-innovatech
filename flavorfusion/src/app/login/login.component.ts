@@ -37,7 +37,8 @@ export class LoginComponent {
         password: this.loginForm.value.password
       };
 
-      this.http.post<any>('http://localhost/controller/login.php', formData, {withCredentials: true })
+      this.http.post<any>('http://localhost/controller/login.php', formData, 
+          {withCredentials: true })
         .subscribe(
           response => {
             if (response.success) {

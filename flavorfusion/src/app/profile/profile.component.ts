@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service';
 import { UserService } from '../../services/user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -28,9 +29,6 @@ export class ProfileComponent implements OnInit {
     username: '',
     bio: '',
   };
-  // showEditModal: boolean = false;
-
-
 
   profileForm: FormGroup;
 
@@ -38,7 +36,8 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute, 
     private fb: FormBuilder, 
     private recipeService: RecipeService,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar
   ) {
     this.recipeForm = this.createRecipeForm();
     this.profileForm = this.fb.group({
@@ -110,18 +109,6 @@ export class ProfileComponent implements OnInit {
     this.instructions.removeAt(index);
   }
 
-  // getUserProfile(): void {
-  //   this.userService.getUserProfile().subscribe({
-  //     next: (data: any) => {
-  //       this.userProfile = data;
-  //       console.log(this.userProfile);
-  //     },
-  //     error: (error: any) => {
-  //       console.error("Error fetching user profile:", error);  
-  //     }
-  //   });
-  // }
-
   getUserProfile(): void {
     this.userService.getUserProfile().subscribe({
         next: (data: any) => {
@@ -138,34 +125,6 @@ export class ProfileComponent implements OnInit {
     });
 }
 
-
-  // handleRouteParams(): void {
-  //   this.route.queryParams.subscribe(params => {
-  //     if (params['showSavedRecipes']) {
-  //       this.showSavedRecipes = true;
-  //       this.showMealPlanning = false;
-  //       this.showActivityLog = false;
-  //     }
-  //   });
-  // }
-
-//   onImageSelected(event: Event): void {
-//     const inputElement = event.target as HTMLInputElement;
-//     if (inputElement.files && inputElement.files[0]) {
-//       const file = inputElement.files[0];
-//       this.recipeForm.patchValue({ image: file });
-//       // this.recipeForm.get('image').updateValueAndValidity();
-
-//       // Preview image
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imageUrl = reader.result as string;
-//       };
-//       reader.readAsDataURL(file);
-//     }
-// }
-
-//tsaka na baguhin after push the edit
 onSubmit(): void {
   if (this.recipeForm.valid) {
     console.log("Form is valid, submitting...");
@@ -190,10 +149,10 @@ onSubmit(): void {
   }
 }
 
-private createFormData(formValue: any): FormData {
-  const formData = new FormData();
-  Object.keys(formValue).forEach(key => {
-    if (key === 'ingredients' || key === 'instructions') {
+  private createFormData(formValue: any): FormData {
+    const formData = new FormData();
+    Object.keys(formValue).forEach(key => {
+      if (key === 'ingredients' || key === 'instructions') {
       formData.append(key, JSON.stringify(formValue[key]));
     } else if (key === 'image' && formValue[key]) {
       formData.append('image', formValue[key], formValue[key].name);
@@ -201,13 +160,13 @@ private createFormData(formValue: any): FormData {
       formData.append(key, formValue[key]);
     }
   });
-  return formData;
+    return formData;
 }
 
 
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
-  }
+  } 
 
   closeShareRecipeModal(): void {
     this.showShareRecipeModal = false;
@@ -215,8 +174,8 @@ private createFormData(formValue: any): FormData {
 
   toggleSavedRecipes(): void {
     this.showSavedRecipes = !this.showSavedRecipes;
-    this.showMealPlanning = false;
-    this.showActivityLog = false;
+   this.showMealPlanning = false;
+   this.showActivityLog = false;
   }
 
   toggleMealPlanning(): void {
@@ -230,7 +189,6 @@ private createFormData(formValue: any): FormData {
     this.showSavedRecipes = false;
     this.showMealPlanning = false;
   }
-  // editProfileModalOpen = false;
 
   openEditModal(): void {
     this.showEditModal = true;
@@ -239,41 +197,27 @@ private createFormData(formValue: any): FormData {
   closeEditModal(): void {
     this.showEditModal = false;
   }
-
   saveChanges(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: (response: any) => {
         if (response.success) {
-          console.log('Profile updated successfully');
-          // Dapat ma-refresh ang user profile data mula sa backend
-          this.userProfile = response.user; // Assign updated profile data
-          this.closeEditModal(); // Isara ang modal pagkatapos ng pag-update
+          this.userProfile = response.user; 
+          this.closeEditModal(); 
+          this.snackBar.open('User Profile Successfully Edited', 'Close', {
+            duration: 4000,
+          });
         } else {
           console.error('Error updating profile:', response.message);
         }
-      },
+     },
       error: (error: any) => {
         console.error('Error updating profile:', error);
+        this.snackBar.open('Error updating profile. Please try again.', 'Close', {
+          duration: 4000,
+        });
       }
-    });
+  });
   }
-
-  //for edit user 
-//   this.userService.updateUserProfile(profileData).subscribe({
-//     next: (response: any) => {
-//     if(response.success) {
-//       console.log('Profile is edited successfully'); //for testing
-//       this.getUserProfile();
-//       this.closeEditModal();
-//     } else {
-//       console.error('Error updating profile', response.message);
-//     }
-//   },
-//     error: (error: any) => {
-//       console.error('Error updating profile', error);
-//     }
-//   });
-// }
 
   changeAvatar(): void {
     this.showAvatarModal = true;
