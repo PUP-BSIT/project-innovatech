@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    // Join the users and user_profiles tables to get the required data
     $sql = "SELECT u.user_id, u.email, up.username, up.bio 
             FROM users u 
             LEFT JOIN user_profiles up ON u.user_id = up.user_id 
@@ -35,7 +34,6 @@ if (isset($_SESSION['user_id'])) {
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
-    // Check if the username is empty, use email instead
     if (empty($user['username'])) {
         $user['username'] = $user['email'];
     }

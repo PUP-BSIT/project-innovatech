@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
         $username = $data['username'];
         $bio = $data['bio'];
 
-        $sql = "UPDATE user_profiles SET username = ?, bio = ? WHERE user_id = ?";
+        $sql = "UPDATE user_profiles SET username = ?, bio = ?
+             WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssi", $username, $bio, $user_id);
 
         if ($stmt->execute()) {
-            // Fetch the updated profile data
             $sql = "SELECT u.user_id, u.email, up.username, up.bio 
                     FROM users u 
                     JOIN user_profiles up ON u.user_id = up.user_id 
