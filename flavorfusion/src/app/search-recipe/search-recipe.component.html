@@ -1,7 +1,12 @@
 <div class="search-results">
+
   <div *ngIf="searchResults.length">
-    <div *ngFor="let result of searchResults" class="recipe-container">
-      <img [src]="result.image" alt="{{ result.name }}" class="recipe-image">
+    <div *ngFor="let result of searchResults" 
+         class="recipe-container" 
+         (click)="viewRecipeDetails(result.recipe_id)">
+      <img [src]="result.image" 
+           alt="{{ result.name }}" 
+           class="recipe-image">
       <h3>{{ result.name }}</h3>
 
       <div class="rating">
@@ -11,10 +16,10 @@
                'fa-star': i < result.rating,
                'fa-star-half-alt': i < result.rating && i + 1 > result.rating,
                'fa-star-o': i >= result.rating
-             }"></i>
+             }">
+          </i>
         </ng-container>
       </div>
-            
     </div>
   </div>
   
