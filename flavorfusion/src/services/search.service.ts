@@ -11,7 +11,12 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  searchRecipes(keyword: string, mealType: string, dietaryPref: string, ingredient: string): Observable<any> {
+  searchRecipes(
+    keyword: string, 
+    mealType: string, 
+    dietaryPref: string, 
+    ingredient: string
+  ): Observable<any> {
     let params = new HttpParams()
       .set('keyword', keyword)
       .set('mealType', mealType)
