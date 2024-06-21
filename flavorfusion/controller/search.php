@@ -1,19 +1,34 @@
 <?php
-include_once 'db_connection.php';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
 
-header("Content-Type: application/json; charset=UTF-8");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    exit();
+}
+
+include_once 'db_connection.php';
 
 $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 $mealType = isset($_GET['mealType']) ? $_GET['mealType'] : '';
 $dietaryPref = isset($_GET['dietaryPref']) ? $_GET['dietaryPref'] : '';
 $ingredient = isset($_GET['ingredient']) ? $_GET['ingredient'] : '';
 
-$sql = "SELECT DISTINCT r.* FROM recipes r";
+$sql = "
+    SELECT DISTINCT 
+        r.name, 
+        r.picture AS image, 
+        COALESCE(AVG(rt.rating), 0) AS rating 
+    FROM 
+        recipes r
+";
 $params = array();
 
 $sql .= " LEFT JOIN recipe_meal_types mt ON r.recipe_id = mt.recipe_id";
 $sql .= " LEFT JOIN recipe_dietary_prefs dp ON r.recipe_id = dp.recipe_id";
 $sql .= " LEFT JOIN recipe_ingredients ri ON r.recipe_id = ri.recipe_id";
+$sql .= " LEFT JOIN ratings rt ON r.recipe_id = rt.recipe_id";
 
 $sql .= " WHERE 1 = 1";
 
@@ -37,6 +52,8 @@ if (!empty($ingredient)) {
     $params[] = "%" . $ingredient . "%";
 }
 
+$sql .= " GROUP BY r.recipe_id";
+
 $stmt = $conn->prepare($sql);
 if ($stmt) {
     if (!empty($params)) {
@@ -50,7 +67,11 @@ if ($stmt) {
 
     $recipes = array();
     while ($row = $result->fetch_assoc()) {
-        $recipes[] = $row;
+        $recipes[] = array(
+            "name" => $row["name"],
+            "image" => $row["image"],
+            "rating" => $row["rating"]
+        );
     }
 
     $stmt->close();
@@ -62,5 +83,4 @@ if ($stmt) {
 }
 
 $conn->close();
-
 ?>
