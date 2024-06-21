@@ -23,9 +23,13 @@ $sql = "SELECT recipe_id,
                description, 
                time AS prep_time, 
                servings, 
-               picture 
-        FROM recipes 
-        WHERE recipe_id = ?";
+               picture,
+               u.username AS chef_name
+        FROM recipes r
+        LEFT JOIN user_profiles u ON r.user_id = u.user_id 
+        WHERE recipe_id = ?
+        ";
+
 $stmt = $conn->prepare($sql);
 
 if ($stmt) {

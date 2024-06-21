@@ -7,17 +7,30 @@
     <div class="recipe-text">
       <h1>{{ recipe.name }}</h1>
       <p>{{ recipe.description }}</p>
-  
-      <p class="prep-time"><i class="fas fa-concierge-bell"></i> 
-        <strong>Preparation Time: </strong> 
-        {{ recipe.prep_time }}
-      </p>
 
-      <p class="servings"><i class="fas fa-users"></i> 
-        <strong>Servings: </strong> 
-        {{ recipe.servings }}
-      </p>
-            
+      <div class="recipe-icons">
+        <div class="icon-item">
+          <p class="chef_name"><i class="fas fa-user"></i>
+            <strong>By: </strong>
+            {{ recipe.chef_name }}
+          </p>
+        </div>
+  
+        <div class="icon-item">
+          <p class="prep-time"><i class="fas fa-concierge-bell"></i> 
+            <strong>Preparation Time: </strong> 
+            {{ recipe.prep_time }}
+          </p>
+        </div>
+
+        <div class="icon-item">
+          <p class="servings"><i class="fas fa-utensils"></i> 
+            <strong>Servings: </strong> 
+            {{ recipe.servings }}
+          </p>
+        </div>
+      </div> 
+
       <div class="actions">
         <button class="save">
           <i class="fas fa-heart"></i> 
@@ -49,12 +62,12 @@
             
     <div class="recipe-procedures">
       <h2>Procedures:</h2>
-      <ol>
-        <li *ngFor="let step of recipe.procedures">
-          <strong>Step {{ step.step_number }}:</strong>
-          <p>{{ step.instruction }}</p>
-        </li>
-      </ol>
+      <div class="steps">
+        <div class="step" *ngFor="let step of recipe.procedures">
+          <strong class="step-number">Step {{ step.step_number }}:</strong>
+          <p class="step-instruction">{{ step.instruction }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
