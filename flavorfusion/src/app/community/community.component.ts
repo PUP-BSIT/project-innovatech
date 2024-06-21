@@ -11,6 +11,8 @@ import { Comment } from '../../model/comments';
 export class CommunityComponent {
   @ViewChild('postDetailTemplate') postDetailTemplate: TemplateRef<any>;
   dialogRef: MatDialogRef<any>;
+  newPostText: string = ''; //added
+  newPostImage: string | ArrayBuffer | null = null; //added
   newCommentText: string = ''
 
   posts: Post[] = [
@@ -111,6 +113,39 @@ export class CommunityComponent {
       this.newCommentText = '';
     }
   }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.newPostImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  addPost(): void {
+    if (this.newPostText.trim()) {
+      this.posts.unshift({
+        username: 'current_user', 
+        time: 'Just now',
+        userAvatar: 'assets/images/default-avatar.png', 
+        image: this.newPostImage as string, 
+        description: this.newPostText,
+        likes: 0,
+        liked: false,
+        comments: [],
+        caption: ''
+      });
+
+      this.newPostText = '';
+      this.newPostImage = null; 
+    }
+  }
+
+  //TO DO: Implement the new post is saved to the database with the actual logged-in user's ID.
 }
 //TO DO: (Malaluan, Kyla) ->
 //Replace this after implementing the function for adding comments by the user.

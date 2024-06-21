@@ -27,12 +27,45 @@ $query = "INSERT INTO users (email, password_hash) VALUES (?, ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ss", $email, $password);
 
-if ($stmt->execute()) {
-    echo json_encode(["message" => "User registered successfully"]);
-} else {
-    echo json_encode(["message" => "Error: " . $stmt->error]);
-}
+//kyla added
+try {
+    $query = "INSERT INTO users (email, password_hash) VALUES (?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $email, $password);
 
-$stmt->close();
-$conn->close();
+    if ($stmt->execute()) {
+        $user_id = $stmt->insert_id;
+
+        // Insert into user_profiles with default username as email
+        $query_profile = "INSERT INTO user_profiles (user_id, username, bio)
+             VALUES (?, ?, ?)";
+        $stmt_profile = $conn->prepare($query_profile);
+        $username = $email;
+        $bio = '';
+        $stmt_profile->bind_param("iss", $user_id, $username, $bio);
+
+        if ($stmt_profile->execute()) {
+            echo json_encode([
+                "success" => true,
+                "message" =>
+                    "User registered successfully"
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" =>
+                    "Profile creation failed: " . $stmt_profile->error
+            ]);
+        }
+
+        $stmt_profile->close();
+    } else {
+        throw new Exception("Error: " . $stmt->error);
+    }
+
+    $stmt->close();
+    $conn->close();
+} catch (Exception $e) {
+    echo json_encode(["success" => false, "message" => $e->getMessage()]);
+}
 ?>

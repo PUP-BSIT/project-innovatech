@@ -27,7 +27,11 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
+import { ForgotPasswordService } from '../services/forgot-password.service';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -45,6 +49,8 @@ import { SignupService } from '../services/signup.service';
     CarouselComponent,
     SearchRecipeComponent,
     RecipeDetailsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +65,7 @@ import { SignupService } from '../services/signup.service';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
     provideAnimationsAsync(),
@@ -67,6 +74,7 @@ import { SignupService } from '../services/signup.service';
     SignupService,
     LoginAuthentication,
     SignupService,
+    ForgotPasswordService,
   ],
   bootstrap: [AppComponent]
 })

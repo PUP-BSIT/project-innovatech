@@ -1,15 +1,29 @@
-<div class="cake-container">
-    <div class="cake-card" *ngFor="let cake of cakes">
-      <img [src]="cake.image" alt="{{cake.name}}">
-      <h3>{{cake.name}}</h3>
-      
+<div class="search-results">
+
+  <div *ngIf="searchResults.length">
+    <div *ngFor="let result of searchResults" 
+         class="recipe-container" 
+         (click)="viewRecipeDetails(result.recipe_id)">
+      <img [src]="result.image" 
+           alt="{{ result.name }}" 
+           class="recipe-image">
+      <h3>{{ result.name }}</h3>
+
       <div class="rating">
-        <span *ngFor="let star of [1,2,3,4,5]; let i = index">
-          <i class="fa" [ngClass]="{'fa-star': i < cake.rating, 
-                                    'fa-star-o': i >= cake.rating}">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+          <i class="fa"
+             [ngClass]="{
+               'fa-star': i < result.rating,
+               'fa-star-half-alt': i < result.rating && i + 1 > result.rating,
+               'fa-star-o': i >= result.rating
+             }">
           </i>
-        </span>
+        </ng-container>
       </div>
     </div>
   </div>
   
+  <div *ngIf="!searchResults.length">
+    <p>No results found for "{{ query }}"</p>
+  </div>
+</div>

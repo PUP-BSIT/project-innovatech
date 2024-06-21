@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service';
 import { UserService } from '../../services/user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -22,15 +23,27 @@ export class ProfileComponent implements OnInit {
   recipeForm: FormGroup;
   // imageUrl: string | ArrayBuffer | null = null;
   // imageUrl: string | ArrayBuffer = '';
-  userProfile: any = {};
+  userProfile: any = {
+    user_id: null,
+    email: '',
+    username: '',
+    bio: '',
+  };
+
+  profileForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute, 
     private fb: FormBuilder, 
     private recipeService: RecipeService,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar
   ) {
     this.recipeForm = this.createRecipeForm();
+    this.profileForm = this.fb.group({
+      username: ['', Validators.required],
+      bio: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
@@ -98,83 +111,75 @@ export class ProfileComponent implements OnInit {
 
   getUserProfile(): void {
     this.userService.getUserProfile().subscribe({
-      next: (data: any) => {
-        this.userProfile = data;
-        console.log(this.userProfile);
-      },
-      error: (error: any) => {
-        console.error("Error fetching user profile:", error);  
-      }
+        next: (data: any) => {
+            // Set email as username if username is not set
+            this.userProfile = data;
+            if (!this.userProfile.username) {
+                this.userProfile.username = this.userProfile.email;
+            }
+            console.log(this.userProfile);
+        },
+        error: (error: any) => {
+            console.error("Error fetching user profile:", error);  
+        }
     });
-  }
-
-  // handleRouteParams(): void {
-  //   this.route.queryParams.subscribe(params => {
-  //     if (params['showSavedRecipes']) {
-  //       this.showSavedRecipes = true;
-  //       this.showMealPlanning = false;
-  //       this.showActivityLog = false;
-  //     }
-  //   });
-  // }
-
-//   onImageSelected(event: Event): void {
-//     const inputElement = event.target as HTMLInputElement;
-//     if (inputElement.files && inputElement.files[0]) {
-//       const file = inputElement.files[0];
-//       this.recipeForm.patchValue({ image: file });
-//       // this.recipeForm.get('image').updateValueAndValidity();
-
-//       // Preview image
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imageUrl = reader.result as string;
-//       };
-//       reader.readAsDataURL(file);
-//     }
-// }
-
+}
   onSubmit(): void {
     if (this.recipeForm.valid) {
       console.log("Form is valid, submitting...");
       const formData = this.createFormData(this.recipeForm.value);
 
+      formData.append('user_id', this.userProfile.user_id);
+
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
       this.recipeService.addRecipe(formData).subscribe({
         next: (response: any) => {
           console.log(response);
-          if (response.success) {
-            this.recipeForm.reset();
-            this.closeShareRecipeModal();
-          } else {
-            console.error('Error adding recipe:', response);
-            alert('Error adding recipe. Please try again later.');
-          }
-        },
-        error: (error: any) => {
-          console.error('Error adding recipe:', error);
-          alert('Error adding recipe. Please try again later.');
+        if (response.success) {
+          this.recipeForm.reset();
+          this.closeShareRecipeModal();
+          this.snackBar.open('Recipe successfully added', 'Close', {
+            duration: 4000,
+          });
+        } else {
+          console.error('Error adding recipe:', response);
+          this.snackBar.open('Failed to add. Please fill out missing fields.', 
+            'Close', {
+            duration: 4000,
+          });
         }
-      });
-    }
+      },
+      error: (error: any) => {
+        console.error('Error adding recipe:', error);
+        alert('Error adding recipe. Please try again later.');
+      }
+    });
   }
+}
 
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
     Object.keys(formValue).forEach(key => {
       if (key === 'ingredients' || key === 'instructions') {
         formData.append(key, JSON.stringify(formValue[key]));
-      } else if (key === 'image' && formValue[key]) {
+    } else if (key === 'image' && formValue[key]) {
         formData.append('image', formValue[key], formValue[key].name);
-      } else {
-        formData.append(key, formValue[key]);
-      }
-    });
-    return formData;
-  }
+    } else {
+       formData.append(key, formValue[key]);
+    }
+  });
+
+  formData.append('user_id', this.userProfile.user_id);
+
+  return formData;
+}
 
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
-  }
+  } 
 
   closeShareRecipeModal(): void {
     this.showShareRecipeModal = false;
@@ -182,8 +187,8 @@ export class ProfileComponent implements OnInit {
 
   toggleSavedRecipes(): void {
     this.showSavedRecipes = !this.showSavedRecipes;
-    this.showMealPlanning = false;
-    this.showActivityLog = false;
+   this.showMealPlanning = false;
+   this.showActivityLog = false;
   }
 
   toggleMealPlanning(): void {
@@ -207,8 +212,26 @@ export class ProfileComponent implements OnInit {
   }
 
   saveChanges(): void {
-    console.log('Saving changes:', this.userProfile);
-    this.closeEditModal();
+    this.userService.updateUserProfile(this.userProfile).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.userProfile = response.user; 
+          this.closeEditModal(); 
+          this.snackBar.open('User Profile Successfully Edited', 'Close', {
+            duration: 4000,
+          });
+        } else {
+          console.error('Error updating profile:', response.message);
+        }
+     },
+      error: (error: any) => {
+        console.error('Error updating profile:', error);
+        this.snackBar.open('Error updating profile. Please try again.',
+           'Close', {
+          duration: 4000,
+        });
+      }
+  });
   }
 
   changeAvatar(): void {

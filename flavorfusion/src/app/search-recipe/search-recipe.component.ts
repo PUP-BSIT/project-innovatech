@@ -1,51 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RecipeResultService } from '../../services/recipe-result.service'; //added
+import { Recipe } from '../../model/recipe';
 
 @Component({
   selector: 'app-search-recipe',
   templateUrl: './search-recipe.component.html',
-  styleUrl: './search-recipe.component.css'
+  styleUrls: ['./search-recipe.component.css']
 })
-export class SearchRecipeComponent {
-  cakes = [
-    { 
-        name: 'Triple Chocolate Cake', 
-        image: 'assets/images/triple-chocolate-cake.jpg', 
-        rating: 5 
-    },
-    { 
-        name: 'Strawberry Cake', 
-        image: 'assets/images/strawberry-cake.jpg', 
-        rating: 4 
-    },
-    { 
-        name: 'Red Velvet Cake', 
-        image: 'assets/images/red-velvet-cake.jpg', 
-        rating: 5 
-    },
-    { 
-        name: 'Blueberry Cake', 
-        image: 'assets/images/blueberry-cake.jpg', 
-        rating: 5 
-    },
-    { 
-        name: 'Tiramisu Cake', 
-        image: 'assets/images/tiramisu-cake.jpg', 
-        rating: 5 
-    },
-    { 
-        name: 'Vanilla Sponge Cake', 
-        image: 'assets/images/vanilla-sponge-cake.jpg', 
-        rating: 4 
-    },
-    { 
-        name: 'Caramello Cake', 
-        image: 'assets/images/caramello-cake.jpg', 
-        rating: 4 
-    },
-    { 
-        name: 'Black Forest Cake', 
-        image: 'assets/images/black-forest-cake.jpg', 
-        rating: 5 
+export class SearchRecipeComponent implements OnInit {
+  searchResults: Recipe[] = []; 
+  query: string = '';
+  mealType: string = '';
+  dietaryPref: string = '';
+  ingredient: string = '';
+
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private recipeService: RecipeResultService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.query = params['query'] || '';
+      this.mealType = params['mealType'] || '';
+      this.dietaryPref = params['dietaryPref'] || '';
+      this.ingredient = params['ingredient'] || '';
+      this.searchRecipes(); 
+    });
+  }
+
+  searchRecipes(): void {
+    this.recipeService.searchRecipes(
+      this.query, 
+      this.mealType, 
+      this.dietaryPref, 
+      this.ingredient
+    ).subscribe(
+      (response: Recipe[]) => {
+        this.searchResults = response;
+      },
+      error => {
+        console.error('Error fetching recipes: ', error);
+      }
+    );
+  }
+
+  viewRecipeDetails(recipeId: number): void {
+    if (recipeId !== undefined && recipeId !== null) {
+      this.router.navigate(['/recipe-details', recipeId])
+    } else {
+      console.error('Invalid recipe ID:', recipeId);
     }
-  ];
+  }  
 }

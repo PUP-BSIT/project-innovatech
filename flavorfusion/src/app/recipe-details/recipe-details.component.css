@@ -46,20 +46,26 @@
   text-indent: 20px;
 }
 
-.recipe-header p.prep-time {
-  text-indent: 0; 
+.recipe-icons {
+  display: flex;
+  gap: 10px; 
+  margin-bottom: 20px; 
 }
 
-.prep-time {
-  font-size: 14px;
-  color: black;
-  font-family: 'Poppins';
-  align-items: center;
+.icon-item {
+  display: flex;
+  align-items: center; 
 }
 
-.prep-time i {
+.icon-item p {
+  margin: 0;
+}
+
+.icon-item i {
+  text-indent: 0px;
   margin-right: 5px;
 }
+/* last */
   
 .recipe-content {
   display: flex;
@@ -84,7 +90,7 @@
 }
   
 .recipe-details ul,
-.recipe-procedures ol {
+.recipe-procedures .steps {
   padding: 0;
   margin: 0;
 }
@@ -105,29 +111,20 @@
   line-height: 1.5;
 }
 
-.recipe-procedures ol li {
+.recipe-procedures .steps .step {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
   font-size: 17px;
-  line-height: 1.5;
 }
 
-.recipe-procedures ol li {
-  margin-left: 50px;
-  margin-bottom: 10px;
+.recipe-procedures .steps .step-number {
+  margin-right: 10px;
 }
   
-.recipe-procedures ol li strong {
+.recipe-procedures .steps strong {
   display: block;
   margin-bottom: 5px;
-}
-
-.recipe-procedures ol li ul {
-  margin-left: 20px; 
-}
-
-.recipe-procedures ol li ul li {
-  list-style-type: disc; 
-  margin-left: 0;
-  margin-bottom: 0;
 }
   
 .actions {
