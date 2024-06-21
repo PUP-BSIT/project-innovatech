@@ -39,7 +39,7 @@ h2 {
     font-size: larger;
 }
   
-.personalize-taste-content {
+.personalize-taste-content, .latest-recipes-content {
     background-color: #fff8e1;
     padding: 20px;
     border-radius: 18px;
@@ -48,12 +48,25 @@ h2 {
     display: flex;
     flex-direction: column;
 }
+
+.share-recipe-btn, .login-btn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    font-family: math;
+    color: #D82B1E;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: rgba(230, 132, 72, 0.3);
+    border-radius: 8px;
+    font-size: 16px;
+}
   
 .personalize-taste {
     margin-bottom: 26px;
 }
   
-.personalize-taste p {
+.personalize-taste p, .latest-recipes p {
     color: #55555585;
     font-family: 'Poppins', sans-serif;
     text-align: center;

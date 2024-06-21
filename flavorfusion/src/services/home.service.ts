@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class HomeService {
   private dailyMealsUrl = 'http://localhost/flavorfusion/controller/get_daily_meals.php';
   private filteredRecipesUrl = 'http://localhost/flavorfusion/controller/get_filtered_recipes.php';
+  private userRecipesUrl = 'http://localhost/flavorfusion/controller/get_user_recipes.php';
 
   constructor(private http: HttpClient) { }
 
@@ -17,5 +18,9 @@ export class HomeService {
 
   getFilteredRecipes(filters: string[]): Observable<any> {
     return this.http.post<any>(this.filteredRecipesUrl, filters);
+  }
+
+  getUserRecipes(): Observable<any> {
+    return this.http.get<any>(this.userRecipesUrl);
   }
 }
