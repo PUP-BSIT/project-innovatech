@@ -1,78 +1,46 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Post } from '../../model/posts';
-import { Comment } from '../../model/comments';
+import { CommunityService } from '../../services/community-service';
 
 @Component({
   selector: 'app-community',
   templateUrl: './community.component.html',
   styleUrls: ['./community.component.css']
 })
-export class CommunityComponent {
+export class CommunityComponent implements OnInit {
   @ViewChild('postDetailTemplate') postDetailTemplate: TemplateRef<any>;
   dialogRef: MatDialogRef<any>;
-  newPostText: string = ''; //added
-  newPostImage: string | ArrayBuffer | null = null; //added
-  newCommentText: string = ''
+  newPostText: string = '';
+  newPostImage: File | null = null;
+  newCommentText: string = '';
 
-  posts: Post[] = [
-    {
-      username: 'janedoe',
-      time: '1h',
-      userAvatar: 'assets/images/jane.png',
-      image: 'assets/images/salad.jpg',
-      description: 'Chicken Salad',
-      likes: 0,
-      liked: false,
-      comments: [
-        {
-          username: 'apol',
-          time: '45 minutes ago',
-          userAvatar: 'assets/images/apol.png',
-          text: `I can\'t express enough how much I adore your recipe. 
-          It\'s like a little slice of culinary heaven on a plate!`,
-          liked: false
-        },
-        {
-          username: 'orange',
-          time: '1 hour ago',
-          userAvatar: 'assets/images/orange.png',
-          text: `I\'m endlessly thankful for your recipe--it\'s 
-          like a delicious gift that keeps on giving every time I make it`,
-          liked: false
+  posts: any[] = [];
+
+  constructor(
+    public dialog: MatDialog,
+    private communityService: CommunityService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadPosts();
+  }
+
+  loadPosts(): void {
+    this.communityService.getPosts().subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.posts = response.posts;
+        } else {
+          console.error('Error fetching posts:', response.message);
         }
-      ],
-      caption: ''
-    },
-    {
-      username: 'sara_lee',
-      time: '3d',
-      userAvatar: 'assets/images/sarah.jpg',
-      image: 'assets/images/spag.jpg',
-      description: 'Saucy Spaghetti',
-      likes: 13,
-      liked: false,
-      comments: [],
-      caption: 'Moist and flavorful'
-    },
-    {
-      username: 'sara_lee',
-      time: '3d',
-      userAvatar: 'assets/images/sarah.jpg',
-      image: 'assets/images/vanilla_cake.jpg',
-      description: 'Vanilla Cake',
-      likes: 13,
-      liked: false,
-      comments: [],
-      caption: ''
-    }
-  ];
-//TO DO: (Malaluan, Kyla) ->
-//Replace this after implementing user post functionality.
+      },
+      error => {
+        console.error('HTTP error:', error);
+      }
+    );
+  }
 
-  constructor(public dialog: MatDialog) {}
-
-  openPostDetail(post: Post, template: TemplateRef<any>) {
+  openPostDetail(post: any, template: TemplateRef<any>): void {
     this.dialogRef = this.dialog.open(template, {
       data: { post },
       width: '600px',
@@ -86,66 +54,76 @@ export class CommunityComponent {
     }
   }
 
-  likePost(post: Post, event: Event): void {
+  likePost(post: any, event: Event): void {
     event.stopPropagation();
     post.liked = !post.liked;
     post.likes += post.liked ? 1 : -1;
   }
 
-  commentOnPost(post: Post, event: Event): void {
+  commentOnPost(post: any, event: Event): void {
     event.stopPropagation();
     this.openPostDetail(post, this.postDetailTemplate);
   }
 
-  toggleLike(comment: Comment): void {
+  toggleLike(comment: any): void {
     comment.liked = !comment.liked;
-  }
-
-  addComment(post: Post): void {
-    if (this.newCommentText.trim()) {
-      post.comments.push({
-        username: 'current_user', 
-        time: 'Just now',
-        userAvatar: 'assets/images/default-avatar.png',
-        text: this.newCommentText,
-        liked: false 
-      });
-      this.newCommentText = '';
-    }
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.newPostImage = reader.result;
-      };
-      reader.readAsDataURL(file);
+      this.newPostImage = input.files[0]; 
+      console.log('Selected file:', this.newPostImage); 
     }
   }
 
   addPost(): void {
     if (this.newPostText.trim()) {
-      this.posts.unshift({
-        username: 'current_user', 
-        time: 'Just now',
-        userAvatar: 'assets/images/default-avatar.png', 
-        image: this.newPostImage as string, 
-        description: this.newPostText,
-        likes: 0,
-        liked: false,
-        comments: [],
-        caption: ''
+      const formData = new FormData();
+      formData.append('user_id', '3'); 
+      formData.append('recipe_id', '25'); 
+      formData.append('caption', this.newPostText);
+      if (this.newPostImage) {
+        formData.append('image', this.newPostImage, this.newPostImage.name); 
+      } else {
+        formData.append('image', ''); 
+      }
+
+      formData.forEach((value, key) => {
+        console.log(key + ': ' + value);
       });
 
-      this.newPostText = '';
-      this.newPostImage = null; 
+      //TO DO -> Make this dynamically reflect which user is logged in.
+      this.communityService.addPost(formData).subscribe(
+        response => {
+          console.log('Response from server:', response);//will delete later on
+          if (response.success) {
+            const newPost = {
+              userId: 3,
+              recipeId: 25,
+              username: 'current_user',
+              time: 'Just now',
+              userAvatar: 'assets/images/default-avatar.png',
+              image: this.newPostImage ? 
+                URL.createObjectURL(this.newPostImage) : '', 
+              description: '',
+              likes: 0,
+              liked: false,
+              comments: [],
+              caption: this.newPostText
+            };
+            this.posts.unshift(newPost);
+            this.newPostText = '';
+            this.newPostImage = null;
+          } else {
+            console.error('Error adding post:', response.message);
+          }
+        },
+        error => {
+          console.error('HTTP error:', error);
+          alert('An error occurred while adding the post: ' + error.message);
+        }
+      );
     }
   }
-
-  //TO DO: Implement the new post is saved to the database with the actual logged-in user's ID.
 }
-//TO DO: (Malaluan, Kyla) ->
-//Replace this after implementing the function for adding comments by the user.
