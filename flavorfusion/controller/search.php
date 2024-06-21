@@ -17,20 +17,20 @@ $ingredient = isset($_GET['ingredient']) ? $_GET['ingredient'] : '';
 
 $sql = "
     SELECT DISTINCT 
+        r.recipe_id, 
         r.name, 
         r.picture AS image, 
         COALESCE(AVG(rt.rating), 0) AS rating 
     FROM 
         recipes r
+    LEFT JOIN recipe_meal_types mt ON r.recipe_id = mt.recipe_id
+    LEFT JOIN recipe_dietary_prefs dp ON r.recipe_id = dp.recipe_id
+    LEFT JOIN recipe_ingredients ri ON r.recipe_id = ri.recipe_id
+    LEFT JOIN ratings rt ON r.recipe_id = rt.recipe_id
+    WHERE 1 = 1
 ";
+
 $params = array();
-
-$sql .= " LEFT JOIN recipe_meal_types mt ON r.recipe_id = mt.recipe_id";
-$sql .= " LEFT JOIN recipe_dietary_prefs dp ON r.recipe_id = dp.recipe_id";
-$sql .= " LEFT JOIN recipe_ingredients ri ON r.recipe_id = ri.recipe_id";
-$sql .= " LEFT JOIN ratings rt ON r.recipe_id = rt.recipe_id";
-
-$sql .= " WHERE 1 = 1";
 
 if (!empty($keyword)) {
     $sql .= " AND r.name LIKE ?";
@@ -68,6 +68,7 @@ if ($stmt) {
     $recipes = array();
     while ($row = $result->fetch_assoc()) {
         $recipes[] = array(
+            "recipe_id" => $row ["recipe_id"], 
             "name" => $row["name"],
             "image" => $row["image"],
             "rating" => $row["rating"]
