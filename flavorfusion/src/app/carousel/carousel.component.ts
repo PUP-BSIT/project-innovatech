@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CarouselService } from '../../services/carousel.service';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-carousel',
@@ -11,7 +11,7 @@ export class CarouselComponent implements OnInit {
   currentSlide = 0;
   slideInterval: any;
 
-  constructor(private carouselService: CarouselService) { }
+  constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
     this.fetchDailyMeals();
@@ -30,7 +30,7 @@ export class CarouselComponent implements OnInit {
   }
 
   fetchDailyMeals(): void {
-    this.carouselService.getDailyMeals()
+    this.homeService.getDailyMeals()
       .subscribe(data => {
         this.slides = [
           { meal: 'BREAKFAST', ...data.Breakfast },

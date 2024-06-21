@@ -1,11 +1,9 @@
 <div class="container">
   <div class="meal-of-the-day">
     <h2>Meal of the Day</h2>
-    <app-carousel></app-carousel>    
+    <app-carousel></app-carousel>
   </div>
-
   <hr class="section-divider">
-  
   <div class="popular-categories">
     <h2>Popular Categories</h2>
     <div class="popular-categories-content">
@@ -15,48 +13,93 @@
       </div>
     </div>
   </div>
-  
+
   <hr class="section-divider">
-  
+
   <div class="latest-recipes">
     <h2>Latest Recipes You Made</h2>
-    <div class="latest-recipes-content">
-      <div class="recipe" *ngFor="let recipe of latestRecipes">
-        <img [src]="recipe.image" [alt]="recipe.name">
-        <h3>{{ recipe.name }}</h3>
-      </div>      
+    <div class="latest-recipes-container" *ngIf="isLoggedIn; else notLoggedIn">
+      <div *ngIf="latestRecipes.length > 0; else noRecipes">
+        <div class="recipe" *ngFor="let recipe of latestRecipes">
+          <img [src]="recipe.picture" [alt]="recipe.name">
+          <h3>{{ recipe.name }}</h3>
+        </div>
+      </div>
+      <ng-template #noRecipes>
+        <div class="latest-recipes-content">
+          <p>
+            Want to share your recipes? Add your own creations to inspire others!
+          </p>
+          <button class="share-recipe-btn" (click)="navigateToProfile()">
+            Share a Recipe
+          </button>
+        </div>
+      </ng-template>
     </div>
+    <ng-template #notLoggedIn>
+      <div class="latest-recipes-content">
+        <p>Want to share your recipes? Log in to add your own creations!</p>
+        <button class="login-btn" (click)="navigateToLogin()">Log In</button>
+      </div>
+    </ng-template>
   </div>
-  
+
   <hr class="section-divider">
-    
+
   <div class="personalize-taste">
     <h2>Personalize Your Taste</h2>
     <div class="personalize-taste-content">
       <div class="filter" (click)="toggleDropdown()">
-        <i class="fa" [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'"
-           aria-hidden="true"></i>
+        <i 
+          class="fa" 
+          [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'"
+          aria-hidden="true">
+        </i>
         <span class="filter-label">Filter</span>
       </div>
       <div class="dropdown" *ngIf="showDropdown">
         <div class="dropdown-content">
           <div class="dropdown-column">
-            <label><input type="checkbox"> Eggs</label>
-            <label><input type="checkbox"> Dairy</label>
-            <label><input type="checkbox"> Nuts</label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.eggs"> Eggs
+            </label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.dairy"> Dairy
+            </label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.nuts"> Nuts
+            </label>
           </div>
           <div class="dropdown-column">
-            <label><input type="checkbox"> Fish</label>
-            <label><input type="checkbox"> Shrimp</label>
-            <label><input type="checkbox"> Vegetables</label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.fish"> Fish
+            </label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.shrimp"> Shrimp
+            </label>
+            <label>
+              <input type="checkbox" [(ngModel)]="filters.vegetables"> Vegetables
+            </label>
           </div>
         </div>
-        <button class="apply-btn">Apply</button>
+        <button 
+          class="apply-btn" 
+          (click)="applyFilter()" 
+          [disabled]="!hasSelectedFilter()">
+          Apply
+        </button>
       </div>
-      <p>Tailor your recipe suggestions to match your taste buds. Exclude any 
-         ingredients you dislike or are allergic to, and we'll serve up a list 
-         of recipes tailored just for you.
+      <p *ngIf="!isFiltered">
+        Tailor your recipe suggestions to match your taste buds. Exclude any 
+        ingredients you dislike or are allergic to, and we'll serve up a list 
+        of recipes tailored just for you.
       </p>
+      <div *ngIf="isFiltered" class="filtered-recipes">
+        <div class="recipe" *ngFor="let recipe of filteredRecipes">
+          <img [src]="recipe.picture" [alt]="recipe.name">
+          <h3>{{ recipe.name }}</h3>
+        </div>
+      </div>
     </div>
   </div>
 </div>
