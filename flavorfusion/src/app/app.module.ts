@@ -28,8 +28,11 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 import { CarouselService } from '../services/carousel.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
+import { ForgotPasswordService } from '../services/forgot-password.service';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -47,6 +50,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CarouselComponent,
     SearchRecipeComponent,
     RecipeDetailsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +75,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     SignupService,
     LoginAuthentication,
     SignupService,
+    ForgotPasswordService,
   ],
   bootstrap: [AppComponent]
 })
