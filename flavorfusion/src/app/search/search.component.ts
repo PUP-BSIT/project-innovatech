@@ -7,8 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-
-export class SearchComponent implements OnInit{
+export class SearchComponent implements OnInit {
   modalText: string = '';
   inputFields: any[] = []; 
   selectedCategories: { title: string, items: string[] }[] = [];
@@ -19,13 +18,17 @@ export class SearchComponent implements OnInit{
   activeSubCategory: string = '';
   searchResults: any[] = [];
   query: string = '';
+  mealType: string = '';
+  dietaryPref: string = '';
+  ingredient: string = '';
 
   constructor(
     private route: ActivatedRoute, 
     private searchService: SearchService, 
-    private router: Router) {}
+    private router: Router
+  ) {}
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     window.addEventListener('click', (event: Event) => {
       const modal = document.getElementById('my_modal') as HTMLElement;
       if (event.target === modal) {
@@ -35,10 +38,12 @@ export class SearchComponent implements OnInit{
 
     this.route.queryParams.subscribe(params => {
       this.query = params['query'] || '';
-      if (this.query) {
-        this.searchService.searchRecipes(this.query).subscribe(results => {
-          this.searchResults = results;
-        });
+      this.mealType = params['mealType'] || '';
+      this.dietaryPref = params['dietaryPref'] || '';
+      this.ingredient = params['ingredient'] || '';
+
+      if (this.query || this.mealType || this.dietaryPref || this.ingredient) {
+        this.searchRecipes();
       }
     });
   }
@@ -60,13 +65,20 @@ export class SearchComponent implements OnInit{
     modal.style.display = 'block';
   }
 
-  searchRecipes() {
-    console.log('Searching recipes...');
+  searchRecipes(): void {
+    this.searchService.searchRecipes(this.query, this.mealType, this.dietaryPref, this.ingredient).subscribe(
+      results => {
+        this.searchResults = results || [];
+      },
+      error => {
+        console.error('Error fetching recipes: ', error);
+      }
+    );
   }
 
   onSearch(event: KeyboardEvent): void {
     if (event.key === 'Enter' && this.query) {
-      this.router.navigate(['/search-recipe'], { queryParams: { query: this.query } });
+      this.router.navigate(['/search-recipe'], { queryParams: { query: this.query, mealType: this.mealType, dietaryPref: this.dietaryPref, ingredient: this.ingredient } });
     }
   }
 
@@ -80,21 +92,13 @@ export class SearchComponent implements OnInit{
   }
 
   toggleCategory(category: string) {
-    this.showMealTypes = category === 'MealTypes'
-      ? !this.showMealTypes
-      : false;
-    this.showDietaryPreferences = category === 'DietaryPreferences'
-      ? !this.showDietaryPreferences
-      : false;
-    this.showIngredients = category === 'Ingredients'
-      ? !this.showIngredients
-      : false;
+    this.showMealTypes = category === 'MealTypes' ? !this.showMealTypes : false;
+    this.showDietaryPreferences = category === 'DietaryPreferences' ? !this.showDietaryPreferences : false;
+    this.showIngredients = category === 'Ingredients' ? !this.showIngredients : false;
   }
 
   addCategory(categoryType: string, category: string) {
-    let categoryGroup = this.selectedCategories.find(
-      group => group.title === categoryType
-    );
+    let categoryGroup = this.selectedCategories.find(group => group.title === categoryType);
 
     if (!categoryGroup) {
       categoryGroup = { title: categoryType, items: [] };
@@ -112,7 +116,6 @@ export class SearchComponent implements OnInit{
   }
 
   isCategoryActive(category: string, subCategory: string): boolean {
-    return this.activeCategory === category &&
-      this.activeSubCategory === subCategory;
+    return this.activeCategory === category && this.activeSubCategory === subCategory;
   }
 }
