@@ -33,7 +33,12 @@ export class SearchRecipeComponent implements OnInit {
   }
 
   searchRecipes(): void {
-    this.searchService.searchRecipes(this.query, this.mealType, this.dietaryPref, this.ingredient).subscribe(
+    this.searchService.searchRecipes(
+      this.query, 
+      this.mealType, 
+      this.dietaryPref, 
+      this.ingredient
+    ).subscribe(
       response => {
         this.searchResults = response || [];
       },
@@ -42,4 +47,5 @@ export class SearchRecipeComponent implements OnInit {
       }
     );
   }
+  
 }
