@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SearchService {
 
-  private searchUrl = 'http://localhost/flavorfusion/controller/search.php';
+  private searchUrl = 'http://localhost/controller/search.php';
 
   constructor(private http: HttpClient) { }
 

@@ -40,6 +40,8 @@ if ($stmt) {
     if ($result->num_rows > 0) {
         $recipe = $result->fetch_assoc();
 
+        $recipe['picture'] = base64_encode($recipe['picture']);
+
         $sql_ingredients = "SELECT ingredient, quantity 
                             FROM recipe_ingredients 
                             WHERE recipe_id = ?";

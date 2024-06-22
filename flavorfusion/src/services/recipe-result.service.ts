@@ -7,8 +7,8 @@ import { Recipe } from '../model/recipe';
   providedIn: 'root'
 })
 export class RecipeResultService {
-  private searchUrl = 'http://localhost/flavorfusion/controller/search.php';
-  private detailsUrl = 'http://localhost/flavorfusion/controller/get_recipe_details.php'; 
+  private searchUrl = 'http://localhost/controller/search.php';
+  private detailsUrl = 'http://localhost/controller/get_recipe_details.php'; 
 
   constructor(private http: HttpClient) { }
 
