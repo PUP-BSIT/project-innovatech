@@ -1,7 +1,8 @@
 <div class="recipe-container" *ngIf="recipe">
   <div class="recipe-header">
     <div class="recipe-image">
-      <img [src]="recipe.picture" [alt]="recipe.name" />
+      <img [src]="'data:image/jpeg;base64,' + recipe.picture" 
+        [alt]="recipe.name" />
     </div>
   
     <div class="recipe-text">

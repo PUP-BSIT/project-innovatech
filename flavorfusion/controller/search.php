@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header("HTTP/1.1 200 OK");
@@ -62,16 +62,18 @@ if ($stmt) {
     }
 
     $stmt->execute();
-    
+
     $result = $stmt->get_result();
 
     $recipes = array();
     while ($row = $result->fetch_assoc()) {
+        $row['image'] = base64_encode($row['image']); // Encode the image to base64
         $recipes[] = array(
-            "recipe_id" => $row ["recipe_id"], 
+            "recipe_id" => $row["recipe_id"],
             "name" => $row["name"],
             "image" => $row["image"],
             "rating" => $row["rating"]
+
         );
     }
 
