@@ -12,9 +12,7 @@ export class RecipeService {
   constructor(private http: HttpClient) { }
 
   addRecipe(formData: FormData): Observable<any> {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-    
-    return this.http.post<any>(this.apiUrl, formData, { headers });
+    return this.http.post<any>(this.apiUrl, formData);
   }
+  
 }
