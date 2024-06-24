@@ -6,11 +6,15 @@
         <div class="profile-header"> 
             <div class="profile-box">
                 <div class="avatar-container">
-                    <img src="assets/images/profile-avatar.png"
+                    <img [src]="userProfile?.profile_picture || 
+                    'assets/images/default-avatar.png'"
                          alt="User Avatar" class="avatar">
-                    <img src="/assets/images/avatar-icon.png"
-                     alt="Change Avatar Icon" class="change-avatar-icon"
-                    (click)="changeAvatar()">
+                    <img src="assets/images/avatar-icon.png"
+                         alt="Change Avatar Icon" class="change-avatar-icon"
+                         (click)="triggerAvatarInput()">
+                    <input type="file" id="avatarInput" 
+                    #avatarInput (change)="onAvatarSelected($event)"
+                    style="display: none;">
                 </div>
 
                 <div class="profile-info">
@@ -306,10 +310,14 @@
                                  (change)="onImageSelected($event)"
                                   accept="image/*">
                                 <div *ngIf="imageUrl">
-                                    <img [src]="imageUrl" alt="Recipe Image" class="preview-image">
+                                    <img [src]="imageUrl" alt="Recipe Image" 
+                                    class="preview-image">
                                 </div>
-                                <div class="error-message" *ngIf="!recipeForm.valid && recipeForm.get('image').touched">
-                                    Please select an image file (JPEG, PNG, or GIF).
+                                <div class="error-message"
+                                    *ngIf="!recipeForm.valid && 
+                                    recipeForm.get('image').touched">
+                                    Please select an image file
+                                     (JPEG, PNG, or GIF).
                                 </div>
                                 <div class="error-message" 
                                 *ngIf="!recipeForm.valid && recipeForm.touched">

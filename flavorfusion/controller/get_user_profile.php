@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    $sql = "SELECT u.user_id, u.email, up.username, up.bio 
+    $sql = "SELECT u.user_id, u.email, up.username, up.bio, up.profile_picture
             FROM users u 
             LEFT JOIN user_profiles up ON u.user_id = up.user_id 
             WHERE u.user_id = ?";
@@ -36,6 +36,15 @@ if (isset($_SESSION['user_id'])) {
 
     if (empty($user['username'])) {
         $user['username'] = $user['email'];
+    }
+
+    if ($user) {
+        if ($user['profile_picture']) {
+            $user['profile_picture'] = 'data:image/jpeg;base64,'
+                . base64_encode($user['profile_picture']);
+        } else {
+            $user['profile_picture'] = 'assets/images/default-avatar.jpg';
+        }
     }
 
     echo json_encode($user);

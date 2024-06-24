@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service';
-import { UserService } from '../../services/user-service';
+import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -12,6 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 
 export class ProfileComponent implements OnInit {
+  @ViewChild('avatarInput') avatarInput!: ElementRef<HTMLInputElement>;
+
   showSavedRecipes: boolean = false;
   showMealPlanning: boolean = false;
   showActivityLog: boolean = false;
@@ -20,20 +22,18 @@ export class ProfileComponent implements OnInit {
   showShareRecipeModal: boolean = false;
   imageUrl: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  avatarImageUrl: string | ArrayBuffer | null = null;
+  selectedAvatarFile: File | null = null;
 
   recipeForm: FormGroup;
-  // imageUrl: string | ArrayBuffer | null = null;
-  // imageUrl: string | ArrayBuffer = '';
+
   userProfile: any = {
     user_id: null,
     email: '',
     username: '',
     bio: '',
+    profile_picture: ''
   };
-  // showEditModal: boolean = false;
-
-
-
   profileForm: FormGroup;
 
   constructor(
@@ -113,44 +113,21 @@ export class ProfileComponent implements OnInit {
     this.instructions.removeAt(index);
   }
 
-  // getUserProfile(): void {
-  //   this.userService.getUserProfile().subscribe({
-  //     next: (data: any) => {
-  //       this.userProfile = data;
-  //       console.log(this.userProfile);
-  //     },
-  //     error: (error: any) => {
-  //       console.error("Error fetching user profile:", error);  
-  //     }
-  //   });
-  // }
-
   getUserProfile(): void {
     this.userService.getUserProfile().subscribe({
         next: (data: any) => {
-            // Set email as username if username is not set
             this.userProfile = data;
             if (!this.userProfile.username) {
                 this.userProfile.username = this.userProfile.email;
             }
+            this.avatarImageUrl = this.userProfile.profile_picture; 
             console.log(this.userProfile);
         },
         error: (error: any) => {
             console.error("Error fetching user profile:", error);  
         }
     });
-}
-
-
-  // handleRouteParams(): void {
-  //   this.route.queryParams.subscribe(params => {
-  //     if (params['showSavedRecipes']) {
-  //       this.showSavedRecipes = true;
-  //       this.showMealPlanning = false;
-  //       this.showActivityLog = false;
-  //     }
-  //   });
-  // }
+  }
 
   onImageSelected(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -162,7 +139,20 @@ export class ProfileComponent implements OnInit {
         };
         reader.readAsDataURL(this.selectedFile);
     }
-}
+  }
+
+  onAvatarSelected(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files && inputElement.files[0]) {
+        this.selectedAvatarFile = inputElement.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.avatarImageUrl = reader.result;
+        };
+        reader.readAsDataURL(this.selectedAvatarFile);
+        this.uploadAvatar(); 
+    }
+  }
 
   onSubmit(): void {
     if (this.recipeForm.valid) {
@@ -186,14 +176,16 @@ export class ProfileComponent implements OnInit {
                   });
                 } else {
                     console.error('Error adding recipe:', response);
-                    this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
+                    this.snackBar.open('Error adding recipe. Please try again.',
+                       'Close', {
                       duration: 3000,
                   });
                 }
             },
             error: (error: any) => {
                 console.error('Error adding recipe:', error);
-                this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
+                this.snackBar.open('Error adding recipe. Please try again.', 
+                  'Close', {
                   duration: 3000,
               });
             }
@@ -245,7 +237,6 @@ export class ProfileComponent implements OnInit {
     this.showSavedRecipes = false;
     this.showMealPlanning = false;
   }
-  // editProfileModalOpen = false;
 
   openEditModal(): void {
     this.showEditModal = true;
@@ -260,7 +251,7 @@ export class ProfileComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           console.log('Profile updated successfully');
-          this.userProfile = response.user; // Assign updated profile data
+          this.userProfile = response.user;
           this.closeEditModal(); 
           this.snackBar.open('User Profile Successfully Edited', 'Close', {
             duration: 4000,
@@ -278,25 +269,8 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  //for edit user 
-//   this.userService.updateUserProfile(profileData).subscribe({
-//     next: (response: any) => {
-//     if(response.success) {
-//       console.log('Profile is edited successfully'); //for testing
-//       this.getUserProfile();
-//       this.closeEditModal();
-//     } else {
-//       console.error('Error updating profile', response.message);
-//     }
-//   },
-//     error: (error: any) => {
-//       console.error('Error updating profile', error);
-//     }
-//   });
-// }
-
   changeAvatar(): void {
-    this.showAvatarModal = true;
+    this.avatarInput.nativeElement.click();
   }
 
   closeAvatarModal(): void {
@@ -307,10 +281,43 @@ export class ProfileComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
-  uploadAvatar() {
-    if (this.selectedFile) {
-      console.log('Uploading file:', this.selectedFile);
-      this.closeAvatarModal();
+  uploadAvatar(): void {
+    if (this.selectedAvatarFile) {
+      const formData = new FormData();
+      formData.append('avatar', this.selectedAvatarFile, 
+        this.selectedAvatarFile.name);
+      formData.append('user_id', this.userProfile.user_id);
+  
+      this.userService.updateUserAvatar(formData).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            console.log('Avatar update response:', response);
+            this.userProfile.profile_picture = response.profile_picture;
+            this.avatarImageUrl = response.profile_picture || 
+              'assets/images/default-avatar.jpg';
+            this.snackBar.open('Avatar updated successfully!', 'Close', {
+              duration: 3000,
+            });
+          } else {
+            console.error('Error updating avatar response:', response);
+            this.snackBar.open('Error updating avatar. Please try again.', 
+              'Close', {
+              duration: 3000,
+            });
+          }
+        },
+        error: (error: any) => {
+          console.error('Error updating avatar:', error);
+          this.snackBar.open('Error updating avatar. Please try again.',
+             'Close', {
+            duration: 3000,
+          });
+        }
+      });
     }
+  }
+
+  triggerAvatarInput(): void {
+    this.avatarInput.nativeElement.click();
   }
 }
