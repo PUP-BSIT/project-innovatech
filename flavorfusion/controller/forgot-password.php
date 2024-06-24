@@ -4,10 +4,8 @@ require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Database connection
 include('db_connection.php');
 
-// Add CORS headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -63,7 +61,6 @@ if (!mysqli_query($conn, $insert_query)) {
     exit;
 }
 
-// Your Angular app URL (replace with your actual frontend URL)
 $frontendUrl = 'http://localhost:4200/reset-password';
 
 // Generate the reset link
@@ -72,7 +69,7 @@ $resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' . urlencod
 try {
     $mail = new PHPMailer(true);
     //Server settings
-    $mail->SMTPDebug = 0;  // Change to 0 for production
+    $mail->SMTPDebug = 0;  
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;

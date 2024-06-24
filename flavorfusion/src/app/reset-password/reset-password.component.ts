@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit {
       const newPassword = this.resetForm.get('password')?.value;
       this.authService.resetPassword(this.token, this.email, newPassword).subscribe(response => {
         console.log(response);
-        this.router.navigate(['/forgot-password']);
+        this.router.navigate(['/login']);
       }, error => {
         console.error('Error resetting password', error);
       });
