@@ -4,12 +4,15 @@
     <app-carousel></app-carousel>
   </div>
   <hr class="section-divider">
-  <div class="popular-categories">
-    <h2>Popular Categories</h2>
-    <div class="popular-categories-content">
-      <div class="category" *ngFor="let category of categories">
-        <img [src]="category.image" [alt]="category.name">
-        <h3>{{ category.name }}</h3>
+  <div class="popular-recipes">
+    <h2>Popular Recipes</h2>
+    <div class="popular-recipes-content">
+      <div class="recipe" *ngFor="let recipe of popularRecipes">
+        <img 
+          [src]="'data:image/jpeg;base64,' + recipe.picture" 
+          [alt]="recipe.name"
+        >
+        <h3>{{ recipe.name }}</h3>
       </div>
     </div>
   </div>
