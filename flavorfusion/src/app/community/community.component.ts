@@ -1,6 +1,6 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommunityService } from '../../services/community-service';
+import { CommunityService } from '../../services/community-service.service';
 
 @Component({
   selector: 'app-community',
