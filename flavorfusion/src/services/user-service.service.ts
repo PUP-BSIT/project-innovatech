@@ -19,6 +19,12 @@ export class UserService {
     return this.http.post<any>(`${this.apiUrl}/update_user_profile.php`, 
       profile, { withCredentials: true });
   }
+
+  updateUserAvatar(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/update_user_avatar.php`, 
+      formData, { withCredentials: true });
+  }
+
 }
 
 

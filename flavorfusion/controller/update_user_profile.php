@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
         $stmt->bind_param("ssi", $username, $bio, $user_id);
 
         if ($stmt->execute()) {
-            $sql = "SELECT u.user_id, u.email, up.username, up.bio 
+            $sql = "SELECT u.user_id, u.email, up.username, up.bio , up.profile_picture
                     FROM users u 
                     JOIN user_profiles up ON u.user_id = up.user_id 
                     WHERE u.user_id = ?";
@@ -44,6 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
             $stmt->execute();
             $result = $stmt->get_result();
             $user = $result->fetch_assoc();
+
+            if ($user && $user['profile_picture']) {
+                $user['profile_picture'] = 'data:image/jpeg;base64,' .
+                    base64_encode($user['profile_picture']);
+            }
 
             echo json_encode(['success' => true, 'user' => $user]);
         } else {
