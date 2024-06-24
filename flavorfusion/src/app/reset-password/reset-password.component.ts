@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ForgotPasswordService } from '../../services/forgot-password.service';
 
 @Component({
@@ -17,11 +18,12 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private authService: ForgotPasswordService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.resetForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]]
     }, { validator: this.passwordMatchValidator });
   }
 
@@ -44,14 +46,28 @@ export class ResetPasswordComponent implements OnInit {
     return null;
   }
 
+  onBlurConfirmPassword() {
+    const confirmPasswordControl = this.resetForm.get('confirmPassword');
+    if (confirmPasswordControl?.touched) {
+      this.resetForm.updateValueAndValidity();
+    }
+  }
+
   onSubmit() {
     if (this.resetForm.valid && this.token && this.email) {
       const newPassword = this.resetForm.get('password')?.value;
       this.authService.resetPassword(this.token, this.email, newPassword).subscribe(response => {
-        console.log(response);
+        this.snackBar.open('Password reset successful, try logging in', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
         this.router.navigate(['/login']);
       }, error => {
         console.error('Error resetting password', error);
+        this.snackBar.open('Error resetting password', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
       });
     }
   }
