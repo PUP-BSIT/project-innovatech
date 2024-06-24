@@ -96,7 +96,7 @@
       </p>
       <div *ngIf="isFiltered" class="filtered-recipes">
         <div class="recipe" *ngFor="let recipe of filteredRecipes">
-          <img [src]="recipe.picture" [alt]="recipe.name">
+          <img [src]="'data:image/jpeg;base64,' + recipe.picture" [alt]="recipe.name">
           <h3>{{ recipe.name }}</h3>
         </div>
       </div>
