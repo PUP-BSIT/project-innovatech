@@ -92,8 +92,7 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching filtered recipes', error);
-          this.snackBar.open(
-            'Error fetching filtered recipes. Try again.', 'Try Again', {
+          this.snackBar.open('Error fetching filtered recipes. Try again.', 'Try Again', {
             duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
@@ -114,8 +113,7 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching filtered recipes', error);
-          this.snackBar.open(
-            'Error fetching filtered recipes. Try again.', 'Try Again', {
+          this.snackBar.open('Error fetching filtered recipes. Try again.', 'Try Again', {
             duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
@@ -129,9 +127,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  navigateToProfile(): void {
-    this.router.navigate([
-      '/profile'
-    ], { queryParams: { openShareRecipe: true } });
-  }
+  shareRecipe(): void {
+    this.router.navigate(['/profile'], { queryParams: { showShareRecipe: true } });
+  } 
 }

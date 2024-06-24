@@ -18,19 +18,22 @@
 
   <div class="latest-recipes">
     <h2>Latest Recipes You Made</h2>
-    <div class="latest-recipes-container" *ngIf="isLoggedIn; else notLoggedIn">
-      <div *ngIf="latestRecipes.length > 0; else noRecipes">
+    <div class="latest-recipes-content" *ngIf="isLoggedIn; else notLoggedIn">
+      <div class="user-recipes" *ngIf="latestRecipes.length > 0; else noRecipes">
         <div class="recipe" *ngFor="let recipe of latestRecipes">
-          <img [src]="recipe.picture" [alt]="recipe.name">
+          <img 
+            [src]="'data:image/jpeg;base64,' + recipe.picture" 
+            [alt]="recipe.name"
+          >
           <h3>{{ recipe.name }}</h3>
-        </div>
+        </div>        
       </div>
       <ng-template #noRecipes>
-        <div class="latest-recipes-content">
+        <div >
           <p>
             Want to share your recipes? Add your own creations to inspire others!
           </p>
-          <button class="share-recipe-btn" (click)="navigateToProfile()">
+          <button class="share-recipe-btn" (click)="shareRecipe()">
             Share a Recipe
           </button>
         </div>
@@ -78,7 +81,8 @@
               <input type="checkbox" [(ngModel)]="filters.shrimp"> Shrimp
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.vegetables"> Vegetables
+              <input type="checkbox" [(ngModel)]="filters.vegetables">
+              Vegetables
             </label>
           </div>
         </div>
@@ -96,7 +100,10 @@
       </p>
       <div *ngIf="isFiltered" class="filtered-recipes">
         <div class="recipe" *ngFor="let recipe of filteredRecipes">
-          <img [src]="recipe.picture" [alt]="recipe.name">
+          <img 
+            [src]="'data:image/jpeg;base64,' + recipe.picture" 
+            [alt]="recipe.name"
+          >
           <h3>{{ recipe.name }}</h3>
         </div>
       </div>

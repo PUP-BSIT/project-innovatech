@@ -7,7 +7,7 @@ require_once 'db_connection.php';
 
 function getRandomRecipeForMeal($mealType, $conn) {
     $sql = "SELECT r.recipe_id, r.name AS title, r.description, r.time, 
-                r.servings, r.picture
+                   r.servings, r.picture
             FROM recipes r
             INNER JOIN recipe_meal_types rm ON r.recipe_id = rm.recipe_id
             WHERE rm.meal_type = ?
@@ -20,7 +20,10 @@ function getRandomRecipeForMeal($mealType, $conn) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
+        $row = $result->fetch_assoc();
+        $row['image'] = base64_encode($row['picture']);
+        unset($row['picture']); 
+        return $row;
     } else {
         return null;
     }

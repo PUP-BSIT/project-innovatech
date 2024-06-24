@@ -75,6 +75,11 @@ if (!empty($selected_filters)) {
     $stmt->execute();
     $result = $stmt->get_result();
     $recipes = $result->fetch_all(MYSQLI_ASSOC);
+
+    foreach ($recipes as &$recipe) {
+        $recipe['picture'] = base64_encode($recipe['picture']);
+    }
+
     echo json_encode($recipes);
 } else {
     echo json_encode([]);
