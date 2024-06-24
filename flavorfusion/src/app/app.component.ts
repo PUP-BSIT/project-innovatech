@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
         this.showHeaderFooter = 
           !this.router.url.includes('/login') && 
           !this.router.url.includes('/sign-up') &&
-          !this.router.url.includes('/forgot-password');
+          !this.router.url.includes('/forgot-password') &&
+          !this.router.url.includes('/reset-password');
 
 
         this.isLoginOrSignupRoute = 
