@@ -19,7 +19,9 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.showHeaderFooter = 
           !this.router.url.includes('/login') && 
-          !this.router.url.includes('/sign-up');
+          !this.router.url.includes('/sign-up') &&
+          !this.router.url.includes('/forgot-password');
+
 
         this.isLoginOrSignupRoute = 
           this.router.url.includes('/login') || 

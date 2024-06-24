@@ -1,27 +1,68 @@
-import { Component } from '@angular/core';
-import { ForgotPasswordService } from '../../services/forgot-password.service'; 
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ForgotPasswordService } from '../../services/forgot-password.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
+  forgotPasswordForm: FormGroup;
+  isLoading: boolean = false; 
 
-  email: string = '';
+  constructor(
+    private fb: FormBuilder,
+    private authService: ForgotPasswordService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) { }
 
-  constructor(private authService: ForgotPasswordService) { }
+  ngOnInit(): void {
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
 
   onSubmit() {
-    this.authService.forgotPassword(this.email).subscribe(
+    if (this.forgotPasswordForm.invalid || !this.isValidEmail(this.forgotPasswordForm.value.email)) {
+      this.snackBar.open('Please enter a valid email address', 'Close', {
+        duration: 3000,
+        panelClass: 'snackbar-error'
+      });
+      return;
+    }
+
+    this.isLoading = true; 
+
+    this.authService.forgotPassword(this.forgotPasswordForm.value.email).subscribe(
       response => {
+        this.isLoading = false;
         console.log('Email sent successfully', response);
-        alert('Password reset link sent to your email');
+        this.snackBar.open('Password reset link sent to your email', 'Close', {
+          duration: 3000,
+          panelClass: 'snackbar-success'
+        });
       },
       error => {
+        this.isLoading = false; 
         console.error('Error sending email', error);
-        alert('There was an error sending the password reset link');
+        this.snackBar.open('There was an error sending the password reset link', 'Close', {
+          duration: 3000,
+          panelClass: 'snackbar-error'
+        });
       }
     );
+  }
+
+  goBack() {
+    this.router.navigate(['/login']);
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   }
 }

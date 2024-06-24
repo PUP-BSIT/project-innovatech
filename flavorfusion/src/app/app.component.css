@@ -8,3 +8,16 @@ main {
     flex: 1;
     padding: 18px;
 }
+
+/* Snackbar success style */
+.snackbar-success {
+    background-color: #4caf50 !important; /* Green background */
+    color: white !important; /* White text */
+  }
+  
+  /* Snackbar error style */
+  .snackbar-error {
+    background-color: #f44336 !important; /* Red background */
+    color: white !important; /* White text */
+  }
+  
