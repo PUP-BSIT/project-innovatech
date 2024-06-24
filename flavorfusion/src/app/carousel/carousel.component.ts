@@ -33,9 +33,18 @@ export class CarouselComponent implements OnInit {
     this.homeService.getDailyMeals()
       .subscribe(data => {
         this.slides = [
-          { meal: 'BREAKFAST', ...data.Breakfast },
-          { meal: 'LUNCH', ...data.Lunch },
-          { meal: 'DINNER', ...data.Dinner }
+          { meal: 'BREAKFAST', 
+            ...data.Breakfast, 
+            image: 'data:image/jpeg;base64,' + data.Breakfast.image 
+          },
+          { meal: 'LUNCH', 
+            ...data.Lunch, 
+            image: 'data:image/jpeg;base64,' + data.Lunch.image 
+          },
+          { meal: 'DINNER', 
+            ...data.Dinner, 
+            image: 'data:image/jpeg;base64,' + data.Dinner.image 
+          }
         ];
         this.showSlide(this.currentSlide);
       });
@@ -64,7 +73,9 @@ export class CarouselComponent implements OnInit {
       }
     });
 
-    const carouselInner = document.querySelector('.carousel-inner') as HTMLElement;
+    const carouselInner = document.querySelector(
+      '.carousel-inner'
+    ) as HTMLElement;
     carouselInner.style.transform = `translateX(-${index * 100}%)`;
   }
 
