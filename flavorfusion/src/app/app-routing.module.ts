@@ -12,7 +12,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 
 const routes: Routes = [
-  //{ path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'community', component: CommunityComponent },
   { path: 'login', component: LoginComponent },
