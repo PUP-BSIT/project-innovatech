@@ -35,17 +35,14 @@ $result = $conn->query($sql);
 if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password_hash'])) {
-        // Password correct, login successful
         session_start();
         $_SESSION['user_id'] = $row['user_id'];
         $_SESSION['email'] = $row['email'];
         echo json_encode(array('success' => true));
     } else {
-        // Password incorrect
         echo json_encode(array('success' => false, 'message' => 'Incorrect password.'));
     }
 } else {
-    // User not found
     echo json_encode(array('success' => false, 'message' => 'User not found.'));
 }
 

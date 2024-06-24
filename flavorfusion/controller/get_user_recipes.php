@@ -1,8 +1,13 @@
 <?php
 session_start();
-header("Access-Control-Allow-Origin: *");
+
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+}
+
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+header('Access-Control-Allow-Credentials: true');
 
 require_once 'db_connection.php';
 
@@ -18,7 +23,12 @@ $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$recipes = $result->fetch_all(MYSQLI_ASSOC);
+
+$recipes = [];
+while ($row = $result->fetch_assoc()) {
+    $row['picture'] = base64_encode($row['picture']);
+    $recipes[] = $row;
+}
 
 echo json_encode($recipes);
 
