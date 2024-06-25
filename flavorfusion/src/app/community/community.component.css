@@ -2,28 +2,28 @@
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-}
+  }
   
-.header {
+  .header {
     text-align: left;
     margin-top: -40px;
-}
+  }
   
-.full-width {
+  .full-width {
     width: 100%;
     margin: 0 10px;
     position: relative;
-}
-    
-.mat-form-field-flex {
+  }
+  
+  .mat-form-field-flex {
     align-items: center;
-}
+  }
   
-.mat-form-field-infix {
+  .mat-form-field-infix {
     padding: 0;
-}
+  }
   
-button[mat-raised-button] {
+  button[mat-raised-button] {
     background-color: #e2b11f;
     border-radius: 20px;
     cursor: pointer;
@@ -32,172 +32,162 @@ button[mat-raised-button] {
     top: 35px;
     font-size: 10px;
     padding: -2px;
-}
+  }
   
-button[mat-raised-button]:hover {
+  button[mat-raised-button]:hover {
     background-color: #af9136;
-}
+  }
   
-button[mat-icon-button] {
+  button[mat-icon-button] {
     color: #888;
     position: absolute;
     left: -10px;
     top: 70%;
     transform: translateY(-50%);
-}
+  }
   
-.posts {
+  .posts {
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
     justify-content: center;
-}
+  }
   
-.post {
-    max-width: calc(30% - 20px);
+  .post {
+    flex: 1 1 calc(33% - 20px);
+    max-width: 300px;
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 7px;
-    padding-bottom: -3px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    transform: scale(1);
     background-color: #FBD5C0;
-}
+    display: flex;
+    flex-direction: column;
+  }
   
-.post:hover {
+  .post:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+  }
   
-.post .user-info {
+  .post .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
-}
+  }
   
-.post .user-info .avatar {
+  .post .user-info .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: -5px;
-}
+  }
   
-.post .user-details {
+  .post .user-details {
     display: flex;
-    text-align: center;
-    width: 100%;
-    gap: 20px;
-}
+    flex-direction: column;
+  }
   
-.post .username {
+  .post .username {
     font-size: 1.2em;
     font-weight: bold;
-    margin-right: 2px;
     font-family: monospace;
-}
+  }
   
-.post .description {
+  .post .description {
     color: #888;
     font-size: 0.8em;
-    margin-left: auto;
     font-weight: bold;
     font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
-.post .time {
+  }
+  
+  .post .time {
     color: #888;
     font-size: 0.9em;
-    margin-left: -15px;
-}
+  }
   
-.post .post-image {
+  .post .post-image {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     margin-top: 10px;
     border-radius: 10px;
-}
+  }
   
-.post .post-footer {
+  .post .post-footer {
     display: flex;
     flex-direction: column;
-    color: red;
-}
+    padding: 10px 0;
+  }
   
-.post .actions {
+  .post .actions {
     display: flex;
     gap: 10px;
     font-size: 0.9em;
     justify-content: flex-start;
-}
+  }
   
-.post .actions span {
+  .post .actions span {
     display: flex;
     align-items: center;
     gap: 5px;
     cursor: pointer;
-}
-
-.post .caption {
-    color: #000000;
-    font-size: 0.9em;
-}
+  }
   
-.post .actions mat-icon {
+  .post .caption {
+    color: #000;
+    font-size: 0.9em;
+    margin-top: 10px;
+  }
+  
+  .post .actions mat-icon {
     vertical-align: middle;
     color: #000;
-    
-}
+  }
   
-.like-button mat-icon {
-    color: black; 
-    font-size: 3px; 
-}
-
-.post .actions span.liked mat-icon {
-    color: red; 
-}
-
-.footer-line {
+  .post .actions span.liked mat-icon {
+    color: red;
+  }
+  
+  .footer-line {
     border: 0;
     border-top: 1.5px solid black;
     margin: 10px 0;
-}
-
-.custom-dialog-container .mat-dialog-container {
+  }
+  
+  .custom-dialog-container .mat-dialog-container {
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 100%;
-}
+  }
   
-.post-detail {
+  .post-detail {
     position: relative;
     width: 100%;
-    padding: 12px 0 12px 12px;
+    padding: 12px;
     background: #FEECCA;
     border: 1.5px solid black;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     overflow: visible;
-}
+  }
   
-.post-detail .content {
+  .post-detail .content {
     display: flex;
     gap: 10px;
     width: 100%;
-}
+  }
   
-.post-detail .post-image {
+  .post-detail .post-image {
     width: 50%;
     height: auto;
     border-radius: 10px;
-}
+  }
   
-.post-detail .comments-section {
+  .post-detail .comments-section {
     width: 100%;  
     padding: 10px;
     border-radius: 10px;
@@ -205,47 +195,47 @@ button[mat-icon-button] {
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 60vh;
-}
+  }
   
-.post-detail .comments-section .comment {
+  .post-detail .comments-section .comment {
     margin-bottom: 10px;
     border-bottom: 1.5px solid #110707; 
     padding-bottom: 10px;
-}
+  }
   
-.comments-section h3 {
+  .comments-section h3 {
     margin: 0 0 10px 0;
-}
+  }
   
-.comments-section .comment {
+  .comments-section .comment {
     margin-bottom: 10px;
-}
+  }
   
-.comments-section .comment .user-info {
+  .comments-section .comment .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
-}
+  }
   
-.comments-section .comment .user-info .avatar {
+  .comments-section .comment .user-info .avatar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-}
+  }
   
-.comments-section .comment .user-details {
+  .comments-section .comment .user-details {
     display: flex;
     flex-direction: column;
-}
+  }
   
-.user-info {
+  .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
-}
+  }
   
-button.close-button {
+  button.close-button {
     background-color: transparent;
     color: #030303; 
     font-size: 13px;
@@ -255,37 +245,37 @@ button.close-button {
     left: 43em; 
     z-index: 1000;
     border: 0;
-}
-
-button.close-button:hover {
+  }
+  
+  button.close-button:hover {
     background-color: #d32f2f; 
     color: white; 
-}
+  }
   
-.like-button {
+  .like-button {
     position: absolute;
     top: 0;
     right: 0;
     background: none;
     border: none;
     cursor: pointer;
-}
+  }
   
-.like-button mat-icon {
+  .like-button mat-icon {
     color: black; 
     font-size: 24px;
-}
+  }
   
-.like-button.clicked mat-icon {
+  .like-button.clicked mat-icon {
     color: red; 
-}
+  }
   
-.new-comment {
+  .new-comment {
     margin-top: 10px;
     position: relative;
-}
-    
-.post-comment-button {
+  }
+  
+  .post-comment-button {
     position: absolute;
     margin-top: -55px;
     right: 1px;
@@ -296,13 +286,14 @@ button.close-button:hover {
     border-radius: 9px;
     cursor: pointer;
     border-width: 1.5px;
-}
+  }
   
-.post-comment-button:hover {
+  .post-comment-button:hover {
     background-color: #e1d3bb;
-}
+  }
   
-.new-comment mat-form-field {
+  .new-comment mat-form-field {
     width: 100%;
     left: -8px;
-}
+  }
+  

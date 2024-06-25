@@ -36,6 +36,10 @@ export class LoginAuthentication {
     localStorage.setItem('user_id', userId);// User ID from database
   }
 
+  getUserId(): string | null {
+    return localStorage.getItem('user_id');
+  }
+
   private resetSessionTimeout(): void {
     setTimeout(() => {
       localStorage.removeItem('user_id');

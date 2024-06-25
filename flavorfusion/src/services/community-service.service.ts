@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +21,8 @@ export class CommunityService {
   addComment(commentData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/add_comment.php`, commentData); 
   }
-}
 
+  getUserProfile(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get_user_profile.php?user_id=${userId}`);
+  }
+}
