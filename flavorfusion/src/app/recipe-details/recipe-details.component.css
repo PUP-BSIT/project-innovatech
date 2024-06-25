@@ -168,3 +168,31 @@
   background-color: #FFC55A;
   opacity: 0.8;
 }
+
+.actions button.save.saved {
+  background-color: #FFC55A;
+  color: white;
+  cursor: default;
+}
+
+.actions button.save.saved:hover {
+  background-color: #d7404d; 
+  color: white;
+  opacity: 1; 
+}
+
+.actions button.save {
+  font-weight: bold;
+  color: black;
+}
+
+.actions button.save:hover {
+  background-color: #FFC55A;
+  opacity: 0.8;
+}
+
+button.save.saved {
+  background-color: red;
+  color: white;
+  cursor: not-allowed;
+}
