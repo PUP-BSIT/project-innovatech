@@ -102,13 +102,10 @@ export class RecipeDetailsComponent implements OnInit {
           },
           error => {
             console.error('Error saving recipe:', error);
-            alert(`Failed to save recipe. Error: ${error.message}`);
           }
         );
       }
-    } else {
-      alert('User not authenticated.');
-    }
+    } 
   }
 
   checkSavedStatus(): void {
