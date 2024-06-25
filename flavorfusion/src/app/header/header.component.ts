@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         this.showModal();
-        this.loginAuthService.setIsLoggedIn(false);
+        this.loginAuthService.logout();
 
         const currentRoute = this.router.url;
         if (currentRoute.includes('/profile')) {
