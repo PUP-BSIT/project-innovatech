@@ -13,6 +13,9 @@ export class RecipeDetailsComponent implements OnInit {
   recipe: any;
   saved: boolean = false; 
   user: any;
+  isRateModalOpen: boolean = false; 
+  rating: number = 0;
+  stars: boolean[] = [false, false, false, false, false];
 
   constructor(
     private route: ActivatedRoute, 
@@ -53,7 +56,6 @@ export class RecipeDetailsComponent implements OnInit {
       }
     );
   }
-
 
   toggleSave(): void {
     if (this.user) {
@@ -120,6 +122,59 @@ export class RecipeDetailsComponent implements OnInit {
         error => {
           console.error('Error checking saved status: ', error);
         }
+      );
+    }
+  }
+
+  openRateModal(): void {
+    this.isRateModalOpen = true;
+  }
+
+  closeRateModal(): void {
+    this.isRateModalOpen = false;
+  }
+
+  setRating(rating: number):void {
+    this.rating = rating;
+    this.stars = this.stars.map((_, i) => i < rating);
+  }
+  
+  submitRating(): void {
+    if (this.user && this.recipe) {
+      const userId = this.user.user_id;
+      const recipeId = this.recipe.recipe_id;
+  
+      this.recipeService.submitRating(recipeId, userId, this.rating).subscribe(
+        response => {
+          if (response.success) {
+            this.snackBar.open(
+              'Rating submitted successfully!', 
+              'Close', 
+              { duration: 3000 }
+            );
+          } else {
+            this.snackBar.open(
+              'Failed to submit rating. Please try again.', 
+              'Close', 
+              { duration: 3000 }
+            );
+          }
+        },
+        error => {
+          console.error('Error submitting rating:', error);
+          this.snackBar.open(
+            'Failed to submit rating. Please try again.', 
+            'Close', 
+            { duration: 3000 });
+        }
+      );
+  
+      this.closeRateModal();
+    } else {
+      this.snackBar.open(
+        'You must be logged in to rate recipes.', 
+        'Close', 
+        { duration: 3000 }
       );
     }
   }

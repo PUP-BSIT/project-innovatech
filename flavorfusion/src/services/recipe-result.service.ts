@@ -15,6 +15,7 @@ export class RecipeResultService {
   private saveRecipeUrl = 'http://localhost/controller/saved_recipes.php';
   private unsaveRecipeUrl = 'http://localhost/controller/unsave_recipe.php'; 
   private checkSavedUrl = 'http://localhost/controller/check_saved_recipe.php';
+  private submitRatingUrl = 'http://localhost/controller/get_recipe_rating.php';
 
   constructor(
     private http: HttpClient, private authService: LoginAuthentication) { }
@@ -73,6 +74,20 @@ export class RecipeResultService {
     return this.http.get<any>(this.checkSavedUrl, { params })
       .pipe(
         map(response => response.saved),
+        catchError(this.handleError)
+      );
+  }
+
+  submitRating(
+    recipe_id: number, 
+    user_id: number, 
+    rating: number
+  ): Observable<any> {
+    const body = { recipe_id, user_id, rating };
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post<any>(this.submitRatingUrl, body, { headers })
+      .pipe(
         catchError(this.handleError)
       );
   }
