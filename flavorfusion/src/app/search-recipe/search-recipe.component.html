@@ -1,12 +1,14 @@
 <div class="search-results">
+  <h3 class="category-heading">{{ dynamicHeading }}</h3>
 
-  <div *ngIf="searchResults.length">
-    <div *ngFor="let result of searchResults" 
-         class="recipe-container" 
-         (click)="viewRecipeDetails(result.recipe_id)">
-         <img [src]="'data:image/jpeg;base64,' + result.image" 
-           alt="{{ result.name }}" 
-           class="recipe-image">
+  <div class="recipe-grid">
+    <div *ngFor="let result of searchResults" class="recipe-container" 
+          (click)="viewRecipeDetails(result.recipe_id)">
+      <img 
+        [src]="'data:image/jpeg;base64,' + result.image" 
+        alt="{{ result.name }}" 
+        class="recipe-image"
+      >
       <h3>{{ result.name }}</h3>
 
       <div class="rating">
@@ -24,6 +26,6 @@
   </div>
   
   <div *ngIf="!searchResults.length">
-    <p>No results found for "{{ query }}"</p>
+    <p>No recipes found for "{{ query }}"</p>
   </div>
 </div>
