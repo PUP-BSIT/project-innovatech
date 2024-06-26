@@ -182,33 +182,28 @@
         <div class="modal-content">
             <span class="close" (click)="closeModal()">&times;</span>
             <p>{{ modalText }}</p>
-            <input type="text" placeholder="Input here">
-            <input type="text" placeholder="Input here">
-            <input type="text" placeholder="Input here">
-            
-            <div *ngFor="let field of inputFields; let i = index" 
-                    class="input-field-container">
-                <input type="text" [placeholder]="'Input here'">
+    
+            <div *ngFor="let field of inputFields; let i = index; trackBy: trackByFn"
+                 class="input-field-container">
+                <input type="text" [(ngModel)]="inputFields[i]" 
+                       placeholder="Input here"
+                       (keydown.enter)="searchByIngredients()">
                 <span class="remove-btn" 
-                        (click)="removeInputField(i)">
-                    &times;
-                </span>
+                      (click)="removeInputField(i)">&times;</span>
             </div>
-            
+    
             <div class="clicked">
                 <div class="add-more-ingredients-container">
                     <a href="#" class="add-more-ingredients" 
-                        (click)="addInputField($event)">
-                        Click here
-                    </a> to add more ingredients
+                       (click)="addInputField($event)">Click here</a> 
+                    to add more ingredients
                 </div>
-                
                 <div class="search-recipe">
-                    <button (click)="searchRecipes()">Search</button>
+                    <button (click)="searchByIngredients()">Search</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 
     <div *ngIf="query" class="search-results">
         <h3>Search Results for "{{ query }}":</h3>

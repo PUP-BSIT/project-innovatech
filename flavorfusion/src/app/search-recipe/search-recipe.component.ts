@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeResultService } from '../../services/recipe-result.service'; //added
-import { Recipe } from '../../model/recipe';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-search-recipe',
@@ -9,7 +8,7 @@ import { Recipe } from '../../model/recipe';
   styleUrls: ['./search-recipe.component.css']
 })
 export class SearchRecipeComponent implements OnInit {
-  searchResults: Recipe[] = []; 
+  searchResults: any[] = [];
   query: string = '';
   mealType: string = '';
   dietaryPref: string = '';
@@ -17,8 +16,8 @@ export class SearchRecipeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, 
-    private router: Router, 
-    private recipeService: RecipeResultService
+    private searchService: SearchService, 
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -27,19 +26,19 @@ export class SearchRecipeComponent implements OnInit {
       this.mealType = params['mealType'] || '';
       this.dietaryPref = params['dietaryPref'] || '';
       this.ingredient = params['ingredient'] || '';
-      this.searchRecipes(); 
+
+      if (this.query || this.mealType || this.dietaryPref || this.ingredient) {
+        this.searchRecipes();
+      }
     });
   }
 
   searchRecipes(): void {
-    this.recipeService.searchRecipes(
-      this.query, 
-      this.mealType, 
-      this.dietaryPref, 
-      this.ingredient
+    this.searchService.searchRecipes(
+      this.query, this.mealType, this.dietaryPref, this.ingredient
     ).subscribe(
-      (response: Recipe[]) => {
-        this.searchResults = response;
+      results => {
+        this.searchResults = results || [];
       },
       error => {
         console.error('Error fetching recipes: ', error);
