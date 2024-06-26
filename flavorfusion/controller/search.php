@@ -1,4 +1,3 @@
-<?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -16,7 +15,7 @@ $dietaryPref = isset($_GET['dietaryPref']) ? $_GET['dietaryPref'] : '';
 $ingredient = isset($_GET['ingredient']) ? $_GET['ingredient'] : '';
 
 $sql = "
-    SELECT DISTINCT 
+    SELECT 
         r.recipe_id, 
         r.name, 
         r.picture AS image, 
@@ -27,58 +26,67 @@ $sql = "
     LEFT JOIN recipe_dietary_prefs dp ON r.recipe_id = dp.recipe_id
     LEFT JOIN recipe_ingredients ri ON r.recipe_id = ri.recipe_id
     LEFT JOIN ratings rt ON r.recipe_id = rt.recipe_id
-    WHERE 1 = 1
 ";
 
 $params = array();
+$types = '';
+$whereClauses = array("1 = 1");
 
 if (!empty($keyword)) {
-    $sql .= " AND r.name LIKE ?";
+    $whereClauses[] = "r.name LIKE ?";
     $params[] = "%" . $keyword . "%";
+    $types .= 's';
 }
 
 if (!empty($mealType)) {
-    $sql .= " AND mt.meal_type = ?";
+    $whereClauses[] = "mt.meal_type = ?";
     $params[] = $mealType;
+    $types .= 's';
 }
 
 if (!empty($dietaryPref)) {
-    $sql .= " AND dp.dietary_pref = ?";
+    $whereClauses[] = "dp.dietary_pref = ?";
     $params[] = $dietaryPref;
+    $types .= 's';
 }
 
 if (!empty($ingredient)) {
-    $sql .= " AND ri.ingredient LIKE ?";
-    $params[] = "%" . $ingredient . "%";
+    $ingredients = explode(',', $ingredient);
+    foreach ($ingredients as $ing) {
+        $whereClauses[] = "EXISTS (
+            SELECT 1 FROM recipe_ingredients ri2 
+            WHERE ri2.recipe_id = r.recipe_id 
+            AND ri2.ingredient LIKE ?
+        )";
+        $params[] = "%" . trim($ing) . "%";
+        $types .= 's';
+    }
 }
 
+$sql .= " WHERE " . implode(" AND ", $whereClauses);
 $sql .= " GROUP BY r.recipe_id";
 
 $stmt = $conn->prepare($sql);
 if ($stmt) {
     if (!empty($params)) {
-        $types = str_repeat('s', count($params));
         $stmt->bind_param($types, ...$params);
     }
 
     $stmt->execute();
-
     $result = $stmt->get_result();
 
     $recipes = array();
     while ($row = $result->fetch_assoc()) {
-        $row['image'] = base64_encode($row['image']); // Encode the image to base64
+        $row['image'] = base64_encode($row['image']);
         $recipes[] = array(
             "recipe_id" => $row["recipe_id"],
             "name" => $row["name"],
             "image" => $row["image"],
             "rating" => $row["rating"]
-
         );
     }
 
     $stmt->close();
-
     echo json_encode($recipes);
 } else {
     http_response_code(500);
@@ -86,4 +94,3 @@ if ($stmt) {
 }
 
 $conn->close();
-?>
