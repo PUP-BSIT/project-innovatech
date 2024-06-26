@@ -1,6 +1,7 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommunityService } from '../../services/community-service.service';
+import { LoginAuthentication } from '../../services/login-authentication.service';
 
 @Component({
   selector: 'app-community',
@@ -12,13 +13,14 @@ export class CommunityComponent implements OnInit {
   dialogRef: MatDialogRef<any>;
   newPostText: string = '';
   newPostImage: File | null = null;
+  newPostImageSrc: string | null = null;
   newCommentText: string = '';
-
   posts: any[] = [];
 
   constructor(
     public dialog: MatDialog,
-    private communityService: CommunityService
+    private communityService: CommunityService,
+    private loginAuthService: LoginAuthentication
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class CommunityComponent implements OnInit {
       }
     );
   }
+  
 
   openPostDetail(post: any, template: TemplateRef<any>): void {
     this.dialogRef = this.dialog.open(template, {
@@ -72,49 +75,38 @@ export class CommunityComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.newPostImage = input.files[0]; 
-      console.log('Selected file:', this.newPostImage); 
+      this.newPostImage = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.newPostImageSrc = reader.result as string;
+      };
+      reader.readAsDataURL(this.newPostImage);
     }
   }
 
   addPost(): void {
+    const userId = this.loginAuthService.getUserId();
+    if (!userId) {
+      console.error('User not logged in');
+      return;
+    }
+
     if (this.newPostText.trim()) {
       const formData = new FormData();
-      formData.append('user_id', '3'); 
-      formData.append('recipe_id', '25'); 
+      formData.append('user_id', userId);
       formData.append('caption', this.newPostText);
       if (this.newPostImage) {
-        formData.append('image', this.newPostImage, this.newPostImage.name); 
-      } else {
-        formData.append('image', ''); 
+        formData.append('image', this.newPostImage, this.newPostImage.name);
       }
 
-      formData.forEach((value, key) => {
-        console.log(key + ': ' + value);
-      });
-
-      //TO DO -> Make this dynamically reflect which user is logged in.
       this.communityService.addPost(formData).subscribe(
         response => {
-          console.log('Response from server:', response);//will delete later on
+          console.log('Response from server:', response);
           if (response.success) {
-            const newPost = {
-              userId: 3,
-              recipeId: 25,
-              username: 'current_user',
-              time: 'Just now',
-              userAvatar: 'assets/images/default-avatar.png',
-              image: this.newPostImage ? 
-                URL.createObjectURL(this.newPostImage) : '', 
-              description: '',
-              likes: 0,
-              liked: false,
-              comments: [],
-              caption: this.newPostText
-            };
-            this.posts.unshift(newPost);
+            this.loadPosts();
             this.newPostText = '';
             this.newPostImage = null;
+            this.newPostImageSrc = null;
           } else {
             console.error('Error adding post:', response.message);
           }
@@ -125,5 +117,29 @@ export class CommunityComponent implements OnInit {
         }
       );
     }
+  }
+
+  addComment(post: any): void {
+    const commentData = {
+      post_id: post.id,
+      user_id: this.loginAuthService.getUserId(),
+      text: this.newCommentText
+    };
+
+    this.communityService.addComment(commentData).subscribe(
+      response => {
+        console.log('Response from server:', response);
+        if (response.success) {
+          this.newCommentText = '';
+          this.loadPosts();
+        } else {
+          console.error('Error adding comment:', response.message);
+        }
+      },
+      error => {
+        console.error('HTTP error:', error);
+        alert('An error occurred while adding the comment: ' + error.message);
+      }
+    );
   }
 }

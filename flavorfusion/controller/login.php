@@ -6,7 +6,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
@@ -38,9 +37,10 @@ if ($result->num_rows == 1) {
         session_start();
         $_SESSION['user_id'] = $row['user_id'];
         $_SESSION['email'] = $row['email'];
-        echo json_encode(array('success' => true));
+        echo json_encode(array('success' => true, 'user_id' => $row['user_id']));
     } else {
-        echo json_encode(array('success' => false, 'message' => 'Incorrect password.'));
+        echo json_encode(array('success' => false, 
+                'message' => 'Incorrect password.'));
     }
 } else {
     echo json_encode(array('success' => false, 'message' => 'User not found.'));

@@ -33,9 +33,9 @@
       </div> 
 
       <div class="actions">
-        <button class="save">
-          <i class="fas fa-heart"></i> 
-          Save
+        <button class="save" (click)="toggleSave()"
+           [disabled]="!user" [ngClass]="{'saved': saved}">
+          <i class="fas fa-heart"></i> {{ saved ? 'Already Saved' : 'Save' }}
         </button>
 
         <button class="rate">

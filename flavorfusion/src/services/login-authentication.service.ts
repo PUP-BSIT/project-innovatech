@@ -14,28 +14,43 @@ export class LoginAuthentication {
       
   private sessionTimeout: number = 3600000; // 1 hr
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { 
+    this.checkAuthentication();
+  }
 
   checkAuthentication(): void {
-    // TODO: implement login logout logic
-    let isLoggedIn = false;
-    this.isLoggedInSubject.next(isLoggedIn);
-
-    if (isLoggedIn) {
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      this.isLoggedInSubject.next(true);
       this.resetSessionTimeout();
-    } 
+    } else {
+      this.isLoggedInSubject.next(false);
+    }
   }
 
   setIsLoggedIn(value: boolean): void {
     this.isLoggedInSubject.next(value);
   }
 
+  setUserId(userId: string): void {
+    localStorage.setItem('user_id', userId);// User ID from database
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('user_id');
+  }
+
   private resetSessionTimeout(): void {
-   
     setTimeout(() => {
+      localStorage.removeItem('user_id');
       this.router.navigateByUrl('/login');
+      this.isLoggedInSubject.next(false);
     }, this.sessionTimeout);
   }
-  
+
+  logout(): void {
+    localStorage.removeItem('user_id');
+    this.isLoggedInSubject.next(false);
+  }
   
 }

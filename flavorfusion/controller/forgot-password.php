@@ -39,7 +39,8 @@ $sel_query = "SELECT * FROM `users` WHERE email='" . $email . "'";
 $results = mysqli_query($conn, $sel_query);
 
 if (!$results) {
-    echo json_encode(['status' => 'error', 'message' => 'Database query failed: ' . mysqli_error($conn)]);
+    echo json_encode(['status' => 'error', 
+            'message' => 'Database query failed: ' . mysqli_error($conn)]);
     exit;
 }
 
@@ -50,14 +51,17 @@ if ($row == 0) {
 }
 
 // Generate a unique token and expiration date
-$expFormat = mktime(date("H"), date("i"), date("s"), date("m"), date("d") + 1, date("Y"));
+$expFormat = mktime(date("H"), date("i"), date("s"), date("m"), 
+        date("d") + 1, date("Y"));
 $expDate = date("Y-m-d H:i:s", $expFormat);
 $token = bin2hex(random_bytes(16));
 
 // Insert token into the temporary table
-$insert_query = "INSERT INTO `password_reset_temp` (`email`, `key`, `expDate`) VALUES ('" . $email . "', '" . $token . "', '" . $expDate . "')";
+$insert_query = "INSERT INTO `password_reset_temp` (`email`, `key`, `expDate`) 
+        VALUES ('" . $email . "', '" . $token . "', '" . $expDate . "')";
 if (!mysqli_query($conn, $insert_query)) {
-    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . mysqli_error($conn)]);
+    echo json_encode(['status' => 'error', 
+            'message' => 'Database error: ' . mysqli_error($conn)]);
     exit;
 }
 
@@ -89,8 +93,10 @@ try {
                      '<a href="' . $resetLink . '">Reset Password</a><br><br>Thank you.';
 
     $mail->send();
-    echo json_encode(['status' => 'success', 'message' => 'Email has been sent']);
+    echo json_encode(['status' => 'success', 'message' => 
+            'Email has been sent']);
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
+    echo json_encode(['status' => 'error', 'message' => 
+            "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
 }
 ?>
