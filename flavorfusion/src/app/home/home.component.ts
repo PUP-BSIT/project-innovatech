@@ -10,14 +10,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  categories = [
-    { name: 'Pasta', image: 'assets/images/pasta.jpg' },
-    { name: 'Chicken', image: 'assets/images/chicken.jpg' },
-    { name: 'Vegetable', image: 'assets/images/vegetable.jpg' },
-    { name: 'Soup', image: 'assets/images/soup.jpg' }
-  ];
+  popularRecipes = [];
 
   latestRecipes = [];
+  
   filters = {
     eggs: false,
     dairy: false,
@@ -44,6 +40,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLoginStatus();
+    this.loadPopularRecipes();
     if (this.isLoggedIn) {
       this.loadLatestRecipes();
     }
@@ -57,6 +54,21 @@ export class HomeComponent implements OnInit {
       }
     });
   }  
+
+  loadPopularRecipes(): void {
+    this.homeService.getPopularRecipes().subscribe(
+      (recipes) => {
+        console.log('Popular recipes:', recipes);
+        this.popularRecipes = recipes;
+      },
+      (error) => {
+        console.error('Error fetching popular recipes', error);
+        this.snackBar.open('Error fetching popular recipes. Try again.', 'Try Again', {
+          duration: 3000
+        });
+      }
+    );
+  }
 
   loadLatestRecipes(): void {
     this.homeService.getUserRecipes().subscribe(
@@ -92,7 +104,8 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching filtered recipes', error);
-          this.snackBar.open('Error fetching filtered recipes. Try again.', 'Try Again', {
+          this.snackBar.open(
+            'Error fetching filtered recipes. Try again.', 'Try Again', {
             duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
@@ -113,7 +126,8 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching filtered recipes', error);
-          this.snackBar.open('Error fetching filtered recipes. Try again.', 'Try Again', {
+          this.snackBar.open(
+            'Error fetching filtered recipes. Try again.', 'Try Again', {
             duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
@@ -127,7 +141,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  shareRecipe(): void {
-    this.router.navigate(['/profile'], { queryParams: { showShareRecipe: true } });
-  } 
+  navigateToProfile(): void {
+    this.router.navigate([
+      '/profile'
+    ], { queryParams: { openShareRecipe: true } });
+  }
 }

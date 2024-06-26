@@ -136,11 +136,25 @@ export class SearchComponent implements OnInit {
     if (!categoryGroup.items.includes(category)) {
       categoryGroup.items.push(category);
     }
+
+    if (categoryType === 'Meal Type') {
+      this.mealType = category.toLowerCase();
+    } else if (categoryType === 'Dietary Preferences') {
+      this.dietaryPref = category.toLowerCase();
+    }
+
+    this.searchRecipes();
   }
 
   setActiveCategory(category: string, subCategory: string) {
     this.activeCategory = category;
     this.activeSubCategory = subCategory;
+
+    if (category === 'Meal Type') {
+      this.mealType = subCategory.toLowerCase();
+    }
+
+    this.searchRecipes();
   }
 
   isCategoryActive(category: string, subCategory: string): boolean {

@@ -26,47 +26,13 @@
     text-decoration: underline;
 }
 
-.popular-recipes {
-    margin-bottom: 20px;
-}
-
-.popular-recipes h2 {
-    margin-bottom: 20px;
-    margin-top: 0;
-    padding-left: 50px;
-}
-
-.recipe-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding-left: 50px;
-    padding-right: 50px;
-}
-
-.recipe-tags button {
-    background-color: rgba(255, 87, 51, 0.35);
-    border: 3px solid #ccccccd9;
-    color: black;
-    padding: 3px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-}
-
-.recipe-tags button:hover {
-    background-color: #ff7353;
-}
-
 .search-by-categories {
     margin-top: 20px;
 }
 
 .search-by-categories h2 {
     margin-bottom: 20px;
-    padding-left: 50px;
+    padding-left: 180px;
 }
 
 .categories {
@@ -151,7 +117,7 @@
     display: block;
 }
 
-.meal-type-container {
+.meal-type-container, .dietary-pref-container {
     background-color: #feeccaab;
     display: flex;
     justify-content: center;
@@ -164,14 +130,14 @@
     border: 3px solid #be8f8f;
 }
   
-.meal-type {
+.meal-type, .dietary-pref {
     display: grid;
     grid-template-columns: repeat(5, 120px);
     justify-content: center;
     gap: 20px;
 }
   
-.meal-type a {
+.meal-type a, .dietary-pref a {
     background-color: #F6DDAF;
     text-align: center;
     color: #571515bd;
@@ -180,13 +146,14 @@
     border-radius: 18px;
     padding: 10px;
     font-family: math;
+    cursor: pointer;
 }
   
-.meal-type a:hover{
+.meal-type a:hover, .dietary-pref a:hover {
     background-color: rgba(255, 206, 56, 0.5);
 }
   
-.meal-type img {
+.meal-type img, .dietary-pref img {
     display: block;
     margin: 0 auto;
     width: 100px;

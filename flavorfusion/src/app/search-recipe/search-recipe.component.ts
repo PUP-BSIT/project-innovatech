@@ -13,6 +13,7 @@ export class SearchRecipeComponent implements OnInit {
   mealType: string = '';
   dietaryPref: string = '';
   ingredient: string = '';
+  dynamicHeading: string = '';
 
   constructor(
     private route: ActivatedRoute, 
@@ -27,10 +28,24 @@ export class SearchRecipeComponent implements OnInit {
       this.dietaryPref = params['dietaryPref'] || '';
       this.ingredient = params['ingredient'] || '';
 
+      this.setDynamicHeading();
+      
       if (this.query || this.mealType || this.dietaryPref || this.ingredient) {
         this.searchRecipes();
       }
     });
+  }
+
+  setDynamicHeading(): void {
+    if (this.mealType) {
+      this.dynamicHeading = `${this.capitalize(this.mealType)} Recipes`;
+    } else if (this.dietaryPref) {
+      this.dynamicHeading = `${this.capitalize(this.dietaryPref)} Recipes`;
+    }
+  }
+
+  capitalize(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   searchRecipes(): void {

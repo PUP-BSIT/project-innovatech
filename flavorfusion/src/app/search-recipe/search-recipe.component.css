@@ -1,11 +1,22 @@
+.category-heading {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+  
+.recipe-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+  
 .recipe-container {
-    display: inline-block;
-    width: 30%;
-    margin: 1.5%;
+    width: 22%;
+    margin: 1%;
     vertical-align: top;
     text-align: center;
+    cursor: pointer;
 }
-
+  
 .recipe-image {
     width: 100%;
     height: 200px;
@@ -13,22 +24,18 @@
     object-fit: cover;
     border: 3px solid #FFCE38;
 }
-
+  
 .recipe-container h3 {
     margin-top: 10px;
     margin-bottom: 5px;
-    font-family: math;
+    font-family: "Poppins", sans-serif;
     font-size: larger;
 }
-
-.rating {
-    margin: 10px 0;
-}
-
+  
 .rating .fa {
     color: gold;
 }
-
+  
 .fa-star-o, .fa-star-half-o {
     color: lightgray;
-}
+}  
