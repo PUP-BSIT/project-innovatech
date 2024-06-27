@@ -23,7 +23,7 @@ export class RecipeDetailsComponent implements OnInit {
     private recipeService: RecipeResultService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private authService: LoginAuthentication // Inject the service
+    private authService: LoginAuthentication 
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.userService.getUserProfile().subscribe(
       response => {
        this.user = response;
-        this.checkSavedStatus(); // Ensure saved status check after user fetch
+        this.checkSavedStatus(); 
       },
       error => {
         console.error('Error fetching user profile: ', error);
@@ -60,7 +60,7 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   toggleSave(): void {
-    if (this.authService.isLoggedIn()) { // Check if user is logged in
+    if (this.authService.isLoggedIn()) { 
       const userId = this.user.user_id;
       const recipeId = this.recipe.recipe_id;
 
