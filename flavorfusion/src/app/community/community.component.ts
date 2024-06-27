@@ -1,7 +1,8 @@
-import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommunityService } from '../../services/community-service.service';
 import { LoginAuthentication } from '../../services/login-authentication.service';
+import { UserService } from '../../services/user-service.service';
 
 @Component({
   selector: 'app-community',
@@ -16,11 +17,14 @@ export class CommunityComponent implements OnInit {
   newPostImageSrc: string | null = null;
   newCommentText: string = '';
   posts: any[] = [];
+  currentPost: any = null;
 
   constructor(
     public dialog: MatDialog,
     private communityService: CommunityService,
-    private loginAuthService: LoginAuthentication
+    private loginAuthService: LoginAuthentication,
+    private cdr: ChangeDetectorRef,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -41,9 +45,9 @@ export class CommunityComponent implements OnInit {
       }
     );
   }
-  
 
   openPostDetail(post: any, template: TemplateRef<any>): void {
+    this.currentPost = post;
     this.dialogRef = this.dialog.open(template, {
       data: { post },
       width: '600px',
@@ -120,25 +124,58 @@ export class CommunityComponent implements OnInit {
   }
 
   addComment(post: any): void {
-    const commentData = {
-      post_id: post.id,
-      user_id: this.loginAuthService.getUserId(),
-      text: this.newCommentText
-    };
+    const userId = this.loginAuthService.getUserId();
+    if (!userId) {
+      console.error('User not logged in');
+      return;
+    }
 
-    this.communityService.addComment(commentData).subscribe(
-      response => {
-        console.log('Response from server:', response);
-        if (response.success) {
-          this.newCommentText = '';
-          this.loadPosts();
-        } else {
-          console.error('Error adding comment:', response.message);
+    // Fetch user profile data using userService
+    this.userService.getUserProfile().subscribe(
+      userProfile => {
+        const { username, profile_picture } = userProfile;
+        
+        const commentData = {
+          community_recipe_id: post.communityRecipeId,
+          user_id: userId,
+          text: this.newCommentText.trim(),
+          userAvatar: profile_picture, 
+          username: username, 
+        };
+
+        if (!commentData.community_recipe_id || !commentData.user_id || 
+              !commentData.text) {
+          console.error('Invalid comment data', commentData);
+          return;
         }
+
+        this.communityService.addComment(commentData).subscribe(
+          response => {
+            console.log('Response from server:', response);
+            if (response.success) {
+              // Add the new comment to the post's comments array
+              post.comments.push({
+                userAvatar: commentData.userAvatar,
+                username: commentData.username, 
+                text: commentData.text,
+                time: 'just now',
+                liked: false
+              });
+              this.newCommentText = '';
+              this.loadPosts(); 
+            } else {
+              console.error('Error adding comment:', response.message);
+            }
+          },
+          error => {
+            console.error('HTTP error:', error);
+            alert('An error occurred while adding the comment: ' + error.message);
+          }
+        );
       },
       error => {
-        console.error('HTTP error:', error);
-        alert('An error occurred while adding the comment: ' + error.message);
+        console.error('Error fetching user profile:', error);
+        alert('An error occurred while fetching user profile: ' + error.message);
       }
     );
   }
