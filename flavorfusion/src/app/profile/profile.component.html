@@ -63,21 +63,21 @@
         </div>
 
         <div class="profile-content">
-            <div class="recipe-list" *ngIf="showSavedRecipes">
-                <div class="recipe-card">
-                    <img src="assets/images/caramel-blueberry.jpg" 
-                    alt="Caramel Blueberry Scones">
-                    <p>Caramel Blueberry Scones</p>
+            <div class="recipe-list">
+                <div *ngFor="let recipe of savedRecipes" class="recipe-card">
+                    <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                        <img [src]="'data:image/jpeg;base64,' + recipe.picture"
+                             alt="{{ recipe.name }}">
+                    </a>
+                    <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                        {{ recipe.name }}</a>
                 </div>
-                <div class="recipe-card">
-                    <img src="assets/images/chocolate-jar.jpg" 
-                    alt="Chocolate and Banana Jar Cake">
-                    <p>Chocolate and Banana Jar Cake</p>
-                </div>
-                <div class="recipe-card">
-                    <img src="assets/images/egg-toast.png" 
-                    alt="Eggs and Avocado Toast">
-                    <p>Eggs and Avocado Toast</p>
+                <div class="pagination-controls">
+                    <button (click)="previousPage()" 
+                     [disabled]="currentPage === 1">Previous</button>
+                    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+                    <button (click)="nextPage()"
+                        [disabled]="currentPage === totalPages">Next</button>
                 </div>
             </div>
 
