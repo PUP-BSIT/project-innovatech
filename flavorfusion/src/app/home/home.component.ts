@@ -140,9 +140,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  navigateToProfile(): void {
-    this.router.navigate(['/profile'], { queryParams: { openShareRecipe: true } });
-  }
+  shareRecipe(): void {
+    this.router.navigate(['/profile'], { queryParams: { showShareRecipe: true } });
+  } 
 
   deleteRecipe(recipeId): void {
     console.log('Attempting to delete recipe with ID:', recipeId);
