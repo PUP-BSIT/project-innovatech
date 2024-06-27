@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service.service';
 import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SavedRecipesService } from '../../services/saved-recipes.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
   selectedAvatarFile: File | null = null;
 
   recipeForm: FormGroup;
+  savedRecipes: any[] = [];
 
   userProfile: any = {
     user_id: null,
@@ -35,12 +37,19 @@ export class ProfileComponent implements OnInit {
   };
   profileForm: FormGroup;
 
+  currentPage: number = 1;
+  pageSize: number = 3;
+  totalRecipes: number = 0;
+  totalPages: number = 1;
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private savedRecipesService: SavedRecipesService
+
   ) {
     this.recipeForm = this.createRecipeForm();
     this.profileForm = this.fb.group({
@@ -61,6 +70,7 @@ export class ProfileComponent implements OnInit {
         this.showShareRecipeModal = true;
       }
     });
+    // this.fetchSavedRecipes();
   }
 
   private createRecipeForm(): FormGroup {
@@ -124,6 +134,7 @@ export class ProfileComponent implements OnInit {
         }
         this.avatarImageUrl = this.userProfile.profile_picture;
         console.log(this.userProfile);
+        this.fetchSavedRecipes();
       },
       error: (error: any) => {
         console.error("Error fetching user profile:", error);
@@ -322,4 +333,37 @@ export class ProfileComponent implements OnInit {
   triggerAvatarInput(): void {
     this.avatarInput.nativeElement.click();
   }
+
+  //for saved recipes
+  fetchSavedRecipes(page: number = 1): void {
+    const userId = this.userProfile.user_id;
+    if (userId) {
+      this.savedRecipesService.getSavedRecipes(userId, page, this.pageSize).subscribe({
+        next: (data: any) => {
+          console.log('Fetched saved recipes:', data);
+          this.savedRecipes = data.recipes; 
+          this.currentPage = page;
+          // Assuming backend provides total count
+          this.totalRecipes = data.total; 
+           this.totalPages = Math.ceil(this.totalRecipes / this.pageSize);
+        },
+        error: (error: any) => {
+          console.error('Error fetching saved recipes:', error);
+        }
+      });
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.fetchSavedRecipes(this.currentPage + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.fetchSavedRecipes(this.currentPage - 1);
+    }
+  }
+
 }
