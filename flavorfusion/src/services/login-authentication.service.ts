@@ -13,6 +13,8 @@ export class LoginAuthentication {
       this.isLoggedInSubject.asObservable();
       
   private sessionTimeout: number = 3600000; // 1 hr
+  private username: string;
+  private userAvatar: string;
 
   constructor(private http: HttpClient, private router: Router) { 
     this.checkAuthentication();
@@ -38,6 +40,14 @@ export class LoginAuthentication {
 
   getUserId(): string | null {
     return localStorage.getItem('user_id');
+  }
+
+  getUsername(): string {
+    return this.username;
+  }
+
+  getUserAvatar(): string {
+    return this.userAvatar;
   }
 
   private resetSessionTimeout(): void {

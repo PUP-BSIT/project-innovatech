@@ -27,9 +27,11 @@
         <img [src]="post.userAvatar" class="avatar" alt="avatar"/>
         <div class="user-details">
           <span class="username">{{ post.username }}</span>
+          <span class="time">{{ post.time }}</span>
         </div>
       </div>
       <img [src]="post.image" class="post-image" alt="post image"/>
+      
       <div class="post-footer">
         <div class="actions">
           <span (click)="likePost(post, $event)" [class.liked]="post.liked">
@@ -40,6 +42,7 @@
           </span>
         </div>
         <div class="caption">
+          <span class="username">{{ post.username }}</span>
           {{ post.caption }}
         </div>
         <hr class="footer-line"/>

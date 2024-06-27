@@ -88,7 +88,7 @@ try {
 
     //Content
     $mail->isHTML(true);
-    $mail->Subject = 'Password Reset Request (TESTING)';
+    $mail->Subject = 'Password Reset Request';
     $mail->Body    = 'Hello,<br><br>Please click on the following link to reset your password:<br>' .
                      '<a href="' . $resetLink . '">Reset Password</a><br><br>Thank you.';
 

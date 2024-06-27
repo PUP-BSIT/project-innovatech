@@ -19,7 +19,7 @@ export class CommunityService {
   }
 
   addComment(commentData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add_comment.php`, commentData); 
+    return this.http.post(`${this.apiUrl}/add_comment.php`, commentData);
   }
 
   getUserProfile(userId: string): Observable<any> {
