@@ -33,7 +33,7 @@ export class LoginAuthentication {
   }
 
   setUserId(userId: string): void {
-    localStorage.setItem('user_id', userId);// User ID from database
+    localStorage.setItem('user_id', userId);
   }
 
   getUserId(): string | null {
@@ -53,4 +53,7 @@ export class LoginAuthentication {
     this.isLoggedInSubject.next(false);
   }
   
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('user_id');
+  }
 }

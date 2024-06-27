@@ -33,8 +33,7 @@
       </div> 
 
       <div class="actions">
-        <button class="save" (click)="toggleSave()"
-           [disabled]="!user" [ngClass]="{'saved': saved}">
+        <button class="save" (click)="toggleSave()">
           <i class="fas fa-heart"></i> {{ saved ? 'Already Saved' : 'Save' }}
         </button>
 

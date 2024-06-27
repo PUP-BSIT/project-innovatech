@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RecipeResultService } from '../../services/recipe-result.service';
 import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoginAuthentication } from '../../services/login-authentication.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -21,7 +22,8 @@ export class RecipeDetailsComponent implements OnInit {
     private route: ActivatedRoute, 
     private recipeService: RecipeResultService,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: LoginAuthentication // Inject the service
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +50,8 @@ export class RecipeDetailsComponent implements OnInit {
   fetchUserProfile(): void {
     this.userService.getUserProfile().subscribe(
       response => {
-        this.user = response;
-        this.checkSavedStatus(); 
+       this.user = response;
+        this.checkSavedStatus(); // Ensure saved status check after user fetch
       },
       error => {
         console.error('Error fetching user profile: ', error);
@@ -58,32 +60,26 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   toggleSave(): void {
-    if (this.user) {
+    if (this.authService.isLoggedIn()) { // Check if user is logged in
       const userId = this.user.user_id;
       const recipeId = this.recipe.recipe_id;
-
-      console.log('User ID:', userId);
-      console.log('Recipe ID', recipeId);
 
       if (this.saved) {
         this.recipeService.unsaveRecipe(userId, recipeId).subscribe(
           response => {
             if (response.success) {
               this.saved = false;
-              this.snackBar.open('Recipe unsaved successfully!.',
-                'Close', {
-               duration: 3000,
-           });
+              this.snackBar.open('Recipe unsaved successfully!', 
+                'Close', { duration: 3000 });
             } else {
-              this.snackBar.open('Unfailed unsaving recipe. Please try again',
-                'Close', {
-               duration: 3000,
-           });
+              this.snackBar.open('Failed to unsave recipe. Please try again', 
+                'Close', { duration: 3000 });
             }
           },
           error => {
             console.error('Error unsaving recipe:', error);
-            alert(`Failed to unsave recipe. Error: ${error.message}`);
+            this.snackBar.open(`Failed to unsave recipe.
+               Error: ${error.message}`, 'Close', { duration: 3000 });
           }
         );
       } else {
@@ -91,23 +87,24 @@ export class RecipeDetailsComponent implements OnInit {
           response => {
             if (response.success) {
               this.saved = true;
-              this.snackBar.open('Recipe Saved Successfully',
-                'Close', {
-               duration: 3000,
-           });
+              this.snackBar.open('Recipe saved successfully!', 
+                'Close', { duration: 3000 });
             } else {
-              this.snackBar.open('Failed to save recipe. Please try again.',
-                'Close', {
-               duration: 3000,
-           });
+              this.snackBar.open('Failed to save recipe. Please try again.', 
+                'Close', { duration: 3000 });
             }
           },
           error => {
             console.error('Error saving recipe:', error);
+            this.snackBar.open(`Failed to save recipe. Error: ${error.message}`, 
+              'Close', { duration: 3000 });
           }
         );
       }
-    } 
+    } else {
+      this.snackBar.open('You must be logged in to save recipes.', 
+        'Close', { duration: 3000 });
+    }
   }
 
   checkSavedStatus(): void {
@@ -127,7 +124,12 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   openRateModal(): void {
-    this.isRateModalOpen = true;
+    if (this.authService.isLoggedIn()) {
+      this.isRateModalOpen = true;
+    } else {
+      this.snackBar.open('You must be logged in to rate recipes.', 
+        'Close', { duration: 3000 });
+    }
   }
 
   closeRateModal(): void {
