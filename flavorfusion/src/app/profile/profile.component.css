@@ -1449,9 +1449,9 @@ button[type="submit"]:hover {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: auto; /* Push to the bottom */
-    padding-bottom: 20px; /* Add some padding at the bottom */
-    width: 100%; /* Ensure it takes full width */
+    margin-top: auto; 
+    padding-bottom: 20px; 
+    width: 100%; 
 }
 
 .pagination-controls button {
@@ -1472,8 +1472,8 @@ button[type="submit"]:hover {
 }
 
 .pagination-controls button:hover:not(:disabled) {
-    background-color: #e45043; /* Darker shade for hover effect */
-    color: #fffacd; /* Light yellow color for text on hover */
+    background-color: #e45043; 
+    color: #fffacd; 
     transform: scale(1.05);
 }
 

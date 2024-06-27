@@ -275,7 +275,8 @@ export class ProfileComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error updating profile:', error);
-        this.snackBar.open('Error updating profile. Please try again.', 'Close', {
+        this.snackBar.open('Error updating profile. Please try again.', 
+          'Close', {
           duration: 3000,
         });
       }
@@ -338,7 +339,8 @@ export class ProfileComponent implements OnInit {
   fetchSavedRecipes(page: number = 1): void {
     const userId = this.userProfile.user_id;
     if (userId) {
-      this.savedRecipesService.getSavedRecipes(userId, page, this.pageSize).subscribe({
+      this.savedRecipesService.getSavedRecipes
+        (userId, page, this.pageSize).subscribe({
         next: (data: any) => {
           console.log('Fetched saved recipes:', data);
           this.savedRecipes = data.recipes; 

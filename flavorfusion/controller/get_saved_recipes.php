@@ -17,8 +17,8 @@ if ($user_id === 0) {
 
 $offset = ($page - 1) * $page_size;
 
-// Get total count of saved recipes
-$total_count_sql = "SELECT COUNT(*) as total FROM saved_recipes WHERE user_id = ?";
+$total_count_sql = "SELECT COUNT(*) as total FROM saved_recipes
+     WHERE user_id = ?";
 $total_stmt = $conn->prepare($total_count_sql);
 $total_stmt->bind_param("i", $user_id);
 $total_stmt->execute();
