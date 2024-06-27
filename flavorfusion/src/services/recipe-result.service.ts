@@ -69,7 +69,8 @@ export class RecipeResultService {
   }
 
   checkIfRecipeSaved(user_id: number, recipe_id: number): Observable<boolean> {
-    const params = { user_id: user_id.toString(), recipe_id: recipe_id.toString() };
+    const params = { user_id: user_id.toString(), recipe_id: 
+      recipe_id.toString() };
 
     return this.http.get<any>(this.checkSavedUrl, { params })
       .pipe(

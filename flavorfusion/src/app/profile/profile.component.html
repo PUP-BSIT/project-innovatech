@@ -63,7 +63,7 @@
         </div>
 
         <div class="profile-content">
-            <div class="recipe-list">
+            <div class="recipe-list" *ngIf="showSavedRecipes">
                 <div *ngFor="let recipe of savedRecipes" class="recipe-card">
                     <a [routerLink]="['/recipe-details', recipe.recipe_id]">
                         <img [src]="'data:image/jpeg;base64,' + recipe.picture"

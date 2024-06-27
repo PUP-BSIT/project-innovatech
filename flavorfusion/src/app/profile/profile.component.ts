@@ -343,9 +343,8 @@ export class ProfileComponent implements OnInit {
         (userId, page, this.pageSize).subscribe({
         next: (data: any) => {
           console.log('Fetched saved recipes:', data);
-          this.savedRecipes = data.recipes; 
+          this.savedRecipes = data.recipes.reverse();
           this.currentPage = page;
-          // Assuming backend provides total count
           this.totalRecipes = data.total; 
            this.totalPages = Math.ceil(this.totalRecipes / this.pageSize);
         },
@@ -358,14 +357,13 @@ export class ProfileComponent implements OnInit {
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.fetchSavedRecipes(this.currentPage + 1);
+        this.fetchSavedRecipes(this.currentPage + 1);
     }
-  }
+}
 
   previousPage(): void {
     if (this.currentPage > 1) {
-      this.fetchSavedRecipes(this.currentPage - 1);
+        this.fetchSavedRecipes(this.currentPage - 1);
     }
   }
-
 }
