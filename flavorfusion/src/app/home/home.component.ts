@@ -11,9 +11,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   popularRecipes = [];
-
   latestRecipes = [];
-  
   filters = {
     eggs: false,
     dairy: false,
@@ -22,12 +20,13 @@ export class HomeComponent implements OnInit {
     shrimp: false,
     vegetables: false
   };
-
+  
   showDropdown: boolean = false;
   isFiltered: boolean = false;
   filteredRecipes = [];
   lastSelectedFilters: string[] = [];
   isLoggedIn: boolean = false;
+  showModal: boolean = false;
 
   constructor(
     private homeService: HomeService,
@@ -36,7 +35,7 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {
     this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
-  }  
+  }
 
   ngOnInit(): void {
     this.checkLoginStatus();
@@ -45,7 +44,7 @@ export class HomeComponent implements OnInit {
       this.loadLatestRecipes();
     }
   }
-  
+
   checkLoginStatus(): void {
     this.loginAuthService.isLoggedIn$.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
@@ -53,7 +52,7 @@ export class HomeComponent implements OnInit {
         this.loadLatestRecipes();
       }
     });
-  }  
+  }
 
   loadPopularRecipes(): void {
     this.homeService.getPopularRecipes().subscribe(
@@ -80,7 +79,7 @@ export class HomeComponent implements OnInit {
         console.error('Error fetching user recipes', error);
       }
     );
-  }  
+  }
 
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
@@ -142,8 +141,31 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToProfile(): void {
-    this.router.navigate([
-      '/profile'
-    ], { queryParams: { openShareRecipe: true } });
+    this.router.navigate(['/profile'], { queryParams: { openShareRecipe: true } });
+  }
+
+  deleteRecipe(recipeId): void {
+    console.log('Attempting to delete recipe with ID:', recipeId);
+    this.homeService.deleteUserRecipe(recipeId).subscribe(
+      (response) => {
+        if (response.success) {
+          this.latestRecipes = this.latestRecipes.filter(recipe => recipe.recipe_id !== recipeId);
+          this.snackBar.open('Recipe deleted successfully!', 'Close', {
+            duration: 3000
+          });
+        } else {
+          this.snackBar.open('Failed to delete recipe. Try again.', 'Try Again', {
+            duration: 3000
+          });
+          console.error('Error response from server:', response.error);
+        }
+      },
+      (error) => {
+        console.error('Error deleting recipe', error);
+        this.snackBar.open('Error deleting recipe. Try again.', 'Try Again', {
+          duration: 3000
+        });
+      }
+    );
   }
 }

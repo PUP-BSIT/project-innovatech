@@ -29,10 +29,11 @@
             [alt]="recipe.name"
           >
           <h3>{{ recipe.name }}</h3>
-        </div>        
+          <button (click)="deleteRecipe(recipe.recipe_id)">Delete</button>
+        </div>
       </div>
       <ng-template #noRecipes>
-        <div >
+        <div>
           <p>
             Want to share your recipes? Add your own creations to inspire others!
           </p>
@@ -56,10 +57,9 @@
     <h2>Personalize Your Taste</h2>
     <div class="personalize-taste-content">
       <div class="filter" (click)="toggleDropdown()">
-        <i 
-          class="fa" 
-          [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'"
-          aria-hidden="true">
+        <i class="fa" 
+            [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'" 
+            aria-hidden="true">
         </i>
         <span class="filter-label">Filter</span>
       </div>
@@ -84,15 +84,12 @@
               <input type="checkbox" [(ngModel)]="filters.shrimp"> Shrimp
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.vegetables">
-              Vegetables
+              <input type="checkbox" [(ngModel)]="filters.vegetables"> Vegetables
             </label>
           </div>
         </div>
-        <button 
-          class="apply-btn" 
-          (click)="applyFilter()" 
-          [disabled]="!hasSelectedFilter()">
+        <button class="apply-btn" (click)="applyFilter()" 
+                [disabled]="!hasSelectedFilter()">
           Apply
         </button>
       </div>
