@@ -10,24 +10,27 @@ import { LoginAuthentication } from '../services/login-authentication.service';
 export class AppComponent implements OnInit {
   public showHeaderFooter: boolean = true;
   public isLoginOrSignupRoute: boolean = false;
+  pageWithoutHeader = [
+    '/login',
+    '/sign-up',
+    '/forgot-password',
+    '/reset-password',
+  ];
 
   constructor(private router: Router, 
       private loginAuthService: LoginAuthentication) {}
 
   ngOnInit() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.showHeaderFooter = 
-          !this.router.url.includes('/login') && 
-          !this.router.url.includes('/sign-up') &&
-          !this.router.url.includes('/forgot-password') &&
-          !this.router.url.includes('/reset-password');
+    this.router.events.subscribe((event) => {
+      if (event !instanceof NavigationEnd) return;
 
+      this.showHeaderFooter = !this.pageWithoutHeader.includes(
+        this.router.url
+      );
 
-        this.isLoginOrSignupRoute = 
-          this.router.url.includes('/login') || 
-          this.router.url.includes('/sign-up');
-      }
+      this.isLoginOrSignupRoute = ['/login', '/sign-up'].includes(
+        this.router.url
+      );
     });
 
     // Check authentication status
