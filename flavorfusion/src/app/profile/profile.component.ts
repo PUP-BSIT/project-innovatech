@@ -9,7 +9,7 @@ import { SavedRecipesService } from '../../services/saved-recipes.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   @ViewChild('avatarInput') avatarInput!: ElementRef<HTMLInputElement>;
@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
     email: '',
     username: '',
     bio: '',
-    profile_picture: ''
+    profile_picture: '',
   };
   profileForm: FormGroup;
 
@@ -42,6 +42,10 @@ export class ProfileComponent implements OnInit {
   totalRecipes: number = 0;
   totalPages: number = 1;
 
+  snackbarConfig = {
+    duration: 3000,
+  };
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -49,18 +53,17 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private savedRecipesService: SavedRecipesService
-
   ) {
     this.recipeForm = this.createRecipeForm();
     this.profileForm = this.fb.group({
       username: ['', Validators.required],
-      bio: ['', Validators.required]
+      bio: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.getUserProfile();
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       if (params['showSavedRecipes']) {
         this.showSavedRecipes = true;
         this.showMealPlanning = false;
@@ -84,20 +87,20 @@ export class ProfileComponent implements OnInit {
       servings: ['', Validators.required],
       ingredients: this.fb.array([this.createIngredient()]),
       instructions: this.fb.array([this.createInstruction()]),
-      image: [null, Validators.required]
+      image: [null, Validators.required],
     });
   }
 
   private createIngredient(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      quantity: [null, [Validators.required, Validators.min(0)]]
+      quantity: [null, [Validators.required, Validators.min(0)]],
     });
   }
 
   private createInstruction(): FormGroup {
     return this.fb.group({
-      step: ['', Validators.required]
+      step: ['', Validators.required],
     });
   }
 
@@ -137,8 +140,8 @@ export class ProfileComponent implements OnInit {
         this.fetchSavedRecipes();
       },
       error: (error: any) => {
-        console.error("Error fetching user profile:", error);
-      }
+        console.error('Error fetching user profile:', error);
+      },
     });
   }
 
@@ -168,47 +171,54 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.recipeForm.valid) {
-      console.log("Form is valid, submitting...");
-      const formData = this.createFormData(this.recipeForm.value);
+    if (this.recipeForm.valid) return;
 
-      if (this.selectedFile) {
-        formData.append('image', this.selectedFile, this.selectedFile.name);
-      }
+    const formData = this.createFormData(this.recipeForm.value);
 
-      this.recipeService.addRecipe(formData).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          if (response.success) {
-            this.recipeForm.reset();
-            this.imageUrl = null;
-            this.selectedFile = null;
-            this.closeShareRecipeModal();
-            this.snackBar.open('Recipe added successfully!', 'Close', {
-              duration: 3000,
-            });
-          } else {
-            console.error('Error adding recipe:', response);
-            this.snackBar.open('Error adding recipe. Please try again.',
-              'Close', {
-                duration: 3000,
-              });
-          }
-        },
-        error: (error: any) => {
-          console.error('Error adding recipe:', error);
-          this.snackBar.open('Error adding recipe. Please try again.',
-            'Close', {
-              duration: 3000,
-            });
-        }
-      });
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile, this.selectedFile.name);
     }
+
+    this.recipeService.addRecipe(formData).subscribe({
+      next: (response: any) => {
+        // Remove any and define a type
+        if (response.success) {
+          // TODO(any group member): Remove below comments.
+          // Instead of having success property, you can just return error code
+          // from the server(such as 301, 400, etc) in case of error.
+          // That way, it will be automatically handled in the error and you
+          // can omit the response.success property checking.
+          this.recipeForm.reset();
+          this.imageUrl = null;
+          this.selectedFile = null;
+          this.closeShareRecipeModal();
+          this.snackBar.open(
+            'Recipe added successfully!',
+            'Close',
+            this.snackbarConfig
+          );
+          return;
+        }
+        this.handleError(response);
+      },
+      error: (error: any) => {// User HttpResponseError
+        this.handleError(error);
+      },
+    });
+  }
+
+  handleError(response: any) {
+    console.error('Error adding recipe:', response);
+    this.snackBar.open(
+      'Error adding recipe. Please try again.',
+      'Close',
+      this.snackbarConfig
+    );
   }
 
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
-    Object.keys(formValue).forEach(key => {
+    Object.keys(formValue).forEach((key) => {
       if (key === 'ingredients' || key === 'instructions') {
         formData.append(key, JSON.stringify(formValue[key]));
       } else {
@@ -275,11 +285,14 @@ export class ProfileComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error updating profile:', error);
-        this.snackBar.open('Error updating profile. Please try again.', 
-          'Close', {
-          duration: 3000,
-        });
-      }
+        this.snackBar.open(
+          'Error updating profile. Please try again.',
+          'Close',
+          {
+            duration: 3000,
+          }
+        );
+      },
     });
   }
 
@@ -298,8 +311,11 @@ export class ProfileComponent implements OnInit {
   uploadAvatar(): void {
     if (this.selectedAvatarFile) {
       const formData = new FormData();
-      formData.append('avatar', this.selectedAvatarFile,
-        this.selectedAvatarFile.name);
+      formData.append(
+        'avatar',
+        this.selectedAvatarFile,
+        this.selectedAvatarFile.name
+      );
       formData.append('user_id', this.userProfile.user_id);
 
       this.userService.updateUserAvatar(formData).subscribe({
@@ -307,26 +323,32 @@ export class ProfileComponent implements OnInit {
           if (response.success) {
             console.log('Avatar update response:', response);
             this.userProfile.profile_picture = response.profile_picture;
-            this.avatarImageUrl = response.profile_picture ||
-              'assets/images/default-avatar.jpg';
+            this.avatarImageUrl =
+              response.profile_picture || 'assets/images/default-avatar.jpg';
             this.snackBar.open('Avatar updated successfully!', 'Close', {
               duration: 3000,
             });
           } else {
             console.error('Error updating avatar response:', response);
-            this.snackBar.open('Error updating avatar. Please try again.',
-              'Close', {
+            this.snackBar.open(
+              'Error updating avatar. Please try again.',
+              'Close',
+              {
                 duration: 3000,
-              });
+              }
+            );
           }
         },
         error: (error: any) => {
           console.error('Error updating avatar:', error);
-          this.snackBar.open('Error updating avatar. Please try again.',
-            'Close', {
+          this.snackBar.open(
+            'Error updating avatar. Please try again.',
+            'Close',
+            {
               duration: 3000,
-            });
-        }
+            }
+          );
+        },
       });
     }
   }
@@ -339,31 +361,32 @@ export class ProfileComponent implements OnInit {
   fetchSavedRecipes(page: number = 1): void {
     const userId = this.userProfile.user_id;
     if (userId) {
-      this.savedRecipesService.getSavedRecipes
-        (userId, page, this.pageSize).subscribe({
-        next: (data: any) => {
-          console.log('Fetched saved recipes:', data);
-          this.savedRecipes = data.recipes.reverse();
-          this.currentPage = page;
-          this.totalRecipes = data.total; 
-           this.totalPages = Math.ceil(this.totalRecipes / this.pageSize);
-        },
-        error: (error: any) => {
-          console.error('Error fetching saved recipes:', error);
-        }
-      });
+      this.savedRecipesService
+        .getSavedRecipes(userId, page, this.pageSize)
+        .subscribe({
+          next: (data: any) => {
+            console.log('Fetched saved recipes:', data);
+            this.savedRecipes = data.recipes.reverse();
+            this.currentPage = page;
+            this.totalRecipes = data.total;
+            this.totalPages = Math.ceil(this.totalRecipes / this.pageSize);
+          },
+          error: (error: any) => {
+            console.error('Error fetching saved recipes:', error);
+          },
+        });
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-        this.fetchSavedRecipes(this.currentPage + 1);
+      this.fetchSavedRecipes(this.currentPage + 1);
     }
-}
+  }
 
   previousPage(): void {
     if (this.currentPage > 1) {
-        this.fetchSavedRecipes(this.currentPage - 1);
+      this.fetchSavedRecipes(this.currentPage - 1);
     }
   }
 }
