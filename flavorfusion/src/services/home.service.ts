@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
-  private dailyMealsUrl = 'http://localhost/controller/get_daily_meals.php';
-  private filteredRecipesUrl = 'http://localhost/controller/get_filtered_recipes.php';
-  private userRecipesUrl = 'http://localhost/controller/get_user_recipes.php';
-  private popularRecipesUrl = 'http://localhost/controller/get_popular_recipes.php';
+  private apiUrl = environment.apiUrl;
+  
+  private dailyMealsUrl = `${this.apiUrl}/get_daily_meals.php`;
+  private filteredRecipesUrl = `${this.apiUrl}/get_filtered_recipes.php`;
+  private userRecipesUrl = `${this.apiUrl}/get_user_recipes.php`;
+  private popularRecipesUrl = `${this.apiUrl}/get_popular_recipes.php`;
 
   constructor(private http: HttpClient) { }
 
