@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
+import { Recipe } from '../../model/recipe'; 
 
 @Component({
   selector: 'app-search-recipe',
@@ -8,7 +9,7 @@ import { SearchService } from '../../services/search.service';
   styleUrls: ['./search-recipe.component.css']
 })
 export class SearchRecipeComponent implements OnInit {
-  searchResults: any[] = [];
+  searchResults: Recipe[] = [];
   query: string = '';
   mealType: string = '';
   dietaryPref: string = '';
@@ -52,7 +53,7 @@ export class SearchRecipeComponent implements OnInit {
     this.searchService.searchRecipes(
       this.query, this.mealType, this.dietaryPref, this.ingredient
     ).subscribe(
-      results => {
+      (results: Recipe[]) => {
         this.searchResults = results || [];
       },
       error => {
@@ -63,7 +64,7 @@ export class SearchRecipeComponent implements OnInit {
 
   viewRecipeDetails(recipeId: number): void {
     if (recipeId !== undefined && recipeId !== null) {
-      this.router.navigate(['/recipe-details', recipeId])
+      this.router.navigate(['/recipe-details', recipeId]);
     } else {
       console.error('Invalid recipe ID:', recipeId);
     }
