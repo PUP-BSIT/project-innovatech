@@ -9,3 +9,8 @@ body {
 .main-margin-top {
     margin-top: 70px;
 }
+
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: #ff9800 !important;
+}
+

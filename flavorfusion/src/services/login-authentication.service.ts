@@ -2,21 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class LoginAuthentication {
+  private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
-  private isLoggedInSubject: BehaviorSubject<boolean> = 
-      new BehaviorSubject<boolean>(false);
-
-  public isLoggedIn$: Observable<boolean> = 
-      this.isLoggedInSubject.asObservable();
-      
   private sessionTimeout: number = 3600000; // 1 hr
   private username: string;
   private userAvatar: string;
+  private apiURL = environment.apiUrl;
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
     this.checkAuthentication();
   }
 
@@ -62,8 +60,12 @@ export class LoginAuthentication {
     localStorage.removeItem('user_id');
     this.isLoggedInSubject.next(false);
   }
-  
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('user_id');
+  }
+
+  login(formData: { email: string, password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}/login.php`, formData, { withCredentials: true });
   }
 }

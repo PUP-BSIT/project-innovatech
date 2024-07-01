@@ -2,13 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-@Injectable({
-  providedIn: 'root'
-})
+import { environment } from '../environments/environment';
+@Injectable()
 export class ForgotPasswordService {
 
-  private apiUrl = 'http://localhost/controller';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

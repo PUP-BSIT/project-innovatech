@@ -5,6 +5,7 @@ import { RecipeService } from '../../services/recipe-service.service';
 import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SavedRecipesService } from '../../services/saved-recipes.service';
+import { LoginAuthentication } from '../../services/login-authentication.service';
 
 @Component({
   selector: 'app-profile',
