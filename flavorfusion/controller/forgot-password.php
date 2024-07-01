@@ -30,7 +30,8 @@ if (!$email) {
 $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 if (!$email) {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid email address']);
+    echo json_encode(['status' => 'error', 'message' => 
+            'Invalid email address']);
     exit;
 }
 
@@ -68,7 +69,8 @@ if (!mysqli_query($conn, $insert_query)) {
 $frontendUrl = 'http://localhost:4200/reset-password';
 
 // Generate the reset link
-$resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' . urlencode($email);
+$resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' 
+        . urlencode($email);
 
 try {
     $mail = new PHPMailer(true);
@@ -144,21 +146,27 @@ try {
                 </div>
                 <div class="email-body">
                     <p>Hello,</p>
-                    <p>Please click on the following link to reset your password:</p>
-                    <p><a href="' . $resetLink . '" class="button">Reset Password</a></p>
+                    <p>
+                    Please click on the following link to reset your password:
+                    </p>
+                    <p><a href="' . $resetLink 
+                            . '" class="button">Reset Password</a></p>
                     <p>Thank you.</p>
                 </div>
                 <div class="email-footer">
-                    <p>&copy; ' . date('Y') . ' Flavorfusion. All rights reserved.</p>
+                    <p>&copy; ' . date('Y') 
+                            . ' Flavorfusion. All rights reserved.</p>
                 </div>
             </div>
         </body>
         </html>';
 
     $mail->send();
-    echo json_encode(['status' => 'success', 'message' => 'Email has been sent']);
+    echo json_encode(['status' => 'success', 'message' => 
+            'Email has been sent']);
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
+    echo json_encode(['status' => 'error', 'message' => 
+            "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
 }
 
 
