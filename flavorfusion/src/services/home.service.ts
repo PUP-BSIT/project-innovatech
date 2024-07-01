@@ -13,9 +13,9 @@ export class HomeService {
   private filteredRecipesUrl = `${this.apiUrl}/get_filtered_recipes.php`;
   private userRecipesUrl = `${this.apiUrl}/get_user_recipes.php`;
   private popularRecipesUrl = `${this.apiUrl}/get_popular_recipes.php`;
-  private deleteRecipeUrl = 'http://localhost/controller/delete_recipe.php';
-  private recipeDetailsUrl = 'http://localhost/controller/get_recipe_details.php';
-  private updateRecipeUrl = 'http://localhost/controller/update_recipe.php';
+  private deleteRecipeUrl = `${this.apiUrl}/delete_recipe.php`;
+  private recipeDetailsUrl = `${this.apiUrl}/get_recipe_details.php`;
+  private updateRecipeUrl = `${this.apiUrl}/update_recipe.php`;
 
   constructor(private http: HttpClient) { }
 
