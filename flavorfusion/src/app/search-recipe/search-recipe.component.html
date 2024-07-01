@@ -2,30 +2,33 @@
   <h3 class="category-heading">{{ dynamicHeading }}</h3>
 
   <div class="recipe-grid">
-    <div *ngFor="let result of searchResults" class="recipe-container" 
-          (click)="viewRecipeDetails(result.recipe_id)">
-      <img 
-        [src]="'data:image/jpeg;base64,' + result.image" 
-        alt="{{ result.name }}" 
-        class="recipe-image"
-      >
-      <h3>{{ result.name }}</h3>
+    @for (result of searchResults; track result.recipe_id) {
+      <div class="recipe-container" 
+        (click)="viewRecipeDetails(result.recipe_id)">
+        <img 
+          [src]="'data:image/jpeg;base64,' + result.image" 
+          alt="{{ result.name }}" 
+          class="recipe-image"
+        >
+        <h3>{{ result.name }}</h3>
 
-      <div class="rating">
-        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
-          <i class="fa"
-             [ngClass]="{
-               'fa-star': i < result.rating,
-               'fa-star-half-alt': i < result.rating && i + 1 > result.rating,
-               'fa-star-o': i >= result.rating
-             }">
-          </i>
-        </ng-container>
+        <div class="rating">
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <i class="fa"
+               [ngClass]="{
+                 'fa-star': i <= result.rating,
+                 'fa-star-half-alt': i <= result.rating && i > 
+                  result.rating - 1,
+                 'fa-star-o': i > result.rating
+               }">
+            </i>
+          }
+        </div>
       </div>
-    </div>
+    }
   </div>
   
-  <div *ngIf="!searchResults.length">
+  @if (!searchResults.length) {
     <p>No recipes found for "{{ query }}"</p>
-  </div>
+  }
 </div>

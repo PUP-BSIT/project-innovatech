@@ -14,7 +14,7 @@ footer {
     justify-content: space-between;
     flex-wrap: wrap;
 }
-  
+   
 .connect {
     display: flex;
     flex-direction: column;
@@ -116,12 +116,47 @@ footer {
 }
   
 @media (max-width: 768px) {
+    footer {
+        padding: 3px 20px; 
+    }
     .footer-content {
-      flex-direction: column;
-      align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        flex-wrap: nowrap; 
     }
-    .connect, .about, .back-to-top {
-      text-align: center;
-      margin: 10px 0;
+    .connect {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        margin-bottom: 0;
     }
-} 
+    .social-icons {
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+        margin-bottom: 0;
+    }
+    .links {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px; 
+        margin-bottom: 0;
+    }
+    .about {
+        width: auto;
+        margin: 0;
+        text-align: center;
+    }
+    .back-to-top {
+        padding-left: 0;
+        text-align: center;
+    }
+    .group-rights {
+        margin-top: 0;
+        text-align: center;
+    }
+}

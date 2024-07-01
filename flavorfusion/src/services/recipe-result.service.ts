@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { Recipe } from '../model/recipe'; 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { Recipe } from '../model/recipe';
+import { environment } from '../environments/environment';
 import { LoginAuthentication } from './login-authentication.service';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeResultService {
-  private searchUrl = 'http://localhost/controller/search.php';
-  private detailsUrl = 'http://localhost/controller/get_recipe_details.php'; 
-  private saveRecipeUrl = 'http://localhost/controller/saved_recipes.php';
-  private unsaveRecipeUrl = 'http://localhost/controller/unsave_recipe.php'; 
-  private checkSavedUrl = 'http://localhost/controller/check_saved_recipe.php';
+  private apiUrl = environment.apiUrl;
 
-  constructor(
-    private http: HttpClient, private authService: LoginAuthentication) { }
+  private searchUrl = `${this.apiUrl}/search.php`;
+  private detailsUrl = `${this.apiUrl}/get_recipe_details.php`;
+  private saveRecipeUrl = `${this.apiUrl}/saved_recipes.php`;
+  private unsaveRecipeUrl = `${this.apiUrl}/unsave_recipe.php`;
+  private checkSavedUrl = `${this.apiUrl}/check_saved_recipe.php`;
+  private submitRatingUrl = `${this.apiUrl}/get_recipe_rating.php`;
+
+  constructor(private http: HttpClient, private authService: LoginAuthentication) { }
 
   searchRecipes(
-    query: string, 
-    mealType: string, 
-    dietaryPref: string, 
+    query: string,
+    mealType: string,
+    dietaryPref: string,
     ingredient: string
   ): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(this.searchUrl, {
@@ -77,6 +79,20 @@ export class RecipeResultService {
       );
   }
 
+  submitRating(
+    recipe_id: number,
+    user_id: number,
+    rating: number
+  ): Observable<any> {
+    const body = { recipe_id, user_id, rating };
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post<any>(this.submitRatingUrl, body, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Something bad happened; please try again later.';
     if (error.error instanceof ErrorEvent) {
@@ -86,7 +102,8 @@ export class RecipeResultService {
       errorMessage = `Server-side error: ${error.status} ${error.message}`;
       console.error(
         `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `body was: ${error.error}`
+      );
     }
     return throwError(errorMessage);
   }

@@ -282,3 +282,227 @@ a.active {
 .remove-btn:hover {
     color: darkred;
 }
+
+
+@media (max-width: 768px) {
+    .search-container {
+        margin: 10px 20px;
+        font-size: 16px; 
+    }
+
+    .header {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .header h3 {
+        font-size: 17px;
+        text-align: right; 
+    }
+
+    .header p {
+        font-size: 14px; 
+        text-align: right; 
+    }
+
+    .search-by-categories {
+        margin-top: 20px;
+        text-align: left;
+        padding-left: 10px;
+    }
+
+    .search-by-categories h2 {
+        margin-bottom: 10px;
+        padding-left: 10px; 
+        font-size: 20px;
+    }
+
+    .categories {
+        display: flex; 
+        flex-direction: row; 
+        justify-content: center; 
+        align-items: center;
+        gap: 30px; 
+    }
+
+    .dropbtn {
+        padding: 10px;
+        width: 200px; 
+        height: 100px; 
+        font-size: 16px;
+    }
+
+    .dropdown img {
+        margin-right: 5px;
+        width: 50px;
+        height: 50px; 
+        object-fit: cover;
+    }
+
+    .meal-type-container, .dietary-pref-container {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center;
+        flex-wrap: wrap; 
+    }
+
+    .meal-type, .dietary-pref {
+        display: flex;
+        flex-direction: row;
+        gap: 10px; 
+        flex-wrap: wrap; 
+        justify-content: center;
+    }
+
+    .meal-type a, .dietary-pref a {
+        padding: 0px;
+        width: 100px;
+        height: 80px;
+        font-size: 12px;
+
+    }
+    
+    .meal-type img, .dietary-pref img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .modal-content {
+        width: 50%;
+    }
+
+    .modal-content p, .modal button {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dropbtn {
+        padding: 5px;
+        width: 150px; 
+        height: 100px; 
+        font-size: 16px;
+    }
+
+    .dropdown img {
+        margin-right: 5px;
+        width: 40px; 
+        height: 40px; 
+        object-fit: cover;
+    }
+
+    .dropdown .dropbtn i {
+        left: 50%;
+    }
+
+    .meal-type, .dietary-pref {
+        grid-template-columns: 1fr;
+    }
+
+    .meal-type a, .dietary-pref a {
+        padding: 0px;
+        width: 100px;
+        height: 80px;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .meal-type img, .dietary-pref img {
+        width: 40px;
+        height: 40px;
+    } 
+
+    .modal-content {
+        width: 50%;
+    }
+}
+
+@media (max-width: 320px) {
+    .search-container {
+        margin: 5px 10px;
+        font-size: 14px;
+    }
+
+    .header {
+        padding-right: 5px;
+    }
+
+    .header h3 {
+        font-size: 15px;
+    }
+
+    .header p {
+        font-size: 12px;
+    }
+
+    .search-by-categories {
+        margin-top: 10px;
+        padding-left: 5px;
+    }
+
+    .search-by-categories h2 {
+        margin-bottom: 5px;
+        padding-left: 5px;
+        font-size: 18px;
+    }
+
+    .categories {
+        gap: 20px;
+    }
+
+    .dropbtn {
+        padding: 5px;
+        width: 120px;
+        height: 80px;
+        font-size: 12px;
+    }
+
+    .dropdown img {
+        margin-right: 3px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .meal-type-container, .dietary-pref-container {
+        flex-wrap: wrap;
+    }
+
+    .meal-type, .dietary-pref {
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .meal-type a, .dietary-pref a {
+        padding: 0px;
+        width: 100px;
+        height: 80px;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .meal-type img, .dietary-pref img {
+        width: 40px;
+        height: 40px;
+    }  
+
+    .modal-content {
+        width: 50%;
+    }
+
+    .modal-content p, .modal button {
+        font-size: 10px;
+    }
+}
+
+
+
+
+
+

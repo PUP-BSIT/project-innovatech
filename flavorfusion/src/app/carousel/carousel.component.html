@@ -1,32 +1,33 @@
 <div class="carousel">
     <div class="carousel-inner">
-        <div 
-            class="carousel-item" 
-            *ngFor="let slide of slides; let i = index" 
-            [class.active]="i === currentSlide">
-            <div class="carousel-content">
-                <div class="label-wrapper">
-                    <div class="label">{{ slide.meal }}</div>
-                </div>
-                <div class="text-content">
-                    <h1>{{ slide.title }}</h1>
-                    <p>{{ slide.description }}</p>
-                    <div class="details">
-                        <span>
-                            <i class="fas fa-clock"></i> 
-                            {{ slide.time }}
-                        </span>
-                        <span>
-                            <i class="fas fa-utensils"></i> 
-                            {{ slide.servings }}
-                        </span>
+        @for (slide of slides; track slide) {
+            <div 
+                class="carousel-item" 
+                [class.active]="slide === slides[currentSlide]">
+                <div class="carousel-content">
+                    <div class="label-wrapper">
+                        <div class="label">{{ slide.meal }}</div>
+                    </div>
+                    <div class="text-content">
+                        <h1>{{ slide.title }}</h1>
+                        <p>{{ slide.description }}</p>
+                        <div class="details">
+                            <span>
+                                <i class="fas fa-clock"></i> 
+                                {{ slide.time }}
+                            </span>
+                            <span>
+                                <i class="fas fa-utensils"></i> 
+                                {{ slide.servings }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img [src]="slide.image" [alt]="slide.title">
                     </div>
                 </div>
-                <div class="image-content">
-                    <img [src]="slide.image" [alt]="slide.title">
-                </div>
             </div>
-        </div>
+        }
     </div>
 
     <button class="carousel-btn prev" (click)="moveToPrevSlide()">
@@ -37,11 +38,13 @@
     </button>
 
     <div class="carousel-indicators">
-        <span 
-            *ngFor="let slide of slides; let i = index" 
-            class="dot" 
-            [class.active]="i === currentSlide" 
-            (click)="setSlide(i)">
-        </span>
+        @for (slide of slides; track slide) {
+            <span 
+                class="dot" 
+                [class.active]="slide === slides[currentSlide]" 
+                (click)="setSlide(slides.indexOf(slide))">
+            </span>
+        }
     </div>
 </div>  
+    

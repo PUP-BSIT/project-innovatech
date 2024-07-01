@@ -1,74 +1,95 @@
-<div class="recipe-container" *ngIf="recipe">
-  <div class="recipe-header">
-    <div class="recipe-image">
-      <img [src]="'data:image/jpeg;base64,' + recipe.picture" 
-        [alt]="recipe.name" />
-    </div>
-  
-    <div class="recipe-text">
-      <h1>{{ recipe.name }}</h1>
-      <p>{{ recipe.description }}</p>
-
-      <div class="recipe-icons">
-        <div class="icon-item">
-          <p class="chef_name"><i class="fas fa-user"></i>
-            <strong>By: </strong>
-            {{ recipe.chef_name }}
-          </p>
-        </div>
-  
-        <div class="icon-item">
-          <p class="prep-time"><i class="fas fa-concierge-bell"></i> 
-            <strong>Preparation Time: </strong> 
-            {{ recipe.prep_time }}
-          </p>
-        </div>
-
-        <div class="icon-item">
-          <p class="servings"><i class="fas fa-utensils"></i> 
-            <strong>Servings: </strong> 
-            {{ recipe.servings }}
-          </p>
-        </div>
-      </div> 
-
-      <div class="actions">
-        <button class="save" (click)="toggleSave()"
-           [disabled]="!user" [ngClass]="{'saved': saved}">
-          <i class="fas fa-heart"></i> {{ saved ? 'Already Saved' : 'Save' }}
-        </button>
-
-        <button class="rate">
-          <i class="fas fa-star"></i> 
-          Rate
-        </button>
-
-        <button class="share">
-          <i class="fas fa-share"></i> 
-          Share to Community
-        </button>
+<div class="recipe-container">
+  @if (recipe) {
+    <div class="recipe-header">
+      <div class="recipe-image">
+        <img [src]="'data:image/jpeg;base64,' + recipe.picture" [alt]="recipe.name" />
       </div>
-    </div>
-  </div>
-    
-  <div class="recipe-content">
-    <div class="recipe-details">
-      <h2>Ingredients:</h2>
-      <ul>
-        <li *ngFor="let ingredient of recipe.ingredients">
-          {{ ingredient.quantity }} {{ ingredient.ingredient }}
-        </li>
-      </ul>
-    </div>
-            
-    <div class="recipe-procedures">
-      <h2>Procedures:</h2>
-      <div class="steps">
-        <div class="step" *ngFor="let step of recipe.procedures">
-          <strong class="step-number">Step {{ step.step_number }}:</strong>
-          <p class="step-instruction">{{ step.instruction }}</p>
+
+      <div class="recipe-text">
+        <h1>{{ recipe.name }}</h1>
+        <p>{{ recipe.description }}</p>
+
+        <div class="recipe-icons">
+          <div class="icon-item">
+            <p class="chef_name"><i class="fas fa-user"></i>
+              <strong>By: </strong>
+              {{ recipe.chef_name }}
+            </p>
+          </div>
+
+          <div class="icon-item">
+            <p class="prep-time"><i class="fas fa-concierge-bell"></i>
+              <strong>Preparation Time: </strong>
+              {{ recipe.prep_time }}
+            </p>
+          </div>
+
+          <div class="icon-item">
+            <p class="servings"><i class="fas fa-utensils"></i>
+              <strong>Servings: </strong>
+              {{ recipe.servings }}
+            </p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="save" (click)="toggleSave()">
+            <i class="fas fa-heart"></i> {{ saved ? 'Already Saved' : 'Save' }}
+          </button>
+
+          <button class="rate" (click)="openRateModal()">
+            <i class="fas fa-star"></i>
+            Rate
+          </button>
+
+          <button class="share" (click)="shareToCommunity()">
+            <i class="fas fa-share"></i>
+            Share to Community
+          </button>
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="recipe-content">
+      <div class="recipe-details">
+        <h2>Ingredients:</h2>
+        <ul>
+          @for (ingredient of recipe.ingredients; track ingredient) {
+            <li>
+              {{ ingredient.quantity }} {{ ingredient.ingredient }}
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="recipe-procedures">
+        <h2>Procedures:</h2>
+        <div class="steps">
+          @for (step of recipe.procedures; track step) {
+            <div class="step">
+              <strong class="step-number">Step {{ step.step_number }}:</strong>
+              <p class="step-instruction">{{ step.instruction }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" [ngClass]="{'show': isRateModalOpen}">
+      <div class="modal-content">
+        <span class="close" (click)="closeRateModal()">&times;</span>
+        <h2>Rate this Recipe</h2>
+        <form (ngSubmit)="submitRating()">
+          <div class="star-rating">
+            @for (star of stars; track $index) {
+              <i class="fas fa-star" [class.filled]="$index < rating" 
+              (click)="setRating($index + 1)"></i>
+            }
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  }
 </div>

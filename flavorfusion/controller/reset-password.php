@@ -19,17 +19,19 @@ try {
     // Debug: Log received input
     error_log("Received input: " . json_encode($input));
 
-    if (!isset($input["key"]) || !isset($input["email"]) || !isset($input["password"])) {
+    if (!isset($input["key"]) || !isset($input["email"]) || 
+            !isset($input["password"])) {
         throw new Exception("Missing required parameters");
     }
 
     $token = mysqli_real_escape_string($conn, $input["key"]);
     $email = mysqli_real_escape_string($conn, $input["email"]);
-    $password = password_hash($input["password"], PASSWORD_DEFAULT); // Hash the new password
+    $password = password_hash($input["password"], PASSWORD_DEFAULT);
     $curDate = date("Y-m-d H:i:s");
 
     // Fetch the latest entry for the given email
-    $query = mysqli_query($conn, "SELECT * FROM `password_reset_temp` WHERE `email`='$email' ORDER BY `expDate` DESC LIMIT 1");
+    $query = mysqli_query($conn, "SELECT * FROM `password_reset_temp` 
+            WHERE `email`='$email' ORDER BY `expDate` DESC LIMIT 1");
     if (mysqli_num_rows($query) == 0) {
         throw new Exception("Invalid Link");
     }
@@ -42,11 +44,14 @@ try {
     $expDate = $row['expDate'];
     if ($expDate >= $curDate) {
         // Update password in the users table
-        if (mysqli_query($conn, "UPDATE `users` SET `password_hash`='$password' WHERE `email`='$email'")) {
+        if (mysqli_query($conn, "UPDATE `users` SET `password_hash`='$password' 
+                WHERE `email`='$email'")) {
 
                 // Delete the password reset token
-                mysqli_query($conn, "DELETE FROM `password_reset_temp` WHERE `email`='$email'");
-                $response["message"] = "Password has been updated successfully in both tables";
+                mysqli_query($conn, "DELETE FROM `password_reset_temp` 
+                        WHERE `email`='$email'");
+                $response["message"] = 
+                        "Password has been updated successfully in both tables";
             
         } else {
             throw new Exception("Failed to update password in users table");

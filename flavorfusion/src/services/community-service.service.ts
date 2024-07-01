@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class CommunityService {
-  private apiUrl = 'http://localhost/controller'; 
+  private apiUrl = environment.apiUrl; 
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class CommunityService {
   }
 
   addComment(commentData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add_comment.php`, commentData); 
+    return this.http.post(`${this.apiUrl}/add_comment.php`, commentData);
   }
 
   getUserProfile(userId: string): Observable<any> {

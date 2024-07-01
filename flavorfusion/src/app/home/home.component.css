@@ -303,3 +303,50 @@ button.update {
     width: 100%;
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .category, .recipe {
+        width: 48%;
+        margin: 1%;
+    }
+
+    .popular-recipes-content, .user-recipes, .filtered-recipes {
+        justify-content: space-between;
+    }
+
+    .category img, .recipe img {
+        height: 150px;
+    }
+
+    .dropdown {
+        right: 10px;
+        margin-right: 10px;
+    }
+
+    .dropdown-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .latest-recipes-content p, .personalize-taste-content p {
+        padding: 20px;
+        font-size: 13px;
+    }
+
+    .share-recipe-btn, .login-btn {
+        font-size: 14px;
+    }
+
+    .apply-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

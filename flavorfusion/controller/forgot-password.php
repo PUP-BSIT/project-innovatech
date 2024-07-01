@@ -30,7 +30,8 @@ if (!$email) {
 $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 if (!$email) {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid email address']);
+    echo json_encode(['status' => 'error', 'message' => 
+            'Invalid email address']);
     exit;
 }
 
@@ -68,7 +69,8 @@ if (!mysqli_query($conn, $insert_query)) {
 $frontendUrl = 'http://localhost:4200/reset-password';
 
 // Generate the reset link
-$resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' . urlencode($email);
+$resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' 
+        . urlencode($email);
 
 try {
     $mail = new PHPMailer(true);
@@ -83,14 +85,81 @@ try {
     $mail->Port       = 587;
 
     //Recipients
-    $mail->setFrom('from@example.com', 'Mailer');
+    $mail->setFrom('from@example.com', 'Flavorfusion.tech');
     $mail->addAddress($email);
 
     //Content
     $mail->isHTML(true);
-    $mail->Subject = 'Password Reset Request (TESTING)';
-    $mail->Body    = 'Hello,<br><br>Please click on the following link to reset your password:<br>' .
-                     '<a href="' . $resetLink . '">Reset Password</a><br><br>Thank you.';
+    $mail->Subject = 'Password Reset Request';
+    $mail->Body    = '
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                }
+                .email-container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    background-color: #f9f9f9;
+                }
+                .email-header {
+                    background-color: #ff9800;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                }
+                .email-body {
+                    padding: 20px;
+                    color: #333;
+                }
+                .email-footer {
+                    padding: 10px 20px;
+                    text-align: center;
+                    font-size: 12px;
+                    color: #888;
+                }
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white !important;
+                    background-color: #ff9800;
+                    text-decoration: none;
+                    border-radius: 5px;
+                }
+                .button:hover {
+                    background-color: #e68900;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="email-header">
+                    <h2>Password Reset Request</h2>
+                </div>
+                <div class="email-body">
+                    <p>Hello,</p>
+                    <p>
+                    Please click on the following link to reset your password:
+                    </p>
+                    <p><a href="' . $resetLink 
+                            . '" class="button">Reset Password</a></p>
+                    <p>Thank you.</p>
+                </div>
+                <div class="email-footer">
+                    <p>&copy; ' . date('Y') 
+                            . ' Flavorfusion. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>';
 
     $mail->send();
     echo json_encode(['status' => 'success', 'message' => 
@@ -99,4 +168,6 @@ try {
     echo json_encode(['status' => 'error', 'message' => 
             "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
 }
+
+
 ?>

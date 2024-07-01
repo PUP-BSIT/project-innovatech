@@ -24,7 +24,8 @@ $email = mysqli_real_escape_string($conn, $request->email);
 $password = mysqli_real_escape_string($conn, $request->password);
 
 if (empty($email) || empty($password)) {
-    echo json_encode(array('success' => false, 'message' => 'Email and password are required.'));
+    echo json_encode(array('success' => false, 'message' => 
+            'Email and password are required.'));
     exit;
 }
 

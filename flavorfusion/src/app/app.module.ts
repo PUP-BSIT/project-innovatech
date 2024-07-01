@@ -24,7 +24,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
@@ -69,6 +69,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    ScrollingModule,
   ],
   providers: [
     provideAnimationsAsync(),

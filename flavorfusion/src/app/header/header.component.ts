@@ -78,7 +78,6 @@ export class HeaderComponent implements OnInit {
     })
   }
 
-  // TODO: Configure log in status to work independently with each user account
   handleLoginLogout(): void {
     this.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
