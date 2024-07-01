@@ -18,17 +18,21 @@ if ($recipe_id <= 0) {
     exit();
 }
 
-$sql = "SELECT recipe_id, 
-               name, 
-               description, 
-               time AS prep_time, 
-               servings, 
-               picture,
-               u.username AS chef_name
+$sql = "SELECT r.recipe_id, 
+               r.name, 
+               r.description, 
+               r.time AS prep_time, 
+               r.servings, 
+               r.picture,
+               u.username AS chef_name,
+               GROUP_CONCAT(DISTINCT mt.meal_type) AS meal_types,
+               GROUP_CONCAT(DISTINCT dp.dietary_pref) AS dietary_prefs
         FROM recipes r
         LEFT JOIN user_profiles u ON r.user_id = u.user_id 
-        WHERE recipe_id = ?
-        ";
+        LEFT JOIN recipe_meal_types mt ON r.recipe_id = mt.recipe_id
+        LEFT JOIN recipe_dietary_prefs dp ON r.recipe_id = dp.recipe_id
+        WHERE r.recipe_id = ?
+        GROUP BY r.recipe_id";
 
 $stmt = $conn->prepare($sql);
 
