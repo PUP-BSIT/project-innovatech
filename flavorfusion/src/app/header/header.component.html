@@ -20,8 +20,9 @@
             [(ngModel)]="searchText"
             (click)="toggleSearchComponent()"
             (keyup.enter)="onSearch()">
-            <button *ngIf="showSearchComponent" 
-            (click)="closeSearch()">X</button>
+            @if (showSearchComponent){ 
+            <button (click)="closeSearch()">X</button>
+            }
         </div>
     </div>
 
@@ -34,9 +35,11 @@
         </a>
     </div>
     
-    <div *ngIf="isShown" class="modal-background">
+    @if (isShown) {
+    <div class="modal-background">
         <div class="modal">
           <p>Log Out Successful</p>
         </div>
     </div>
+    }
 </header>

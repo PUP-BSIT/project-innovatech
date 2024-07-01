@@ -1,80 +1,85 @@
 <div class="login-container">
-    <div class="logo">
-      <img src="assets/images/logo-text.png" alt="FlavorFusion Logo">
-    </div>
-    <div class="login-content">
-      <div class="login-form">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <h2>Log In</h2>
-          <p class="description">
-            Get access to our expert-curated recipes, 
-            inspiring cooking guides, and interactive features 
-            to transform your culinary skills today!
-          </p>
-          <label for="email">Email:</label>
-          <div *ngIf="email.invalid && (email.dirty || email.touched)" 
-                class="error-message">
-            <p *ngIf="email.errors?.required" class="validation-error">
-                Email is required.
-            </p>
-            <p *ngIf="email.errors?.email" class="validation-error">
-                Please enter a valid email address.
-            </p>
+  <div class="logo">
+    <img src="assets/images/logo-text.png" alt="FlavorFusion Logo">
+  </div>
+  <div class="login-content">
+    <div class="login-form">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h2>Log In</h2>
+        <p class="description">
+          Get access to our expert-curated recipes, 
+          inspiring cooking guides, and interactive features 
+          to transform your culinary skills today!
+        </p>
+        <label for="email">Email:</label>
+        @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="error-message">
+            @if (email.errors?.required) {
+              <p class="validation-error">Email is required.</p>
+            }
+            @if (email.errors?.email) {
+              <p class="validation-error">Please enter a valid email address.</p>
+            }
           </div>
-          <input 
-            type="email" 
-            id="email"
-            formControlName="email"
-            placeholder="e.g. hello@reallygreatsite.com">
-  
-          <label for="password">Password:</label>
-          <div *ngIf="password.invalid && (password.dirty || password.touched)" 
-                    class="error-message">
+        }
+        <input 
+          type="email" 
+          id="email"
+          formControlName="email"
+          placeholder="e.g. hello@reallygreatsite.com">
+
+        <label for="password">Password:</label>
+        @if (password.invalid && (password.dirty || password.touched)) {
+          <div class="error-message">
             <p class="validation-error">Password is required.</p>
           </div>
-          <input 
-            type="password" 
-            id="password"
-            formControlName="password"
-            placeholder="Password">
-  
-          <div class="form-bottom">
-            <div class="error-message">
-              <div *ngIf="errorMessage" class="incorrect-credentials">
+        }
+        <input 
+          type="password" 
+          id="password"
+          formControlName="password"
+          placeholder="Password">
+
+        <div class="form-bottom">
+          <div class="error-message">
+            @if (errorMessage) {
+              <div class="incorrect-credentials">
                 {{ errorMessage }}
               </div>
-            </div>
-            <button type="submit">Log In</button>
+            }
           </div>
-  
-          <div class="signup-link">
-            <p> Don't have an account yet? 
-              <a routerLink="/sign-up">Sign Up</a>
-            </p>
-          </div>
+          <button type="submit">Log In</button>
+        </div>
 
-          <div class="signup-link">
-            <p> Forgot password? 
-              <a routerLink="/forgot-password">Forgot password</a>
-            </p>
-          </div>
+        <div class="signup-link">
+          <p> Don't have an account yet? 
+            <a routerLink="/sign-up">Sign Up</a>
+          </p>
+        </div>
 
-        </form>
-        <div *ngIf="showModal" class="modal" (click)="closeModal()">
+        <div class="signup-link">
+          <p> Forgot password? 
+            <a routerLink="/forgot-password">Forgot password</a>
+          </p>
+        </div>
+
+      </form>
+      @if (showModal) {
+        <div class="modal" (click)="closeModal()">
           <div class="modal-content">
             <span class="close">&times;</span>
             <p class="login-success">Login successful!</p>
             <button (click)="closeModal()">Close</button>
           </div>
         </div>
-        <div class="terms">By continuing, you agree to our 
-          <a href="#">Terms of Service</a> and
-          <a href="#">Privacy Policy</a>
-        </div>
-      </div>
-      <div class="login-graphic">
-        <img src="assets/images/frontpage_colored.PNG" alt="FlavorFusion Graphic">
+      }
+      <div class="terms">By continuing, you agree to our 
+        <a href="#">Terms of Service</a> and
+        <a href="#">Privacy Policy</a>
       </div>
     </div>
+    <div class="login-graphic">
+      <img src="assets/images/frontpage_colored.PNG" alt="FlavorFusion Graphic">
+    </div>
   </div>
-  
+</div>
