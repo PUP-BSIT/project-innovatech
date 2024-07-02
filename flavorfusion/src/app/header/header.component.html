@@ -4,24 +4,22 @@
     </div>
 
     <nav class="nav">
-        <a 
-            routerLink="/home" 
-            routerLinkActive="active" 
-            [routerLinkActiveOptions]="{ exact: true }">Home
-        </a>
+        <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
         <a routerLink="/community" routerLinkActive="active">Community</a>
     </nav>
 
     <div class="search-bar">
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text"
+            <input
+                type="text"
                 placeholder="Search Recipe"
                 [(ngModel)]="searchText"
                 (click)="toggleSearchComponent()"
-                (keyup.enter)="onSearch()">
+                (keyup.enter)="onSearch()"
+            />
             @if (showSearchComponent) { 
-                <button (click)="closeSearch()">X</button>
+                <button class="close-search" (click)="closeSearch()">X</button>
             }
         </div>
     </div>
@@ -29,19 +27,16 @@
     <div class="user-actions">
         <button #logInLogOut (click)="handleLoginLogout()"></button>
         @if (isLoggedIn$ | async) {
-            <a [routerLink]="(getProfileRouterlink() | async)" 
-               [queryParams]="{ showSavedRecipes: true }">
+            <a [routerLink]="(getProfileRouterlink() | async)" [queryParams]="{ showSavedRecipes: true }">
                 <img [src]="userAvatar" alt="Profile" class="profile-picture">
             </a>
         } @else {
-            <a [routerLink]="(getProfileRouterlink() | async)" 
-               [queryParams]="{ showSavedRecipes: true }">
-               <img src="assets/images/profile.png" alt="Profile" 
-                    class="profile-picture">
+            <a [routerLink]="(getProfileRouterlink() | async)" [queryParams]="{ showSavedRecipes: true }">
+               <img src="assets/images/profile.png" alt="Profile" class="profile-picture">
             </a>
         }
     </div>
-    
+
     @if (isShown) {
         <div class="modal-background" (click)="closeModal()">
             <div class="modal">
