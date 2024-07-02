@@ -9,7 +9,11 @@
                         <div class="label">{{ slide.meal }}</div>
                     </div>
                     <div class="text-content">
-                        <h1>{{ slide.title }}</h1>
+                        <h1>
+                            <a [routerLink]="['/recipe-details', slide.recipe_id]">
+                                {{ slide.title }}
+                            </a>
+                        </h1>
                         <p>{{ slide.description }}</p>
                         <div class="details">
                             <span>
@@ -47,4 +51,3 @@
         }
     </div>
 </div>  
-    

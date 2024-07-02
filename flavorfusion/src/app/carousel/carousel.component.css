@@ -61,6 +61,15 @@
     width: 80%;
 }
 
+.text-content h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.text-content h1 a:hover {
+    color: #D82B1E;
+}
+
 .text-content p {
     width: 80%;
     font-family: math, sans-serif;

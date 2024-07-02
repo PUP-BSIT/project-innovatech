@@ -26,6 +26,13 @@ h2 {
     border-radius: 23px;
     object-fit: cover;
     border: 3px solid #FFCE38;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.category img:hover,
+.recipe img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
   
 .popular-recipes-content, 
@@ -42,6 +49,18 @@ h2 {
     margin-bottom: 5px;
     font-family: math;
     font-size: larger;
+    cursor: pointer;
+}
+
+.category h3 a, 
+.recipe h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.category h3:hover, 
+.recipe h3:hover {
+    color: #D82B1E;
 }
   
 .personalize-taste-content, 

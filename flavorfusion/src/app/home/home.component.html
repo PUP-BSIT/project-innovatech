@@ -10,11 +10,15 @@
     <h2>Popular Recipes</h2>
     <div class="popular-recipes-content">
       <div class="recipe" *ngFor="let recipe of popularRecipes">
-        <img 
-          [src]="'data:image/jpeg;base64,' + recipe.picture" 
-          [alt]="recipe.name"
-        >
-        <h3>{{ recipe.name }}</h3>
+        <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+          <img 
+            [src]="'data:image/jpeg;base64,' + recipe.picture" 
+            [alt]="recipe.name"
+          >
+        </a>
+        <h3>
+          <a [routerLink]="['/recipe-details', recipe.recipe_id]">{{ recipe.name }}</a>
+        </h3>
       </div>
     </div>
   </div>
@@ -26,11 +30,15 @@
     <div class="latest-recipes-content" *ngIf="isLoggedIn; else notLoggedIn">
       <div class="user-recipes" *ngIf="latestRecipes.length > 0; else noRecipes">
         <div class="recipe" *ngFor="let recipe of latestRecipes">
-          <img 
-            [src]="'data:image/jpeg;base64,' + recipe.picture" 
-            [alt]="recipe.name"
-          >
-          <h3>{{ recipe.name }}</h3>
+          <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+            <img 
+              [src]="'data:image/jpeg;base64,' + recipe.picture" 
+              [alt]="recipe.name"
+            >
+          </a>
+          <h3>
+            <a [routerLink]="['/recipe-details', recipe.recipe_id]">{{ recipe.name }}</a>
+          </h3>
           <button (click)="getRecipeDetails(recipe.recipe_id)">Update</button>
           <button (click)="deleteRecipe(recipe.recipe_id)">Delete</button>
         </div>
@@ -103,11 +111,15 @@
       </p>
       <div *ngIf="isFiltered" class="filtered-recipes">
         <div class="recipe" *ngFor="let recipe of filteredRecipes">
-          <img 
-            [src]="'data:image/jpeg;base64,' + recipe.picture" 
-            [alt]="recipe.name"
-          >
-          <h3>{{ recipe.name }}</h3>
+          <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+            <img 
+              [src]="'data:image/jpeg;base64,' + recipe.picture" 
+              [alt]="recipe.name"
+            >
+          </a>
+          <h3>
+            <a [routerLink]="['/recipe-details', recipe.recipe_id]">{{ recipe.name }}</a>
+          </h3>
         </div>
       </div>
     </div>
