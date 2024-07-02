@@ -3,7 +3,9 @@
     <h2>Meal of the Day</h2>
     <app-carousel></app-carousel>
   </div>
+
   <hr class="section-divider">
+
   <div class="popular-recipes">
     <h2>Popular Recipes</h2>
     <div class="popular-recipes-content">
@@ -29,10 +31,12 @@
             [alt]="recipe.name"
           >
           <h3>{{ recipe.name }}</h3>
-        </div>        
+          <button (click)="getRecipeDetails(recipe.recipe_id)">Update</button>
+          <button (click)="deleteRecipe(recipe.recipe_id)">Delete</button>
+        </div>
       </div>
       <ng-template #noRecipes>
-        <div >
+        <div>
           <p>
             Want to share your recipes? Add your own creations to inspire others!
           </p>
@@ -56,10 +60,9 @@
     <h2>Personalize Your Taste</h2>
     <div class="personalize-taste-content">
       <div class="filter" (click)="toggleDropdown()">
-        <i 
-          class="fa" 
-          [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'"
-          aria-hidden="true">
+        <i class="fa" 
+            [ngClass]="showDropdown ? 'fa-caret-up' : 'fa-caret-down'" 
+            aria-hidden="true">
         </i>
         <span class="filter-label">Filter</span>
       </div>
@@ -84,15 +87,12 @@
               <input type="checkbox" [(ngModel)]="filters.shrimp"> Shrimp
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.vegetables">
-              Vegetables
+              <input type="checkbox" [(ngModel)]="filters.vegetables"> Vegetables
             </label>
           </div>
         </div>
-        <button 
-          class="apply-btn" 
-          (click)="applyFilter()" 
-          [disabled]="!hasSelectedFilter()">
+        <button class="apply-btn" (click)="applyFilter()" 
+                [disabled]="!hasSelectedFilter()">
           Apply
         </button>
       </div>
@@ -111,5 +111,118 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="showModal = false">&times;</span>
+    <h2>Update Recipe</h2>
+    <form (ngSubmit)="updateRecipe()">
+      <div class="form-container">
+        <div class="form-content">
+          <div class="title-container">
+            <label class="title">Title:</label>  
+            <input [(ngModel)]="editRecipe.name" name="name" required>
+          </div>
+          <div class="description-container">
+            <label class="description">Description:</label> 
+            <textarea 
+              [(ngModel)]="editRecipe.description" 
+              name="description" 
+              required
+            ></textarea>
+          </div>
+          <div class="meal-dietary-container">
+            <div class="meal-type-container">
+              <label class="meal-type">Meal Type:</label> 
+              <select [(ngModel)]="editRecipe.meal_type" name="meal_type" required>
+                <option [ngValue]="''">Select Meal Type</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Snacks">Snacks</option>
+              </select>
+            </div>
+            <div class="dietary-preference-container">
+              <label class="dietary-preference">Dietary Preference:</label>
+              <select 
+                [(ngModel)]="editRecipe.dietary_preference" 
+                name="dietary_preference" 
+                required
+              >
+                <option [ngValue]="''">Select Dietary Preference</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+                <option value="Low-Carb">Low-Carb</option>
+                <option value="Nut-Free">Nut-Free</option>
+              </select>
+            </div>  
+          </div>
+          <div class="time-servings-container">
+            <div class="time-container">
+              <label class="time">Time:</label>
+              <input [(ngModel)]="editRecipe.prep_time" name="prep_time" required>
+            </div>
+            <div class="servings-container">
+              <label class="servings">Servings:</label>
+              <input 
+                  type="number" 
+                  [(ngModel)]="editRecipe.servings" 
+                  name="servings" 
+                  required
+              > 
+            </div>            
+          </div>
+          <div class="ingredients">
+            <h3>Ingredients:</h3>
+            <div *ngFor="let ingredient of editRecipe.ingredients; let i = index" class="ingredient-quantity-container">
+              <div class="ingredient-container">
+                <label class="ingredient">Ingredient:</label>
+                <input 
+                  [(ngModel)]="ingredient.ingredient" 
+                  name="ingredient-{{i}}" 
+                  required
+                >   
+              </div>
+              <div class="quantity-container">
+                <label class="quantity">Quantity:</label> 
+                <input 
+                  [(ngModel)]="ingredient.quantity" 
+                  name="quantity-{{i}}" 
+                  required
+                >
+              </div>
+            </div>
+          </div>
+          <div class="instructions">
+            <h3>Instructions:</h3>
+            <div *ngFor="let procedure of editRecipe.procedures; let i = index">
+              <div class="instructions-container">
+                <label class="step">Step {{i + 1}}:</label>
+                <textarea 
+                  [(ngModel)]="procedure.instruction" 
+                  name="instruction-{{i}}" 
+                  required
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="image-container">
+            <h3>Image:</h3>
+            <div class="image-box">
+              <img *ngIf="editRecipe.picture" 
+                   [src]="'data:image/jpeg;base64,' + editRecipe.picture" 
+                   alt="Recipe Image"
+              >
+            </div>
+            <input type="file" (change)="onFileSelected($event)">
+          </div>          
+          <button class="update" type="submit">Update Recipe</button>        
+        </div>     
+      </div>
+    </form>
   </div>
 </div>

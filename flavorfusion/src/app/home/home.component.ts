@@ -11,9 +11,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   popularRecipes = [];
-
   latestRecipes = [];
-  
   filters = {
     eggs: false,
     dairy: false,
@@ -28,6 +26,8 @@ export class HomeComponent implements OnInit {
   filteredRecipes = [];
   lastSelectedFilters: string[] = [];
   isLoggedIn: boolean = false;
+  showModal: boolean = false;
+  editRecipe: any = {};
 
   constructor(
     private homeService: HomeService,
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {
     this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
-  }  
+  }
 
   ngOnInit(): void {
     this.checkLoginStatus();
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
       this.loadLatestRecipes();
     }
   }
-  
+
   checkLoginStatus(): void {
     this.loginAuthService.isLoggedIn$.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
@@ -53,18 +53,17 @@ export class HomeComponent implements OnInit {
         this.loadLatestRecipes();
       }
     });
-  }  
+  }
 
   loadPopularRecipes(): void {
     this.homeService.getPopularRecipes().subscribe(
       (recipes) => {
-        console.log('Popular recipes:', recipes);
         this.popularRecipes = recipes;
       },
       (error) => {
-        console.error('Error fetching popular recipes', error);
-        this.snackBar.open('Error fetching popular recipes. Try again.', 'Try Again', {
-          duration: 3000
+        this.snackBar.open(
+          'Error fetching popular recipes. Try again.', 'Try Again', { 
+            duration: 3000 
         });
       }
     );
@@ -73,14 +72,13 @@ export class HomeComponent implements OnInit {
   loadLatestRecipes(): void {
     this.homeService.getUserRecipes().subscribe(
       (recipes) => {
-        console.log('User recipes:', recipes);
         this.latestRecipes = recipes;
       },
       (error) => {
         console.error('Error fetching user recipes', error);
       }
     );
-  }  
+  }
 
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
@@ -91,22 +89,20 @@ export class HomeComponent implements OnInit {
   }
 
   applyFilter(): void {
-    const selectedFilters = Object.keys(this.filters).filter(key => this.filters[key]);
-    this.lastSelectedFilters = selectedFilters; 
-    console.log("Selected filters:", selectedFilters);
+    const selectedFilters = Object.keys(this.filters)
+      .filter(key => this.filters[key]);
+    this.lastSelectedFilters = selectedFilters;
     if (selectedFilters.length) {
       this.homeService.getFilteredRecipes(selectedFilters).subscribe(
         (recipes) => {
-          console.log("Filtered recipes:", recipes); 
           this.filteredRecipes = recipes;
           this.isFiltered = true;
           this.showDropdown = false;
         },
         (error) => {
-          console.error('Error fetching filtered recipes', error);
           this.snackBar.open(
             'Error fetching filtered recipes. Try again.', 'Try Again', {
-            duration: 3000
+              duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
           });
@@ -119,16 +115,14 @@ export class HomeComponent implements OnInit {
     if (this.lastSelectedFilters.length) {
       this.homeService.getFilteredRecipes(this.lastSelectedFilters).subscribe(
         (recipes) => {
-          console.log("Filtered recipes:", recipes);
           this.filteredRecipes = recipes;
           this.isFiltered = true;
           this.showDropdown = false;
         },
         (error) => {
-          console.error('Error fetching filtered recipes', error);
           this.snackBar.open(
             'Error fetching filtered recipes. Try again.', 'Try Again', {
-            duration: 3000
+              duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
           });
@@ -141,9 +135,90 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  navigateToProfile(): void {
-    this.router.navigate([
-      '/profile'
-    ], { queryParams: { openShareRecipe: true } });
+  shareRecipe(): void {
+    this.router.navigate(
+      ['/profile'], 
+      { queryParams: { showShareRecipe: true } }
+    );
+  }
+
+  deleteRecipe(recipeId): void {
+    this.homeService.deleteUserRecipe(recipeId).subscribe(
+      (response) => {
+        if (response.success) {
+          this.latestRecipes = this.latestRecipes.filter(
+            recipe => recipe.recipe_id !== recipeId
+          );
+          this.snackBar.open('Recipe deleted successfully!', 'Close', {
+            duration: 3000
+          });
+        } else {
+          this.snackBar.open(
+            'Failed to delete recipe. Try again.', 'Try Again', {
+              duration: 3000
+          });
+        }
+      },
+      (error) => {
+        this.snackBar.open('Error deleting recipe. Try again.', 'Try Again', {
+          duration: 3000
+        });
+      }
+    );
+  }
+
+  getRecipeDetails(recipeId: number): void {
+    this.homeService.getRecipeDetails(recipeId).subscribe(
+      (recipe) => {
+        this.editRecipe = {
+          ...recipe,
+          meal_type: recipe.meal_types ? recipe.meal_types.split(',')[0] : '',
+          dietary_preference: recipe.dietary_prefs 
+            ? recipe.dietary_prefs.split(',')[0] 
+            : '',
+        };
+        this.showModal = true;
+      },
+      (error) => {
+        this.snackBar.open(
+          'Error fetching recipe details. Try again.', 'Try Again', {
+            duration: 3000
+        });
+      }
+    );
+  }
+
+  updateRecipe(): void {
+    this.homeService.updateRecipe(this.editRecipe).subscribe(
+      (response) => {
+        if (response.success) {
+          this.snackBar.open('Recipe updated successfully!', 'Close', {
+            duration: 3000
+          });
+          this.showModal = false;
+          this.loadLatestRecipes();
+        } else {
+          this.snackBar.open(
+            'Failed to update recipe. Try again.', 'Try Again', {
+              duration: 3000
+          });
+        }
+      },
+      (error) => {
+        this.snackBar.open('Error updating recipe. Try again.', 'Try Again', {
+          duration: 3000
+        });
+      }
+    );
+  }
+
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.editRecipe.picture = (reader.result as string).split(',')[1];
+    };
+    reader.readAsDataURL(file);
+    this.editRecipe.pictureFile = file;
   }
 }

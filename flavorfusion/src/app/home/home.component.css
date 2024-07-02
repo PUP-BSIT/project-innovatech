@@ -11,14 +11,16 @@ h2 {
     margin: 8px;
 }
   
-.category, .recipe {
+.category, 
+.recipe {
     width: 22%;
     margin: 1%;
     vertical-align: top;
     text-align: center;
 }
   
-.category img, .recipe img {
+.category img, 
+.recipe img {
     width: 100%;
     height: 200px;
     border-radius: 23px;
@@ -26,20 +28,24 @@ h2 {
     border: 3px solid #FFCE38;
 }
   
-.popular-recipes-content, .user-recipes, .filtered-recipes {
+.popular-recipes-content, 
+.user-recipes, 
+.filtered-recipes {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
   
-.category h3, .recipe h3 {
+.category h3, 
+.recipe h3 {
     margin-top: 10px;
     margin-bottom: 5px;
     font-family: math;
     font-size: larger;
 }
   
-.personalize-taste-content, .latest-recipes-content {
+.personalize-taste-content, 
+.latest-recipes-content {
     background-color: #fff8e1;
     padding: 20px;
     border-radius: 18px;
@@ -49,7 +55,8 @@ h2 {
     flex-direction: column;
 }
 
-.share-recipe-btn, .login-btn {
+.share-recipe-btn, 
+.login-btn {
     margin-top: 10px;
     background: none;
     border: none;
@@ -67,7 +74,8 @@ h2 {
     margin-bottom: 26px;
 }
   
-.personalize-taste p, .latest-recipes p {
+.personalize-taste p, 
+.latest-recipes p {
     color: #55555585;
     font-family: 'Poppins', sans-serif;
     text-align: center;
@@ -137,6 +145,163 @@ h2 {
     height: 3px;
     background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
     margin: 40px 0;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+    font-family: "Poppins", sans-serif;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+span.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-content {
+    width: calc(88% - 10px);
+}
+
+label.title, 
+label.description,
+label.meal-type,
+label.dietary-preference,
+label.time,
+label.servings,
+label.ingredient,
+label.quantity,
+label.step,
+label.image {
+    margin-right: 1rem;
+}
+
+.title-container, 
+.description-container,
+.meal-type-container,
+.dietary-preference-container,
+.time-servings-container,
+.ingredient-quantity-container,
+.instructions-container,
+.image-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.title-container input,
+.description-container textarea,
+.meal-type-container select,
+.dietary-preference-container select,
+.time-container input,
+.servings-container input,
+.ingredient-container input,
+.quantity-container input,
+.instructions-container textarea,
+.image-container input {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.time-container,
+.servings-container,
+.ingredient-container, 
+.quantity-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.servings-container,
+.quantity-container {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.time-container input,
+.servings-container input,
+.ingredient-container input,
+.quantity-container input {
+    width: 100%;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+  
+.image-container label {
+    margin-bottom: 0.5rem;
+}
+  
+.image-box {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+  
+.image-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.image-container input[type="file"] {
+    margin-top: 0.5rem;
+    width: 100%;
+}  
+
+button.update {
+    background-color: #ffb9a9;
+    border: 3px solid #ccccccd9;
+    color: black;
+    border-radius: 18px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
