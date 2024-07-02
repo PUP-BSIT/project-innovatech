@@ -1,14 +1,17 @@
 import { Comment } from "./comments";
 
 export interface Post {
-    userAvatar: string;
-    username: string;
-    description: string;
-    time: string;
-    image: string;
-    likes: number;
-    liked: boolean;
-    comments: Comment[];
-    caption: string;
-  }
-  
+  id: number;
+  userAvatar: string;
+  username: string;
+  description: string;
+  time: string;
+  image: string;
+  likes: number;
+  liked: boolean;
+  comments: Comment[];
+  caption: string;
+  recipeName?: string;  
+  recipeId?: number;   
+  communityRecipeId: number; 
+}
