@@ -64,20 +64,21 @@ header {
 }
 
 .search-box input[type="text"] {
-    width: calc(100% - 30px);
+    width: calc(100% - 40px); /* Adjusted to account for the close button */
     padding: 10px 10px 10px 33px;
     border: 3px solid #FFD700;
     border-radius: 33px;
+    box-sizing: border-box; /* Added to ensure proper box sizing */
 }
 
 .search-box input[type="text"]::placeholder {
     color: #333333;
 }
 
-.search-box button {
+.search-box .close-search {
     position: absolute;
     top: 50%;
-    right: 5px;
+    right: 10px;
     transform: translateY(-50%);
     background: #fab1a1;
     border: none;
@@ -95,15 +96,15 @@ header {
     margin-left: 10px; 
 }
 
-.user-actions a {
-    font-size: 19px;
-    text-decoration: none;
-    color: #252323;
-    font-weight: bolder;
+.user-actions img.profile-picture {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.user-actions a:hover {
-    color: #2e9800ce;
+.user-actions img.profile-picture:hover {
+    transform: scale(1.03);
 }
 
 .user-actions button {
@@ -122,47 +123,69 @@ header {
     color: #2e9800ce;
 }
 
-.user-actions img {
-    width: 63px;
-    height: auto;
-    border-radius: 50%;
-}
-
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #FEECCA;
-    border: 1px solid #FEECCA;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto; 
-    transition: opacity 0.3s ease;
-}
-
-.modal p {
-    font-size: 20px;
-    text-align: center;
-    color: #252323;
-}
-
 .modal-background {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px); 
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.modal {
+    position: relative;
+    background-color: #fefefe;
+    border: 1px solid #888;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    width: 50%;
+    max-width: 90%;
+    text-align: center;
+}
+
+.modal-content {
+    text-align: center;
+}
+
+.modal p {
+    font-size: 20px;
+    color: #252323;
+}
+
+.modal button {
+    width: 100px;
+    padding: 10px;
+    background-color: #ff9800;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.modal button:hover {
+    background-color: #e68900;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
 
 @media (max-width: 768px) {
     header {
@@ -208,7 +231,7 @@ header {
         padding: 10px 10px 10px 40px;
     }
 
-    .search-box button {
+    .search-box .close-search {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -224,14 +247,15 @@ header {
         max-width: 20%;
     }
 
-    .user-actions a,
-    .user-actions button {
-        font-size: 14px;
-        white-space: nowrap;
+    .user-actions img.profile-picture {
+        width: 30px;
+        height: 30px;
     }
 
-    .user-actions img {
-        width: 30px;
+    .user-actions button,
+    .user-actions a {
+        font-size: 14px;
+        white-space: nowrap;
     }
 
     .login-link {

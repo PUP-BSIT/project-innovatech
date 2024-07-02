@@ -30,10 +30,12 @@ import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 import { ForgotPasswordService } from '../services/forgot-password.service';
+import { UserService } from '../services/user-service.service';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserVerificationComponent } from './user-verification/user-verification.component';
 
 
 
@@ -53,6 +55,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     RecipeDetailsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    UserVerificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +73,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatSnackBarModule,
     MatProgressSpinnerModule,
     ScrollingModule,
+
   ],
   providers: [
     provideAnimationsAsync(),
@@ -79,6 +83,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     LoginAuthentication,
     SignupService,
     ForgotPasswordService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })
