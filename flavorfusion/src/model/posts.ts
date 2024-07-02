@@ -2,6 +2,7 @@ import { Comment } from "./comments";
 
 export interface Post {
   id: number;
+  recipe_id: number;
   userAvatar: string;
   username: string;
   description: string;
@@ -14,4 +15,5 @@ export interface Post {
   recipeName?: string;  
   recipeId?: number;   
   communityRecipeId: number; 
+  newRecipeId: number;
 }

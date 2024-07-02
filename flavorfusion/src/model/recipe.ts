@@ -1,4 +1,5 @@
 export interface Recipe {
+    id:number;
     recipe_id: number;
     name: string;
     image: string;
