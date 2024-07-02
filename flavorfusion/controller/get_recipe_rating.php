@@ -23,31 +23,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $sql = "INSERT INTO ratings (recipe_id, user_id, rating) 
-            VALUES (?, ?, ?) 
-            ON DUPLICATE 
-            KEY UPDATE rating = VALUES(rating)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iii", $recipe_id, $user_id, $rating);
+    $check_sql = "SELECT rating 
+                FROM ratings 
+                WHERE recipe_id = ? 
+                AND user_id = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ii", $recipe_id, $user_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
 
-    if ($stmt->execute()) {
-        echo json_encode([
-            'success' => true, 'message' => 
-            'Rating submitted successfully'
-        ]);
+    if ($check_result->num_rows > 0) {
+        echo json_encode(['success' => false, 'message' => 
+                        'You have already rated this recipe']);
     } else {
-        echo json_encode([
-            'success' => false, 'message' => 
-            'Failed to submit rating'
-        ]);
+        $sql = "INSERT INTO ratings (recipe_id, user_id, rating) 
+                VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iii", $recipe_id, $user_id, $rating);
+
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 
+                            'Rating submitted successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 
+                            'Failed to submit rating']);
+        }
+
+        $stmt->close();
     }
 
-    $stmt->close();
+    $check_stmt->close();
     $conn->close();
 } else {
-    echo json_encode([
-        'success' => false, 'message' => 
-        'Invalid request method'
-    ]);
+    echo json_encode(['success' => false, 'message' => 
+                    'Invalid request method']);
 }
-?>
