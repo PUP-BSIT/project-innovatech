@@ -37,7 +37,7 @@
         </div>
         
         <img [src]="post.image || post.image_src" class="post-image"
-         alt="post image"/>
+         alt="post image"  (click)="openPostDetail(post, postDetailTemplate)"/>
         <div class="post-footer">
           <div class="actions">
             <span (click)="likePost(post, $event)" [class.liked]="post.liked">
@@ -50,7 +50,8 @@
           </div>
           <div class="caption">
             <span class="username">{{ post.username }}:</span>
-            <span class="username">{{ post.caption }}</span>
+            <span class="caption-text"
+            (click)="navigateToRecipe(post, $event)">{{ post.caption }}</span>
           </div>
           <hr class="footer-line"/>
         </div>
