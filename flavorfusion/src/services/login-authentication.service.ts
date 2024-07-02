@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
@@ -9,7 +9,7 @@ export class LoginAuthentication {
   private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
-  private sessionTimeout: number = 3600000; // 1 hr
+  private sessionTimeout: number = 3600000;
   private username: string;
   private userAvatar: string;
   private apiURL = environment.apiUrl;
@@ -56,9 +56,10 @@ export class LoginAuthentication {
     }, this.sessionTimeout);
   }
 
-  logout(): void {
+  logout(): Observable<void> {
     localStorage.removeItem('user_id');
     this.isLoggedInSubject.next(false);
+    return of(void 0);
   }
 
   isLoggedIn(): boolean {

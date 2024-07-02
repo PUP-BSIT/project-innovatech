@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
     this.loadPopularRecipes();
     if (this.isLoggedIn) {
       this.loadLatestRecipes();
+      this.loadFilterState();
     }
   }
 
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn = isLoggedIn;
       if (this.isLoggedIn) {
         this.loadLatestRecipes();
+        this.loadFilterState();
       }
     });
   }
@@ -80,6 +82,21 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  loadFilterState(): void {
+    const savedFilters = localStorage.getItem('filters');
+    const savedFilteredRecipes = localStorage.getItem('filteredRecipes');
+    const savedIsFiltered = localStorage.getItem('isFiltered');
+
+    if (savedFilters) {
+      this.filters = JSON.parse(savedFilters);
+    }
+
+    if (savedFilteredRecipes) {
+      this.filteredRecipes = JSON.parse(savedFilteredRecipes);
+      this.isFiltered = JSON.parse(savedIsFiltered);
+    }
+  }
+
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
   }
@@ -98,6 +115,9 @@ export class HomeComponent implements OnInit {
           this.filteredRecipes = recipes;
           this.isFiltered = true;
           this.showDropdown = false;
+          localStorage.setItem('filters', JSON.stringify(this.filters));
+          localStorage.setItem('filteredRecipes', JSON.stringify(this.filteredRecipes));
+          localStorage.setItem('isFiltered', JSON.stringify(this.isFiltered));
         },
         (error) => {
           this.snackBar.open(
@@ -220,5 +240,20 @@ export class HomeComponent implements OnInit {
     };
     reader.readAsDataURL(file);
     this.editRecipe.pictureFile = file;
+  }
+
+  logout(): void {
+    this.loginAuthService.logout().subscribe(() => {
+      localStorage.removeItem('filters');
+      localStorage.removeItem('filteredRecipes');
+      localStorage.removeItem('isFiltered');
+      this.isLoggedIn = false;
+      this.router.navigate(['/']);
+    }, error => {
+      console.error('Error during logout', error);
+      this.snackBar.open('Error during logout. Please try again.', 'Close', {
+        duration: 3000
+      });
+    });
   }
 }
