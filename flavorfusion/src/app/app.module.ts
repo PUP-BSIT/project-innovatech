@@ -35,6 +35,7 @@ import { UserService } from '../services/user-service.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserVerificationComponent } from './user-verification/user-verification.component';
 
 
 
@@ -54,6 +55,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     RecipeDetailsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    UserVerificationComponent,
   ],
   imports: [
     BrowserModule,
