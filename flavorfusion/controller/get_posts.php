@@ -5,15 +5,17 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Content-Type: application/json');
 
 include 'db_connection.php';
-//TODO: fix timeAgo function bug some comment.time remain as "just now"
 
-function timeAgo($time) {
+// TODO: fix timeAgo function bug some comment.time remain as "just now"
+function timeAgo($time)
+{
     $time = strtotime($time);
     $diff = time() - $time;
 
     if ($diff < 60) {
         return 'just now';
-    } if ($diff < 3600) {
+    }
+    if ($diff < 3600) {
         return ceil($diff / 60) . ' minutes ago';
     } elseif ($diff < 86400) {
         return ceil($diff / 3600) . ' hours ago';
@@ -27,7 +29,7 @@ function timeAgo($time) {
 }
 
 try {
-    $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.caption, cr.image, 
+    $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.recipe_id, cr.caption, cr.image, 
             cr.shared_at, up.username, up.profile_picture 
             FROM community_recipes cr 
             JOIN user_profiles up ON cr.user_id = up.user_id 
@@ -37,9 +39,9 @@ try {
     $posts = [];
     while ($row = $result->fetch_assoc()) {
         $postId = $row['community_recipe_id'];
-        $userAvatar = !empty($row['profile_picture']) ? 'data:image/jpeg;base64,' 
-                . base64_encode($row['profile_picture']) : 
-                'assets/images/default-avatar.png';
+        $userAvatar = !empty($row['profile_picture']) ? 'data:image/jpeg;base64,'
+            . base64_encode($row['profile_picture']) :
+            'assets/images/default-avatar.png';
 
         $comments = [];
         // Use a prepared statement to fetch comments
@@ -53,16 +55,16 @@ try {
         $stmt->execute();
         $commentResult = $stmt->get_result();
         while ($commentRow = $commentResult->fetch_assoc()) {
-            $commentAvatar = !empty($commentRow['profile_picture']) ? 
-                    'data:image/jpeg;base64,' 
-                    . base64_encode($commentRow['profile_picture']) : 
-                    'assets/images/default-avatar.png';
+            $commentAvatar = !empty($commentRow['profile_picture']) ?
+                'data:image/jpeg;base64,'
+                . base64_encode($commentRow['profile_picture']) :
+                'assets/images/default-avatar.png';
 
             $comments[] = [
                 'commentId' => $commentRow['comment_id'],
                 'username' => $commentRow['username'],
                 'userAvatar' => $commentAvatar,
-                'time' => timeAgo($commentRow['commented_at']), 
+                'time' => timeAgo($commentRow['commented_at']),
                 'text' => $commentRow['comment']
             ];
         }
@@ -71,11 +73,12 @@ try {
         $posts[] = [
             'userId' => $row['user_id'],
             'communityRecipeId' => $postId,
+            'recipeId' => $row['recipe_id'], // Add recipeId to the response
             'username' => $row['username'],
-            'time' => timeAgo($row['shared_at']), //TODO: fix comment time
+            'time' => timeAgo($row['shared_at']), // TODO: fix comment time
             'userAvatar' => $userAvatar,
-            'image' => $row['image'] ? 'data:image/jpeg;base64,' 
-                    . base64_encode($row['image']) : '',
+            'image' => $row['image'] ? 'data:image/jpeg;base64,'
+                . base64_encode($row['image']) : '',
             'description' => $row['caption'],
             'likes' => 0,
             'liked' => false,
