@@ -7,6 +7,7 @@ import { ShareCommunityService } from '../../services/share-community.service';
 import { Post } from '../../model/posts';
 import { Comment } from '../../model/comments';
 import { Router } from '@angular/router';
+import { Recipe } from '../../model/recipe'; 
 
 @Component({
   selector: 'app-community',
@@ -23,6 +24,7 @@ export class CommunityComponent implements OnInit {
   posts: Post[] = [];
   currentPost: Post | null = null;
   newRecipeId: number | null = null;
+  newRecipe: Recipe | null = null; 
 
   constructor(
     public dialog: MatDialog,
@@ -38,17 +40,19 @@ export class CommunityComponent implements OnInit {
     this.loadPosts();
     this.shareCommunity.sharedRecipe$.subscribe(recipe => {
       if (recipe) {
+        this.newRecipe = recipe; 
         this.populatePostWithRecipe(recipe);
       }
     });
   }
-  //TO DO: (will change this to Recipe model)
-  populatePostWithRecipe(recipe: any): void {
+
+  populatePostWithRecipe(recipe: Recipe): void {
     console.log('Received recipe:', recipe);
-    const postText = recipe.name;
-    this.newPostText = postText;
+    console.log('this recipe:', this.newRecipe);
+    
+    this.newPostText = recipe.name;
     this.newRecipeId = recipe.id;
-    console.log('New Recipe ID:', this.newRecipeId);
+    console.log('this recipe after:',  this.newRecipeId);
     if (recipe.picture) {
       this.newPostImageSrc = !recipe.picture.startsWith('data:image/') 
         ? `data:image/jpeg;base64,${recipe.picture}` 
@@ -85,7 +89,8 @@ export class CommunityComponent implements OnInit {
   }
 
   navigateToRecipe(post: Post, event: Event): void {
-    event.stopPropagation(); // Prevent event bubbling to the post div
+    event.stopPropagation(); 
+    console.log("-->",post.recipeId);
     if (post.recipeId) {
       this.router.navigate(['/recipe-details', post.recipeId]);
     }
@@ -151,6 +156,7 @@ export class CommunityComponent implements OnInit {
             this.newPostImage = null;
             this.newPostImageSrc = null;
             this.newRecipeId = null;
+            this.newRecipe = null; 
           } else {
             console.error('Error adding post:', response.message);
           }
@@ -202,13 +208,15 @@ export class CommunityComponent implements OnInit {
           },
           error => {
             console.error('HTTP error:', error);
-            alert('An error occurred while adding the comment: ' + error.message);
+            alert('An error occurred while adding the comment: ' 
+              + error.message);
           }
         );
       },
       error => {
         console.error('Error fetching user profile:', error);
-        alert('An error occurred while fetching user profile: ' + error.message);
+        alert('An error occurred while fetching user profile: '
+           + error.message);
       }
     );
   }
