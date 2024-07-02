@@ -9,13 +9,34 @@
   <div class="popular-recipes">
     <h2>Popular Recipes</h2>
     <div class="popular-recipes-content">
-      <div class="recipe" *ngFor="let recipe of popularRecipes">
-        <img 
-          [src]="'data:image/jpeg;base64,' + recipe.picture" 
-          [alt]="recipe.name"
-        >
-        <h3>{{ recipe.name }}</h3>
+      <div class="recipe" *ngFor="let recipe of displayedPopularRecipes">
+        <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+          <img 
+            [src]="'data:image/jpeg;base64,' + recipe.picture" 
+            [alt]="recipe.name"
+          >
+        </a>
+        <h3>
+          <a 
+            [routerLink]="['/recipe-details', recipe.recipe_id]"
+          >
+            {{ recipe.name }}
+          </a>
+        </h3>
       </div>
+    </div>
+    <div class="pagination">
+      <button 
+        (click)="prevPagePopular()" 
+        [disabled]="currentPagePopular === 1">
+        Previous
+      </button>
+      <span>Page {{currentPagePopular}} of {{totalPagesPopular}}</span>
+      <button 
+        (click)="nextPagePopular()" 
+        [disabled]="currentPagePopular === totalPagesPopular">
+        Next
+      </button>
     </div>
   </div>
 
@@ -25,15 +46,36 @@
     <h2>Latest Recipes You Made</h2>
     <div class="latest-recipes-content" *ngIf="isLoggedIn; else notLoggedIn">
       <div class="user-recipes" *ngIf="latestRecipes.length > 0; else noRecipes">
-        <div class="recipe" *ngFor="let recipe of latestRecipes">
-          <img 
-            [src]="'data:image/jpeg;base64,' + recipe.picture" 
-            [alt]="recipe.name"
-          >
-          <h3>{{ recipe.name }}</h3>
+        <div class="recipe" *ngFor="let recipe of displayedLatestRecipes">
+          <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+            <img 
+              [src]="'data:image/jpeg;base64,' + recipe.picture" 
+              [alt]="recipe.name"
+            >
+          </a>
+          <h3>
+            <a 
+              [routerLink]="['/recipe-details', recipe.recipe_id]"
+            >
+              {{ recipe.name }}
+            </a>
+          </h3>
           <button (click)="getRecipeDetails(recipe.recipe_id)">Update</button>
           <button (click)="deleteRecipe(recipe.recipe_id)">Delete</button>
         </div>
+      </div>
+      <div class="pagination">
+        <button 
+          (click)="prevPageLatest()" 
+          [disabled]="currentPageLatest === 1">
+          Previous
+        </button>
+        <span>Page {{currentPageLatest}} of {{totalPagesLatest}}</span>
+        <button 
+          (click)="nextPageLatest()" 
+          [disabled]="currentPageLatest === totalPagesLatest">
+          Next
+        </button>
       </div>
       <ng-template #noRecipes>
         <div>
@@ -102,13 +144,34 @@
         of recipes tailored just for you.
       </p>
       <div *ngIf="isFiltered" class="filtered-recipes">
-        <div class="recipe" *ngFor="let recipe of filteredRecipes">
-          <img 
-            [src]="'data:image/jpeg;base64,' + recipe.picture" 
-            [alt]="recipe.name"
-          >
-          <h3>{{ recipe.name }}</h3>
+        <div class="recipe" *ngFor="let recipe of displayedFilteredRecipes">
+          <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+            <img 
+              [src]="'data:image/jpeg;base64,' + recipe.picture" 
+              [alt]="recipe.name"
+            >
+          </a>
+          <h3>
+            <a 
+              [routerLink]="['/recipe-details', recipe.recipe_id]"
+            >
+              {{ recipe.name }}
+            </a>
+          </h3>
         </div>
+      </div>
+      <div class="pagination" *ngIf="isFiltered">
+        <button 
+          (click)="prevPageFiltered()" 
+          [disabled]="currentPageFiltered === 1">
+          Previous
+        </button>
+        <span>Page {{currentPageFiltered}} of {{totalPagesFiltered}}</span>
+        <button 
+          (click)="nextPageFiltered()" 
+          [disabled]="currentPageFiltered === totalPagesFiltered">
+          Next
+        </button>
       </div>
     </div>
   </div>
@@ -136,7 +199,11 @@
           <div class="meal-dietary-container">
             <div class="meal-type-container">
               <label class="meal-type">Meal Type:</label> 
-              <select [(ngModel)]="editRecipe.meal_type" name="meal_type" required>
+              <select 
+                [(ngModel)]="editRecipe.meal_type" 
+                name="meal_type" 
+                required
+              >
                 <option [ngValue]="''">Select Meal Type</option>
                 <option value="Breakfast">Breakfast</option>
                 <option value="Lunch">Lunch</option>
@@ -164,7 +231,11 @@
           <div class="time-servings-container">
             <div class="time-container">
               <label class="time">Time:</label>
-              <input [(ngModel)]="editRecipe.prep_time" name="prep_time" required>
+              <input 
+                [(ngModel)]="editRecipe.prep_time" 
+                name="prep_time" 
+                required
+              >
             </div>
             <div class="servings-container">
               <label class="servings">Servings:</label>
@@ -178,7 +249,10 @@
           </div>
           <div class="ingredients">
             <h3>Ingredients:</h3>
-            <div *ngFor="let ingredient of editRecipe.ingredients; let i = index" class="ingredient-quantity-container">
+            <div 
+              *ngFor="let ingredient of editRecipe.ingredients; let i = index" 
+              class="ingredient-quantity-container"
+            >
               <div class="ingredient-container">
                 <label class="ingredient">Ingredient:</label>
                 <input 

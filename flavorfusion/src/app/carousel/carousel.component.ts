@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from '../../services/home.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { HomeService } from '../../services/home.service';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   slides = [];
   currentSlide = 0;
   slideInterval: any;
@@ -20,9 +20,7 @@ export class CarouselComponent implements OnInit {
       this.fetchDailyMeals();
     }, 86400000);
 
-    this.slideInterval = setInterval(() => {
-      this.moveToNextSlide();
-    }, 8000);
+    this.startSlideInterval();
   }
 
   ngOnDestroy(): void {
@@ -53,6 +51,7 @@ export class CarouselComponent implements OnInit {
   setSlide(index: number): void {
     this.currentSlide = index;
     this.showSlide(this.currentSlide);
+    this.resetSlideInterval();
   }
 
   showSlide(index: number): void {
@@ -86,6 +85,7 @@ export class CarouselComponent implements OnInit {
         this.currentSlide = this.slides.length - 1;
     }
     this.showSlide(this.currentSlide);
+    this.resetSlideInterval();
   }
 
   moveToNextSlide(): void {
@@ -95,5 +95,17 @@ export class CarouselComponent implements OnInit {
           this.currentSlide = 0;
       }
       this.showSlide(this.currentSlide);
+      this.resetSlideInterval();
+  }
+
+  startSlideInterval(): void {
+    this.slideInterval = setInterval(() => {
+      this.moveToNextSlide();
+    }, 8000);
+  }
+
+  resetSlideInterval(): void {
+    clearInterval(this.slideInterval);
+    this.startSlideInterval();
   }
 }

@@ -11,7 +11,18 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   popularRecipes = [];
+  displayedPopularRecipes = [];
   latestRecipes = [];
+  displayedLatestRecipes = [];
+  filteredRecipes = [];
+  displayedFilteredRecipes = [];
+  currentPagePopular = 1;
+  currentPageLatest = 1;
+  currentPageFiltered = 1;
+  recipesPerPage = 4;
+  totalPagesPopular = 0;
+  totalPagesLatest = 0;
+  totalPagesFiltered = 0;
   filters = {
     eggs: false,
     dairy: false,
@@ -20,13 +31,11 @@ export class HomeComponent implements OnInit {
     shrimp: false,
     vegetables: false
   };
-
-  showDropdown: boolean = false;
-  isFiltered: boolean = false;
-  filteredRecipes = [];
+  showDropdown = false;
+  isFiltered = false;
   lastSelectedFilters: string[] = [];
-  isLoggedIn: boolean = false;
-  showModal: boolean = false;
+  isLoggedIn = false;
+  showModal = false;
   editRecipe: any = {};
 
   constructor(
@@ -43,6 +52,7 @@ export class HomeComponent implements OnInit {
     this.loadPopularRecipes();
     if (this.isLoggedIn) {
       this.loadLatestRecipes();
+      this.loadFilterState();
     }
   }
 
@@ -51,6 +61,9 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn = isLoggedIn;
       if (this.isLoggedIn) {
         this.loadLatestRecipes();
+        this.loadFilterState();
+      } else {
+        this.clearFilterState();
       }
     });
   }
@@ -59,6 +72,10 @@ export class HomeComponent implements OnInit {
     this.homeService.getPopularRecipes().subscribe(
       (recipes) => {
         this.popularRecipes = recipes;
+        this.totalPagesPopular = Math.ceil(
+          this.popularRecipes.length / this.recipesPerPage
+        );
+        this.updateDisplayedPopularRecipes();
       },
       (error) => {
         this.snackBar.open(
@@ -73,11 +90,54 @@ export class HomeComponent implements OnInit {
     this.homeService.getUserRecipes().subscribe(
       (recipes) => {
         this.latestRecipes = recipes;
+        this.totalPagesLatest = Math.ceil(
+          this.latestRecipes.length / this.recipesPerPage
+        );
+        this.updateDisplayedLatestRecipes();
       },
       (error) => {
         console.error('Error fetching user recipes', error);
       }
     );
+  }
+
+  loadFilterState(): void {
+    if (!this.isLoggedIn) return;
+  
+    const savedFilters = localStorage.getItem('filters');
+    const savedFilteredRecipes = localStorage.getItem('filteredRecipes');
+    const savedIsFiltered = localStorage.getItem('isFiltered');
+  
+    if (savedFilters) {
+      this.filters = JSON.parse(savedFilters);
+    }
+  
+    if (savedFilteredRecipes) {
+      this.filteredRecipes = JSON.parse(savedFilteredRecipes);
+      this.isFiltered = JSON.parse(savedIsFiltered);
+      this.totalPagesFiltered = Math.ceil(
+        this.filteredRecipes.length / this.recipesPerPage
+      );
+      this.updateDisplayedFilteredRecipes();
+    }
+  }
+
+  clearFilterState(): void {
+    localStorage.removeItem('filters');
+    localStorage.removeItem('filteredRecipes');
+    localStorage.removeItem('isFiltered');
+    this.filters = {
+      eggs: false,
+      dairy: false,
+      nuts: false,
+      fish: false,
+      shrimp: false,
+      vegetables: false
+    };
+    this.filteredRecipes = [];
+    this.isFiltered = false;
+    this.currentPageFiltered = 1;
+    this.updateDisplayedFilteredRecipes();
   }
 
   toggleDropdown(): void {
@@ -92,42 +152,116 @@ export class HomeComponent implements OnInit {
     const selectedFilters = Object.keys(this.filters)
       .filter(key => this.filters[key]);
     this.lastSelectedFilters = selectedFilters;
-    if (selectedFilters.length) {
-      this.homeService.getFilteredRecipes(selectedFilters).subscribe(
-        (recipes) => {
-          this.filteredRecipes = recipes;
-          this.isFiltered = true;
-          this.showDropdown = false;
-        },
-        (error) => {
-          this.snackBar.open(
-            'Error fetching filtered recipes. Try again.', 'Try Again', {
-              duration: 3000
+    if (!selectedFilters.length) return;
+  
+    this.homeService.getFilteredRecipes(selectedFilters).subscribe(
+      (recipes) => {
+        this.filteredRecipes = recipes;
+        this.isFiltered = true;
+        this.totalPagesFiltered = Math.ceil(
+          this.filteredRecipes.length / this.recipesPerPage
+        );
+        this.updateDisplayedFilteredRecipes();
+        this.showDropdown = false;
+        localStorage.setItem('filters', JSON.stringify(this.filters));
+        localStorage.setItem(
+          'filteredRecipes',
+          JSON.stringify(this.filteredRecipes)
+        );
+        localStorage.setItem('isFiltered', JSON.stringify(this.isFiltered));
+      },
+      (error) => {
+        this.snackBar.open(
+          'Error fetching filtered recipes. Try again.', 'Try Again', {
+            duration: 3000
           }).onAction().subscribe(() => {
             this.reapplyFilter();
           });
-        }
-      );
+      }
+    );
+  }  
+
+  reapplyFilter(): void {
+    if (!this.lastSelectedFilters.length) return;
+  
+    this.homeService.getFilteredRecipes(this.lastSelectedFilters).subscribe(
+      (recipes) => {
+        this.filteredRecipes = recipes;
+        this.isFiltered = true;
+        this.totalPagesFiltered = Math.ceil(
+          this.filteredRecipes.length / this.recipesPerPage
+        );
+        this.updateDisplayedFilteredRecipes();
+        this.showDropdown = false;
+      },
+      (error) => {
+        this.snackBar.open(
+          'Error fetching filtered recipes. Try again.', 'Try Again', {
+            duration: 3000
+          }).onAction().subscribe(() => {
+            this.reapplyFilter();
+          });
+      }
+    );
+  }  
+
+  updateDisplayedPopularRecipes(): void {
+    const startIndex = (this.currentPagePopular - 1) * this.recipesPerPage;
+    this.displayedPopularRecipes = this.popularRecipes
+      .slice(startIndex, startIndex + this.recipesPerPage);
+  }
+
+  updateDisplayedLatestRecipes(): void {
+    const startIndex = (this.currentPageLatest - 1) * this.recipesPerPage;
+    this.displayedLatestRecipes = this.latestRecipes
+      .slice(startIndex, startIndex + this.recipesPerPage);
+  }
+
+  updateDisplayedFilteredRecipes(): void {
+    const startIndex = (this.currentPageFiltered - 1) * this.recipesPerPage;
+    this.displayedFilteredRecipes = this.filteredRecipes
+      .slice(startIndex, startIndex + this.recipesPerPage);
+  }
+
+  nextPagePopular(): void {
+    if (this.currentPagePopular < this.totalPagesPopular) {
+      this.currentPagePopular++;
+      this.updateDisplayedPopularRecipes();
     }
   }
 
-  reapplyFilter(): void {
-    if (this.lastSelectedFilters.length) {
-      this.homeService.getFilteredRecipes(this.lastSelectedFilters).subscribe(
-        (recipes) => {
-          this.filteredRecipes = recipes;
-          this.isFiltered = true;
-          this.showDropdown = false;
-        },
-        (error) => {
-          this.snackBar.open(
-            'Error fetching filtered recipes. Try again.', 'Try Again', {
-              duration: 3000
-          }).onAction().subscribe(() => {
-            this.reapplyFilter();
-          });
-        }
-      );
+  prevPagePopular(): void {
+    if (this.currentPagePopular > 1) {
+      this.currentPagePopular--;
+      this.updateDisplayedPopularRecipes();
+    }
+  }
+
+  nextPageLatest(): void {
+    if (this.currentPageLatest < this.totalPagesLatest) {
+      this.currentPageLatest++;
+      this.updateDisplayedLatestRecipes();
+    }
+  }
+
+  prevPageLatest(): void {
+    if (this.currentPageLatest > 1) {
+      this.currentPageLatest--;
+      this.updateDisplayedLatestRecipes();
+    }
+  }
+
+  nextPageFiltered(): void {
+    if (this.currentPageFiltered < this.totalPagesFiltered) {
+      this.currentPageFiltered++;
+      this.updateDisplayedFilteredRecipes();
+    }
+  }
+
+  prevPageFiltered(): void {
+    if (this.currentPageFiltered > 1) {
+      this.currentPageFiltered--;
+      this.updateDisplayedFilteredRecipes();
     }
   }
 
@@ -145,19 +279,22 @@ export class HomeComponent implements OnInit {
   deleteRecipe(recipeId): void {
     this.homeService.deleteUserRecipe(recipeId).subscribe(
       (response) => {
-        if (response.success) {
-          this.latestRecipes = this.latestRecipes.filter(
-            recipe => recipe.recipe_id !== recipeId
-          );
-          this.snackBar.open('Recipe deleted successfully!', 'Close', {
-            duration: 3000
-          });
-        } else {
+        if (!response.success) {
           this.snackBar.open(
             'Failed to delete recipe. Try again.', 'Try Again', {
               duration: 3000
-          });
+            }
+          );
+          return;
         }
+  
+        this.latestRecipes = this.latestRecipes.filter(
+          recipe => recipe.recipe_id !== recipeId
+        );
+        this.updateDisplayedLatestRecipes();
+        this.snackBar.open('Recipe deleted successfully!', 'Close', {
+          duration: 3000
+        });
       },
       (error) => {
         this.snackBar.open('Error deleting recipe. Try again.', 'Try Again', {
@@ -165,7 +302,7 @@ export class HomeComponent implements OnInit {
         });
       }
     );
-  }
+  }  
 
   getRecipeDetails(recipeId: number): void {
     this.homeService.getRecipeDetails(recipeId).subscribe(
@@ -220,5 +357,18 @@ export class HomeComponent implements OnInit {
     };
     reader.readAsDataURL(file);
     this.editRecipe.pictureFile = file;
+  }
+
+  logout(): void {
+    this.loginAuthService.logout().subscribe(() => {
+      this.clearFilterState();
+      this.isLoggedIn = false;
+      this.router.navigate(['/']);
+    }, error => {
+      console.error('Error during logout', error);
+      this.snackBar.open('Error during logout. Please try again.', 'Close', {
+        duration: 3000
+      });
+    });
   }
 }

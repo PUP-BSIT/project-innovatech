@@ -11,7 +11,6 @@ h2 {
     margin: 8px;
 }
   
-.category, 
 .recipe {
     width: 22%;
     margin: 1%;
@@ -19,29 +18,43 @@ h2 {
     text-align: center;
 }
   
-.category img, 
 .recipe img {
     width: 100%;
     height: 200px;
     border-radius: 23px;
     object-fit: cover;
     border: 3px solid #FFCE38;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.recipe img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
   
 .popular-recipes-content, 
-.user-recipes, 
-.filtered-recipes {
+.latest-recipes-content .user-recipes, 
+.personalize-taste-content .filtered-recipes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
   
-.category h3, 
 .recipe h3 {
     margin-top: 10px;
     margin-bottom: 5px;
     font-family: math;
     font-size: larger;
+    cursor: pointer;
+}
+
+.recipe h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.recipe h3:hover {
+    color: #D82B1E;
 }
   
 .personalize-taste-content, 
@@ -304,6 +317,40 @@ button.update {
     font-weight: bold;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+  
+.pagination button {
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    color: #0E194D;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+  
+.pagination button:hover:not([disabled]) {
+    background-color: rgba(14, 25, 77, 0.1);
+}
+  
+.pagination button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+  
+.pagination span {
+    font-family: 'Poppins', sans-serif;
+    color: #0E194D;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 95%;
@@ -313,7 +360,7 @@ button.update {
         font-size: 18px;
     }
 
-    .category, .recipe {
+    .recipe {
         width: 48%;
         margin: 1%;
     }
@@ -322,7 +369,7 @@ button.update {
         justify-content: space-between;
     }
 
-    .category img, .recipe img {
+    .recipe img {
         height: 150px;
     }
 
