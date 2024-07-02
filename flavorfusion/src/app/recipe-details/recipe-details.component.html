@@ -80,16 +80,17 @@
       <div class="modal-content">
         <span class="close" (click)="closeRateModal()">&times;</span>
         <h2>Rate this Recipe</h2>
-        <form (ngSubmit)="submitRating()">
-          <div class="star-rating">
-            @for (star of stars; track $index) {
-              <i class="fas fa-star" [class.filled]="$index < rating" 
-              (click)="setRating($index + 1)"></i>
-            }
-          </div>
-
-          <button type="submit">Submit</button>
-        </form>
+          <form (ngSubmit)="submitRating()">
+            <div class="star-rating">
+              @for (star of [0, 1, 2, 3, 4]; track star; let i = $index) {
+              <i class="fas fa-star"
+              [class.filled]="i < rating"
+              (click)="setRating(i + 1)">
+              </i>
+              }
+            </div>
+            <button type="submit">Submit</button>
+          </form>
       </div>
     </div>
   }

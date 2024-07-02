@@ -18,6 +18,7 @@ export class RecipeResultService {
   private unsaveRecipeUrl = `${this.apiUrl}/unsave_recipe.php`;
   private checkSavedUrl = `${this.apiUrl}/check_saved_recipe.php`;
   private submitRatingUrl = `${this.apiUrl}/get_recipe_rating.php`;
+  private checkRatingUrl = `${this.apiUrl}/check_recipe_rating.php`; 
 
   constructor(private http: HttpClient, private authService: LoginAuthentication) { }
 
@@ -75,6 +76,17 @@ export class RecipeResultService {
     return this.http.get<any>(this.checkSavedUrl, { params })
       .pipe(
         map(response => response.saved),
+        catchError(this.handleError)
+      );
+  }
+
+  checkIfRecipeRated(user_id: number, recipe_id: number): Observable<boolean> {
+    const url = `${this.checkRatingUrl}/check_recipe_rating.php`;
+    const params = { user_id: user_id.toString(), recipe_id: recipe_id.toString() };
+
+    return this.http.get<any>(url, { params })
+      .pipe(
+        map(response => response.hasRated),
         catchError(this.handleError)
       );
   }

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginAuthentication } from '../../services/login-authentication.service';
 import { ShareCommunityService } from '../../services/share-community.service';
 import { Router } from '@angular/router';
+import { Recipe } from '../../model/recipe';
 
 @Component({
   selector: 'app-recipe-details',
@@ -13,12 +14,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./recipe-details.component.css']
 })
 export class RecipeDetailsComponent implements OnInit {
-  recipe: any;
+  recipe: Recipe;
   saved: boolean = false; 
   user: any;
   isRateModalOpen: boolean = false; 
   rating: number = 0;
-  stars: boolean[] = [false, false, false, false, false];
+  hasRated = false;
 
   constructor(
     private route: ActivatedRoute,  
@@ -49,6 +50,7 @@ export class RecipeDetailsComponent implements OnInit {
       response => {
         this.recipe = response;
         this.checkSavedStatus(); 
+        this.checkRatingStatus();
       },
       error => {
         console.error('Error fetching recipe details: ', error);
@@ -61,6 +63,7 @@ export class RecipeDetailsComponent implements OnInit {
       response => {
         this.user = response;
         this.checkSavedStatus(); 
+        this.checkRatingStatus();
       },
       error => {
         console.error('Error fetching user profile: ', error);
@@ -132,14 +135,36 @@ export class RecipeDetailsComponent implements OnInit {
     }
   }
 
-  openRateModal(): void {
-    if (this.authService.isLoggedIn()) {
-      this.isRateModalOpen = true;
-    } else {
-      this.snackBar.open('You must be logged in to rate recipes.',
-         'Close', { duration: 3000 });
+  checkRatingStatus(): void {
+    if (this.user && this.recipe) {
+      const userId = this.user.user_id;
+      const recipeId = this.recipe.recipe_id;
+  
+      this.recipeService.checkIfRecipeRated(userId, recipeId).subscribe(
+        hasRated => {
+          this.hasRated = hasRated;
+          console.log('Rating status:', this.hasRated);
+        },
+        error => {
+          console.error('Error checking rating status: ', error);
+        }
+      );
     }
   }
+
+  openRateModal(): void {
+    if (this.authService.isLoggedIn()) {
+      if (!this.hasRated) {
+        this.isRateModalOpen = true;
+      } else {
+        this.snackBar.open('You have already rated this recipe.', 
+          'Close', { duration: 3000 });
+      }
+    } else {
+      this.snackBar.open('You must be logged in to rate recipes.', 
+        'Close', { duration: 3000 });
+    }
+  } 
 
   closeRateModal(): void {
     this.isRateModalOpen = false;
@@ -147,7 +172,6 @@ export class RecipeDetailsComponent implements OnInit {
 
   setRating(rating: number): void {
     this.rating = rating;
-    this.stars = this.stars.map((_, i) => i < rating);
   }
   
   submitRating(): void {
@@ -160,6 +184,7 @@ export class RecipeDetailsComponent implements OnInit {
           if (response.success) {
             this.snackBar.open('Rating submitted successfully!', 
               'Close', { duration: 3000 });
+              this.hasRated = true
           } else {
             this.snackBar.open('Failed to submit rating. Please try again.', 
               'Close', { duration: 3000 });
