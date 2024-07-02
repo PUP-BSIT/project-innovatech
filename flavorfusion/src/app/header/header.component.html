@@ -16,30 +16,41 @@
         <div class="search-box">
             <i class="fas fa-search"></i>
             <input type="text"
-            placeholder="Search Recipe"
-            [(ngModel)]="searchText"
-            (click)="toggleSearchComponent()"
-            (keyup.enter)="onSearch()">
-            @if (showSearchComponent){ 
-            <button (click)="closeSearch()">X</button>
+                placeholder="Search Recipe"
+                [(ngModel)]="searchText"
+                (click)="toggleSearchComponent()"
+                (keyup.enter)="onSearch()">
+            @if (showSearchComponent) { 
+                <button (click)="closeSearch()">X</button>
             }
         </div>
     </div>
 
     <div class="user-actions">
         <button #logInLogOut (click)="handleLoginLogout()"></button>
-        <a 
-            [routerLink]="(getProfileRouterlink() | async)"
-            [queryParams]="{ showSavedRecipes: true }">
-            <img src="assets/images/profile.png" alt="Profile">
-        </a>
+        @if (isLoggedIn$ | async) {
+            <a [routerLink]="(getProfileRouterlink() | async)" 
+               [queryParams]="{ showSavedRecipes: true }">
+                <img [src]="userAvatar" alt="Profile" class="profile-picture">
+            </a>
+        } @else {
+            <a [routerLink]="(getProfileRouterlink() | async)" 
+               [queryParams]="{ showSavedRecipes: true }">
+               <img src="assets/images/profile.png" alt="Profile" 
+                    class="profile-picture">
+            </a>
+        }
     </div>
     
     @if (isShown) {
-    <div class="modal-background">
-        <div class="modal">
-          <p>Log Out Successful</p>
+        <div class="modal-background" (click)="closeModal()">
+            <div class="modal">
+                <span class="close">&times;</span>
+                <div class="modal-content">
+                    <p>Log Out Successful</p>
+                    <button (click)="closeModal()">Close</button>
+                </div>
+            </div>
         </div>
-    </div>
     }
 </header>

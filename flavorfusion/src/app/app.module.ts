@@ -30,6 +30,7 @@ import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 import { ForgotPasswordService } from '../services/forgot-password.service';
+import { UserService } from '../services/user-service.service';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -70,6 +71,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatSnackBarModule,
     MatProgressSpinnerModule,
     ScrollingModule,
+
   ],
   providers: [
     provideAnimationsAsync(),
@@ -79,6 +81,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     LoginAuthentication,
     SignupService,
     ForgotPasswordService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })
