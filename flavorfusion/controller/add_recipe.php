@@ -9,12 +9,14 @@ include (__DIR__ . '/db_connection.php');
 $title = isset($_POST['title']) ? $_POST['title'] : '';
 $description = isset($_POST['description']) ? $_POST['description'] : '';
 $mealType = isset($_POST['mealType']) ? $_POST['mealType'] : '';
-$dietaryPreferences = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences'] : '';
-$hours = isset($_POST['hours']) ? $_POST['hours'] : '';
+$dietaryPreferences = isset($_POST['dietaryPreferences']) ?
+    $_POST['dietaryPreferences'] : '';
 $minutes = isset($_POST['minutes']) ? $_POST['minutes'] : '';
 $servings = isset($_POST['servings']) ? $_POST['servings'] : '';
-$ingredients = isset($_POST['ingredients']) ? json_decode($_POST['ingredients'], true) : [];
-$instructions = isset($_POST['instructions']) ? json_decode($_POST['instructions'], true) : [];
+$ingredients = isset($_POST['ingredients']) ?
+    json_decode($_POST['ingredients'], true) : [];
+$instructions = isset($_POST['instructions']) ?
+    json_decode($_POST['instructions'], true) : [];
 $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 $image = isset($_FILES['image']['tmp_name']) ? file_get_contents($_FILES['image']['tmp_name']) : null;
 
@@ -26,8 +28,6 @@ if (empty($mealType))
     $missingFields[] = 'mealType';
 if (empty($dietaryPreferences))
     $missingFields[] = 'dietaryPreferences';
-if (empty($hours))
-    $missingFields[] = 'hours';
 if (empty($minutes))
     $missingFields[] = 'minutes';
 if (empty($servings))
@@ -59,7 +59,7 @@ if ($stmt->num_rows === 0) {
 
 $conn->begin_transaction();
 try {
-    $time = $hours . ":" . $minutes;
+    $time = $minutes . " minutes";
 
     // Debugging information
     error_log("Inserting into recipes: user_id=$userId, title=$title, description=$description, time=$time, servings=$servings, image length=" . strlen($image));

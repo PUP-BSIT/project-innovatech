@@ -197,6 +197,7 @@
     justify-content: center;
     gap: 20px;
     margin-top: 10px;
+    flex-grow: 1; /*added*/
 }
 
 .recipe-card {
@@ -218,6 +219,23 @@
     color: #0E194D;
     font-family: 'Poppins', sans-serif;
 }
+
+.recipe-card a {
+    text-decoration: none; /* Remove underline */
+    color: #0E194D; /* Original color */
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.recipe-card img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.recipe-card img:hover {
+    transform: scale(1.05); /* Slightly enlarge image on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
 
 .meal-planning {
     display: flex;
@@ -931,26 +949,27 @@ button[type="submit"]:hover {
     font-family: 'Poppins', sans-serif;
 }
 
+
 .recipe-card a {
-    text-decoration: none; /* Remove underline */
-    color: #0E194D; /* Original color */
+    text-decoration: none; 
+    color: #0E194D; 
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
 }
 
 .recipe-card a:hover {
-    color: #ff6f61; /* Change color on hover */
-    text-decoration: underline; /* Optionally add underline on hover */
-    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+    color: #ff6f61;
+    text-decoration: underline; 
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .recipe-card img {
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .recipe-card img:hover {
-    transform: scale(1.05); /* Slightly enlarge image on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .meal-planning {
@@ -1098,7 +1117,7 @@ button[type="submit"]:hover {
 
 .form-row {
     display: flex;
-    gap: 20px; /* Add space between the fields */
+    gap: 20px; 
     margin-bottom: 15px;
 }
 
@@ -1193,7 +1212,7 @@ button[type="submit"]:hover {
     border-radius: 4px;
     color: #333;
     text-align: center;
-    margin-top: 1rem; /* Adjust margin */
+    margin-top: 1rem; 
 }
 
 .material-icons {

@@ -28,5 +28,9 @@ export class CommunityService {
   likePost(payload: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/like_post.php`, payload);
   }
+
+  getUserPosts(userId: number, page: number, pageSize: number): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/get_user_posts.php?user_id=${userId}&page=${page}&pageSize=${pageSize}`);
+  }
 }
 
