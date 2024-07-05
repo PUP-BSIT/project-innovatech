@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CommunityService {
   private apiUrl = environment.apiUrl; 
 
   constructor(private http: HttpClient) {}
 
-  getPosts(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get_posts.php`);
+  getPosts(userId?: string): Observable<any> {
+    const url = userId ? `${this.apiUrl}/get_posts.php?user_id=${userId}` : `${this.apiUrl}/get_posts.php`;
+    return this.http.get(url);
   }
 
   addPost(postData: FormData): Observable<any> {
@@ -25,4 +24,9 @@ export class CommunityService {
   getUserProfile(userId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/get_user_profile.php?user_id=${userId}`);
   }
+
+  likePost(payload: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/like_post.php`, payload);
+  }
 }
+

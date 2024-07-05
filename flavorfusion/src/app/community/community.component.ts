@@ -7,7 +7,7 @@ import { ShareCommunityService } from '../../services/share-community.service';
 import { Post } from '../../model/posts';
 import { Comment } from '../../model/comments';
 import { Router } from '@angular/router';
-import { Recipe } from '../../model/recipe'; 
+import { Recipe } from '../../model/recipe';
 
 @Component({
   selector: 'app-community',
@@ -15,8 +15,8 @@ import { Recipe } from '../../model/recipe';
   styleUrls: ['./community.component.css']
 })
 export class CommunityComponent implements OnInit {
-  @ViewChild('postDetailTemplate') postDetailTemplate: TemplateRef<any>;
-  dialogRef: MatDialogRef<any>;
+  @ViewChild('postDetailTemplate', { static: true }) postDetailTemplate: TemplateRef<any>;
+  dialogRef: MatDialogRef<any> | null = null;
   newPostText: string = '';
   newPostImage: File | null = null;
   newPostImageSrc: string | null = null;
@@ -24,7 +24,7 @@ export class CommunityComponent implements OnInit {
   posts: Post[] = [];
   currentPost: Post | null = null;
   newRecipeId: number | null = null;
-  newRecipe: Recipe | null = null; 
+  newRecipe: Recipe | null = null;
 
   constructor(
     public dialog: MatDialog,
@@ -40,7 +40,7 @@ export class CommunityComponent implements OnInit {
     this.loadPosts();
     this.shareCommunity.sharedRecipe$.subscribe(recipe => {
       if (recipe) {
-        this.newRecipe = recipe; 
+        this.newRecipe = recipe;
         this.populatePostWithRecipe(recipe);
       }
     });
@@ -48,14 +48,11 @@ export class CommunityComponent implements OnInit {
 
   populatePostWithRecipe(recipe: Recipe): void {
     console.log('Received recipe:', recipe);
-    console.log('this recipe:', this.newRecipe);
-    
     this.newPostText = recipe.name;
     this.newRecipeId = recipe.id;
-    console.log('this recipe after:',  this.newRecipeId);
     if (recipe.picture) {
-      this.newPostImageSrc = !recipe.picture.startsWith('data:image/') 
-        ? `data:image/jpeg;base64,${recipe.picture}` 
+      this.newPostImageSrc = !recipe.picture.startsWith('data:image/')
+        ? `data:image/jpeg;base64,${recipe.picture}`
         : recipe.picture;
     } else {
       this.newPostImageSrc = null;
@@ -63,6 +60,7 @@ export class CommunityComponent implements OnInit {
   }
 
   loadPosts(): void {
+    const userId = this.loginAuthService.getUserId();
     this.communityService.getPosts().subscribe(
       (response: any) => {
         if (response.success) {
@@ -74,23 +72,34 @@ export class CommunityComponent implements OnInit {
           console.error('Error fetching posts:', response.message);
         }
       },
+      error => {
+        console.error('HTTP error:', error);
+      }
     );
   }
 
   openPostDetail(post: Post, template: TemplateRef<any>): void {
-    post.recipeId = post.recipeId || this.newRecipeId;
-    console.log('Opening post detail:', post);
-    this.currentPost = post;
-    this.dialogRef = this.dialog.open(template, {
-      data: { post },
-      width: '600px',
-      panelClass: 'custom-dialog-container'
-    });
+    if (!this.dialogRef) { 
+      post.recipeId = post.recipeId || this.newRecipeId;
+      console.log('Opening post detail:', post);
+      this.currentPost = post;
+      this.dialogRef = this.dialog.open(template, {
+        data: { post },
+        width: '600px',
+        panelClass: 'custom-dialog-container'
+      });
+      
+      this.dialogRef.afterClosed().subscribe(() => {
+        console.log('Modal closed');
+        this.currentPost = null;
+        this.dialogRef = null; 
+      });
+    }
   }
+  
 
   navigateToRecipe(post: Post, event: Event): void {
-    event.stopPropagation(); 
-    console.log("-->",post.recipeId);
+    event.stopPropagation();
     if (post.recipeId) {
       this.router.navigate(['/recipe-details', post.recipeId]);
     }
@@ -98,14 +107,38 @@ export class CommunityComponent implements OnInit {
 
   closeDialog(): void {
     if (this.dialogRef) {
+      console.log('Closing dialog');
       this.dialogRef.close();
+    } else {
+      console.log('DialogRef is null');
     }
   }
 
   likePost(post: Post, event: Event): void {
     event.stopPropagation();
-    post.liked = !post.liked;
-    post.likes += post.liked ? 1 : -1;
+    const userId = this.loginAuthService.getUserId();
+    if (!userId) {
+      console.error('User not logged in');
+      return;
+    }
+    const payload = {
+      user_id: userId,
+      community_recipe_id: post.communityRecipeId,
+      action: post.liked ? 'unlike' : 'like'
+    };
+    this.communityService.likePost(payload).subscribe(
+      response => {
+        if (response.success) {
+          post.liked = !post.liked;
+          post.likes += post.liked ? 1 : -1;
+        } else {
+          console.error('Error liking post:', response.message);
+        }
+      },
+      error => {
+        console.error('HTTP error:', error);
+      }
+    );
   }
 
   commentOnPost(post: Post, event: Event): void {
@@ -149,14 +182,13 @@ export class CommunityComponent implements OnInit {
       }
       this.communityService.addPost(formData).subscribe(
         response => {
-          console.log('Response from server:', response);
           if (response.success) {
             this.loadPosts();
             this.newPostText = '';
             this.newPostImage = null;
             this.newPostImageSrc = null;
             this.newRecipeId = null;
-            this.newRecipe = null; 
+            this.newRecipe = null;
           } else {
             console.error('Error adding post:', response.message);
           }
@@ -197,7 +229,6 @@ export class CommunityComponent implements OnInit {
         };
         this.communityService.addComment(payload).subscribe(
           response => {
-            console.log('Response from server:', response);
             if (response.success) {
               post.comments.push(commentData);
               this.newCommentText = '';
@@ -208,15 +239,13 @@ export class CommunityComponent implements OnInit {
           },
           error => {
             console.error('HTTP error:', error);
-            alert('An error occurred while adding the comment: ' 
-              + error.message);
+            alert('An error occurred while adding the comment: ' + error.message);
           }
         );
       },
       error => {
         console.error('Error fetching user profile:', error);
-        alert('An error occurred while fetching user profile: '
-           + error.message);
+        alert('An error occurred while fetching user profile: ' + error.message);
       }
     );
   }
