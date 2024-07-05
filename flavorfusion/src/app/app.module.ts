@@ -31,6 +31,7 @@ import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 import { ForgotPasswordService } from '../services/forgot-password.service';
 import { UserService } from '../services/user-service.service';
+import { CommunityService } from '../services/community-service.service';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -84,6 +85,7 @@ import { UserVerificationComponent } from './user-verification/user-verification
     SignupService,
     ForgotPasswordService,
     UserService,
+    CommunityService,
   ],
   bootstrap: [AppComponent]
 })

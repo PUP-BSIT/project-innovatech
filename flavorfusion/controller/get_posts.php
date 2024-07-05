@@ -6,12 +6,9 @@ header('Content-Type: application/json');
 
 include 'db_connection.php';
 
-// TODO: fix timeAgo function bug some comment.time remain as "just now"
-function timeAgo($time)
-{
+function timeAgo($time) {
     $time = strtotime($time);
     $diff = time() - $time;
-
     if ($diff < 60) {
         return 'just now';
     }
@@ -29,8 +26,8 @@ function timeAgo($time)
 }
 
 try {
-    $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.recipe_id, cr.caption, cr.image, 
-            cr.shared_at, up.username, up.profile_picture 
+    $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.recipe_id, cr.caption,
+         cr.image, cr.shared_at, up.username, up.profile_picture 
             FROM community_recipes cr 
             JOIN user_profiles up ON cr.user_id = up.user_id 
             ORDER BY cr.shared_at DESC";
@@ -39,14 +36,30 @@ try {
     $posts = [];
     while ($row = $result->fetch_assoc()) {
         $postId = $row['community_recipe_id'];
-        $userAvatar = !empty($row['profile_picture']) ? 'data:image/jpeg;base64,'
-            . base64_encode($row['profile_picture']) :
+        $userAvatar = !empty($row['profile_picture']) ? 
+            'data:image/jpeg;base64,' 
+            . base64_encode($row['profile_picture']) : 
             'assets/images/default-avatar.png';
 
+        $stmt = $conn->prepare("SELECT COUNT(*) as like_count FROM reactions 
+            WHERE community_recipe_id = ?");
+        $stmt->bind_param("i", $postId);
+        $stmt->execute();
+        $likeResult = $stmt->get_result();
+        $likeCount = $likeResult->fetch_assoc()['like_count'];
+        $stmt->close();
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as liked FROM reactions 
+            WHERE community_recipe_id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $postId, $userId);
+        $stmt->execute();
+        $likedResult = $stmt->get_result();
+        $liked = $likedResult->fetch_assoc()['liked'] > 0;
+        $stmt->close();
+
         $comments = [];
-        // Use a prepared statement to fetch comments
-        $stmt = $conn->prepare("SELECT c.comment_id, c.comment, c.commented_at, 
-                up.username, up.profile_picture 
+        $stmt = $conn->prepare("SELECT c.comment_id, c.comment, 
+            c.commented_at, up.username, up.profile_picture 
                                 FROM comments c 
                                 JOIN user_profiles up ON c.user_id = up.user_id 
                                 WHERE c.community_recipe_id = ? 
@@ -55,11 +68,10 @@ try {
         $stmt->execute();
         $commentResult = $stmt->get_result();
         while ($commentRow = $commentResult->fetch_assoc()) {
-            $commentAvatar = !empty($commentRow['profile_picture']) ?
-                'data:image/jpeg;base64,'
-                . base64_encode($commentRow['profile_picture']) :
+            $commentAvatar = !empty($commentRow['profile_picture']) ? 
+                'data:image/jpeg;base64,' 
+                . base64_encode($commentRow['profile_picture']) : 
                 'assets/images/default-avatar.png';
-
             $comments[] = [
                 'commentId' => $commentRow['comment_id'],
                 'username' => $commentRow['username'],
@@ -73,15 +85,15 @@ try {
         $posts[] = [
             'userId' => $row['user_id'],
             'communityRecipeId' => $postId,
-            'recipeId' => $row['recipe_id'], // Add recipeId to the response
+            'recipeId' => $row['recipe_id'],
             'username' => $row['username'],
-            'time' => timeAgo($row['shared_at']), // TODO: fix comment time
+            'time' => timeAgo($row['shared_at']),
             'userAvatar' => $userAvatar,
-            'image' => $row['image'] ? 'data:image/jpeg;base64,'
+            'image' => $row['image'] ? 'data:image/jpeg;base64,' 
                 . base64_encode($row['image']) : '',
             'description' => $row['caption'],
-            'likes' => 0,
-            'liked' => false,
+            'likes' => $likeCount,
+            'liked' => $liked,
             'comments' => $comments,
             'caption' => $row['caption']
         ];
