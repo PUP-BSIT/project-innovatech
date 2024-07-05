@@ -65,7 +65,6 @@
   text-indent: 0px;
   margin-right: 5px;
 }
-/* last */
   
 .recipe-content {
   display: flex;
@@ -269,4 +268,109 @@ button.save.saved {
 
 .modal-content button[type="submit"]:hover {
   background-color: #ce8208;
+}
+
+@media (max-width: 768px) {
+  .recipe-header {
+    flex-direction: column;
+    margin: 20px auto;
+    width: auto; 
+  }
+
+  .recipe-image img {
+    width: 100%;
+    height: auto;
+    max-width: 100%; 
+  }
+
+  .recipe-icons {
+    flex-direction: column;
+  }
+
+  .recipe-details ul {
+    columns: 2; 
+    column-gap: 10px; 
+  }
+
+  .recipe-procedures .steps .step {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row; 
+    gap: 5px;
+    justify-content: space-between; 
+    margin-top: 10px;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-header h1 {
+    font-size: 24px;
+  }
+
+  .recipe-header p {
+    font-size: 12px;
+    text-indent: 10px;
+  }
+
+  .recipe-details ul {
+    columns: 1;
+  }
+
+  .recipe-details h2,
+  .recipe-procedures h2 {
+    font-size: 24px;
+  }
+
+  .recipe-details ul li,
+  .recipe-procedures .steps .step {
+    font-size: 15px;
+  }
+
+  .recipe-icons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .actions button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .recipe-header h1 {
+    font-size: 20px;
+  }
+
+  .recipe-header p {
+    font-size: 10px;
+    text-indent: 5px;
+  }
+
+  .recipe-details h2,
+  .recipe-procedures h2 {
+    font-size: 20px;
+  }
+
+  .recipe-details ul li,
+  .recipe-procedures .steps .step {
+    font-size: 13px;
+  }
+
+  .actions button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
