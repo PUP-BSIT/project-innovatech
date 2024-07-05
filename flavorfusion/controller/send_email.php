@@ -20,7 +20,7 @@ $requestPayload = file_get_contents('php://input');
 $data = json_decode($requestPayload, true);
 $email = $data['email'] ?? '';
 $type = $data['type'] ?? '';
-
+$otp = $data['otp'] ?? ''; // Added OTP field
 // Validate email
 $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 $email = filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -34,8 +34,8 @@ $sel_query = "SELECT * FROM `users` WHERE email='" . $email . "'";
 $results = mysqli_query($conn, $sel_query);
 
 if (!$results) {
-    echo json_encode(['status' => 'error', 'message' => 
-        'Database query failed: ' . mysqli_error($conn)]);
+    echo json_encode(['status' => 'error', 'message' => 'Database query failed: ' 
+            . mysqli_error($conn)]);
     exit;
 }
 
@@ -46,8 +46,7 @@ if ($row == 0) {
 }
 
 // Generate a unique token and expiration date
-$expFormat = mktime(date("H"), date("i"), date("s"), date("m"), 
-    date("d") + 1, date("Y"));
+$expFormat = mktime(date("H"), date("i"), date("s"), date("m"), date("d") + 1, date("Y"));
 $expDate = date("Y-m-d H:i:s", $expFormat);
 $token = bin2hex(random_bytes(16));
 
@@ -62,12 +61,12 @@ if (!mysqli_query($conn, $insert_query)) {
 
 $frontendUrl = 'http://localhost:4200/reset_password';
 if ($type == 'verify_user') {
-    $frontendUrl = 'http://localhost:4200/user_verification';  
+    $frontendUrl = 'http://localhost:4200/user_verification';
 }
 
 // Generate the reset link
 $resetLink = $frontendUrl . '?token=' . urlencode($token) . '&email=' 
-    . urlencode($email);
+        . urlencode($email);
 
 // Load the email template based on the type of email to send
 $templateFile = '';
@@ -84,6 +83,10 @@ $template = file_get_contents('../email_templates/'. $templateFile);
 $template = str_replace('{{resetLink}}', htmlspecialchars($resetLink), $template);
 $template = str_replace('{{year}}', date('Y'), $template);
 
+if ($type == 'verify_user') {
+    $template = str_replace('{{otp}}', htmlspecialchars($otp), $template);
+}
+
 try {
     $mail = new PHPMailer(true);
     $mail->SMTPDebug = 0;
@@ -99,8 +102,8 @@ try {
     $mail->addAddress($email);
 
     $mail->isHTML(true);
-    $mail->Subject = ($type == 'verify_user') ? 
-        'Verify Your Account' : 'Reset Your Password';
+    $mail->Subject = ($type == 'verify_user') ? 'Verify Your Account' :
+             'Reset Your Password';
     $mail->Body    = $template;
 
     $mail->send();

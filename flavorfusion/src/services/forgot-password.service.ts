@@ -19,10 +19,10 @@ export class ForgotPasswordService {
       );
   }
 
-  verifyUser(email: string): Observable<any> {
+  verifyUser(email: string, otp: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(`${this.apiUrl}/send_email.php`, 
-      { email, type: 'verify_user' }, { headers })
+      { email, type: 'verify_user', otp }, { headers }) // Include OTP in the payload
       .pipe(
         catchError(this.handleError)
       );
