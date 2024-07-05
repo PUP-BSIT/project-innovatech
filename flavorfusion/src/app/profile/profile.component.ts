@@ -6,6 +6,7 @@ import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SavedRecipesService } from '../../services/saved-recipes.service';
 import { LoginAuthentication } from '../../services/login-authentication.service';
+import { CommunityService } from '../../services/community-service.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,12 +16,12 @@ import { LoginAuthentication } from '../../services/login-authentication.service
 export class ProfileComponent implements OnInit {
   @ViewChild('avatarInput') avatarInput!: ElementRef<HTMLInputElement>;
 
-  showSavedRecipes: boolean = true;
-  showMealPlanning: boolean = false;
-  showActivityLog: boolean = false;
-  showEditModal: boolean = false;
-  showAvatarModal: boolean = false;
-  showShareRecipeModal: boolean = false;
+  showSavedRecipes = true;
+  showMealPlanning = false;
+  showActivityLog = false;
+  showEditModal = false;
+  showAvatarModal = false;
+  showShareRecipeModal = false;
   imageUrl: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   avatarImageUrl: string | ArrayBuffer | null = null;
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
 
   recipeForm: FormGroup;
   savedRecipes: any[] = [];
+  userPosts: any[] = [];
 
   userProfile: any = {
     user_id: null,
@@ -43,13 +45,18 @@ export class ProfileComponent implements OnInit {
   totalRecipes: number = 0;
   totalPages: number = 1;
 
+  currentPostPage: number = 1;
+  totalPosts: number = 0;
+  totalPostPages: number = 1;
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private savedRecipesService: SavedRecipesService
+    private savedRecipesService: SavedRecipesService,
+    private communityService: CommunityService
   ) {
     this.recipeForm = this.createRecipeForm();
     this.profileForm = this.fb.group({
@@ -70,7 +77,6 @@ export class ProfileComponent implements OnInit {
         this.showShareRecipeModal = true;
       }
     });
-    // this.fetchSavedRecipes();
   }
 
   private createRecipeForm(): FormGroup {
@@ -79,7 +85,6 @@ export class ProfileComponent implements OnInit {
       description: [''],
       mealType: ['', Validators.required],
       dietaryPreferences: ['', Validators.required],
-      hours: [null, Validators.required],
       minutes: [null, Validators.required],
       servings: ['', Validators.required],
       ingredients: this.fb.array([this.createIngredient()]),
@@ -167,40 +172,37 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.recipeForm.valid) return;
+    if (this.recipeForm.valid) {
+      console.log("Form is valid, submitting...");
+      const formData = this.createFormData(this.recipeForm.value);
 
-    const formData = this.createFormData(this.recipeForm.value);
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile, this.selectedFile.name);
+      }
 
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile, this.selectedFile.name);
-    }
-
-    this.recipeService.addRecipe(formData).subscribe({
-      next: (response: any) => {
-        // Remove any and define a type
-        if (response.success) {
-          // TODO(any group member): Remove below comments.
-          // Instead of having success property, you can just return error code
-          // from the server(such as 301, 400, etc) in case of error.
-          // That way, it will be automatically handled in the error and you
-          // can omit the response.success property checking.
+      this.recipeService.addRecipe(formData).subscribe({
+        next: (response: any) => {
+          console.log(response);
           this.recipeForm.reset();
           this.imageUrl = null;
           this.selectedFile = null;
           this.closeShareRecipeModal();
-          this.showSnackBar('Recipe added successfully!');
-          return;
+          this.snackBar.open('Recipe added successfully!', 'Close', {
+            duration: 3000,
+          });
+        },
+        error: (error: any) => {
+          console.error('Error adding recipe:', error);
+          this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
+            duration: 3000,
+          });
         }
-        this.showSnackBar(`Error adding recipe: ${response}`);
-      },
-      error: (error: any) => {// User HttpResponseError
-        this.showSnackBar(`Error adding recipe: ${error}`);
-      },
-    });
+      });
+    }
   }
 
   showSnackBar(message: string) {
-    this.snackBar.open(message, 'Close', {duration: 3000});
+    this.snackBar.open(message, 'Close', { duration: 3000 });
   }
 
   private createFormData(formValue: any): FormData {
@@ -240,12 +242,7 @@ export class ProfileComponent implements OnInit {
     this.showMealPlanning = !this.showMealPlanning;
     this.showSavedRecipes = false;
     this.showActivityLog = false;
-  }
-
-  toggleActivityLog(): void {
-    this.showActivityLog = !this.showActivityLog;
-    this.showSavedRecipes = false;
-    this.showMealPlanning = false;
+    this.fetchUserPosts();
   }
 
   openEditModal(): void {
@@ -259,16 +256,12 @@ export class ProfileComponent implements OnInit {
   saveChanges(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: (response: any) => {
-        if (response.success) {
-          console.log('Profile updated successfully');
-          this.userProfile = response.user;
-          this.closeEditModal();
-          this.snackBar.open('User Profile Successfully Edited', 'Close', {
-            duration: 4000,
-          });
-        } else {
-          console.error('Error updating profile:', response.message);
-        }
+        console.log('Profile updated successfully');
+        this.userProfile = response.user;
+        this.closeEditModal();
+        this.snackBar.open('User Profile Successfully Edited', 'Close', {
+          duration: 4000,
+        });
       },
       error: (error: any) => {
         console.error('Error updating profile:', error);
@@ -302,15 +295,10 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateUserAvatar(formData).subscribe({
       next: (response: any) => {
-        if (response.success) {
-          this.userProfile.profile_picture = response.profile_picture;
-          this.avatarImageUrl =
-            response.profile_picture || 'assets/images/default-avatar.jpg';
-          this.showSnackBar('Avatar updated successfully!');
-        } else {
-          console.error('Error updating avatar response:', response);
-          this.showSnackBar('Error updating avatar. Please try again.');
-        }
+        this.userProfile.profile_picture = response.profile_picture;
+        this.avatarImageUrl =
+          response.profile_picture || 'assets/images/default-avatar.jpg';
+        this.showSnackBar('Avatar updated successfully!');
       },
       error: (error: any) => {
         console.error('Error updating avatar:', error);
@@ -323,7 +311,6 @@ export class ProfileComponent implements OnInit {
     this.avatarInput.nativeElement.click();
   }
 
-  //for saved recipes
   fetchSavedRecipes(page: number = 1): void {
     const userId = this.userProfile.user_id;
     if (!userId) return;
@@ -353,6 +340,38 @@ export class ProfileComponent implements OnInit {
   previousPage(): void {
     if (this.currentPage > 1) {
       this.fetchSavedRecipes(this.currentPage - 1);
+    }
+  }
+
+  fetchUserPosts(page: number = 1): void {
+    const userId = this.userProfile.user_id;
+    if (!userId) return;
+
+    this.communityService.getUserPosts(userId, page, this.pageSize).subscribe({
+      next: (data: any) => {
+        this.userPosts = data.posts.map((post: any) => {
+          post.image = 'data:image/jpeg;base64,' + post.image;
+          return post;
+        });
+        this.currentPostPage = page;
+        this.totalPosts = data.total;
+        this.totalPostPages = Math.ceil(this.totalPosts / this.pageSize);
+      },
+      error: (error: any) => {
+        console.error('Error fetching user posts:', error);
+      },
+    });
+  }
+
+  nextPostPage(): void {
+    if (this.currentPostPage < this.totalPostPages) {
+      this.fetchUserPosts(this.currentPostPage + 1);
+    }
+  }
+
+  previousPostPage(): void {
+    if (this.currentPostPage > 1) {
+      this.fetchUserPosts(this.currentPostPage - 1);
     }
   }
 }
