@@ -28,8 +28,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   fetchDailyMeals(): void {
-    this.homeService.getDailyMeals()
-      .subscribe(data => {
+    const storedMeals = localStorage.getItem('dailyMeals');
+    const storedDate = localStorage.getItem('mealsDate');
+    const today = new Date().toLocaleDateString();
+    if (storedMeals && storedDate === today) {
+      this.slides = JSON.parse(storedMeals);
+      this.showSlide(this.currentSlide);
+    } else {
+      this.homeService.getDailyMeals().subscribe(data => {
         this.slides = [
           { meal: 'BREAKFAST', 
             ...data.Breakfast, 
@@ -44,8 +50,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
             image: 'data:image/jpeg;base64,' + data.Dinner.image 
           }
         ];
+        localStorage.setItem('dailyMeals', JSON.stringify(this.slides));
+        localStorage.setItem('mealsDate', today);
         this.showSlide(this.currentSlide);
       });
+    }
   }
 
   setSlide(index: number): void {
@@ -80,22 +89,22 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   moveToPrevSlide(): void {
     if (this.currentSlide > 0) {
-        this.currentSlide--;
+      this.currentSlide--;
     } else {
-        this.currentSlide = this.slides.length - 1;
+      this.currentSlide = this.slides.length - 1;
     }
     this.showSlide(this.currentSlide);
     this.resetSlideInterval();
   }
 
   moveToNextSlide(): void {
-      if (this.currentSlide < this.slides.length - 1) {
-          this.currentSlide++;
-      } else {
-          this.currentSlide = 0;
-      }
-      this.showSlide(this.currentSlide);
-      this.resetSlideInterval();
+    if (this.currentSlide < this.slides.length - 1) {
+      this.currentSlide++;
+    } else {
+      this.currentSlide = 0;
+    }
+    this.showSlide(this.currentSlide);
+    this.resetSlideInterval();
   }
 
   startSlideInterval(): void {

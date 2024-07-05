@@ -60,8 +60,12 @@
               {{ recipe.name }}
             </a>
           </h3>
-          <button (click)="getRecipeDetails(recipe.recipe_id)">Update</button>
-          <button (click)="deleteRecipe(recipe.recipe_id)">Delete</button>
+          <button class="update" (click)="getRecipeDetails(recipe.recipe_id)">
+            Update
+          </button>
+          <button class="delete" (click)="deleteRecipe(recipe.recipe_id)">
+            Delete
+          </button>          
         </div>
       </div>
       <div class="pagination">
@@ -112,24 +116,30 @@
         <div class="dropdown-content">
           <div class="dropdown-column">
             <label>
-              <input type="checkbox" [(ngModel)]="filters.eggs"> Eggs
+              <input type="checkbox" [(ngModel)]="filters.eggs"> 
+              Eggs
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.dairy"> Dairy
+              <input type="checkbox" [(ngModel)]="filters.dairy"> 
+              Dairy
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.nuts"> Nuts
+              <input type="checkbox" [(ngModel)]="filters.nuts"> 
+              Nuts
             </label>
           </div>
           <div class="dropdown-column">
             <label>
-              <input type="checkbox" [(ngModel)]="filters.fish"> Fish
+              <input type="checkbox" [(ngModel)]="filters.fish"> 
+              Fish
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.shrimp"> Shrimp
+              <input type="checkbox" [(ngModel)]="filters.shrimp">
+              Shrimp
             </label>
             <label>
-              <input type="checkbox" [(ngModel)]="filters.vegetables"> Vegetables
+              <input type="checkbox" [(ngModel)]="filters.vegetables">
+              Vegetables
             </label>
           </div>
         </div>
@@ -294,7 +304,7 @@
             </div>
             <input type="file" (change)="onFileSelected($event)">
           </div>          
-          <button class="update" type="submit">Update Recipe</button>        
+          <button class="update-recipe" type="submit">Update Recipe</button>        
         </div>     
       </div>
     </form>

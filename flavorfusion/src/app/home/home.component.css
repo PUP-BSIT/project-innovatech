@@ -306,7 +306,35 @@ label.image {
     width: 100%;
 }  
 
+button.update, button.delete {
+    background-color: #FFCE38;
+    border: none;
+    color: #0E194D;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 13px;
+    margin: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+button.update:hover, button.delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 button.update {
+    background-color: #FFCE38;
+}
+
+button.delete {
+    background-color: #D82B1E;
+    color: #fff;
+}
+
+button.update-recipe {
     background-color: #ffb9a9;
     border: 3px solid #ccccccd9;
     color: black;
