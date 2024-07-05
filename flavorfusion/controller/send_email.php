@@ -110,4 +110,6 @@ try {
     echo json_encode(['status' => 'error', 'message' => 
         "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
 }
+
+
 ?>
