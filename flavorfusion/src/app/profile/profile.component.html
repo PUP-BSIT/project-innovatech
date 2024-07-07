@@ -1,273 +1,364 @@
 <div class="user-profile">
     <div class="profile-title">
-        <h1>User Profile</h1>
+      <h1>User Profile</h1>
     </div>
+  
     <div class="profile-container">
-        <div class="profile-header"> 
-            <div class="profile-box">
-                <div class="avatar-container">
-                    <img [src]="userProfile?.profile_picture || 'assets/images/default-avatar.png'"
-                         alt="User Avatar" class="avatar">
-                    <img src="assets/images/avatar-icon.png"
-                         alt="Change Avatar Icon" class="change-avatar-icon"
-                         (click)="triggerAvatarInput()">
-                    <input type="file" id="avatarInput" 
-                    #avatarInput (change)="onAvatarSelected($event)"
-                    style="display: none;">
-                </div>
-
-                <div class="profile-info">
-                    <div class="share-recipe-container">
-                        <button class="share-recipe-button" 
-                        (click)="openShareRecipeModal()">
+      <div class="profile-header"> 
+        <div class="profile-box">
+          <div class="avatar-container">
+            <img [src]="userProfile?.profile_picture || 
+                      'assets/images/default-avatar.png'"
+                 alt="User Avatar" 
+                 class="avatar">
+            <img src="assets/images/avatar-icon.png"
+                 alt="Change Avatar Icon" 
+                 class="change-avatar-icon"
+                 (click)="triggerAvatarInput()">
+            
+            <input type="file" 
+                   id="avatarInput" 
+                   #avatarInput (change)="onAvatarSelected($event)"
+                   style="display: none;">
+          </div>
+  
+          <div class="profile-info">
+            <div class="share-recipe-container">
+              <button class="share-recipe-button" 
+                      (click)="openShareRecipeModal()">
                         + Share Recipe</button>
-                    </div>
-                    <h2>{{ userProfile?.username }}</h2>
-                    <p>{{ userProfile?.bio }}</p> 
-                    <div class="profile-stats">
-                        <span class="ratings">
-                            <img src="assets/images/star.png"
-                             alt="Star" class="star-icon"> Ratings
-                        </span>
-                        <span class="likes">
-                            <img src="assets/images/heart.png" 
-                            alt="Heart" class="heart-icon"> Likes
-                        </span>
-                
-                        <button class="edit-profile" (click)="openEditModal()">
-                            <img src="assets/images/edit-icon.png" 
-                            alt="Edit Icon" class="edit-icon"> Edit User Profile
-                        </button>
-                    </div>                 
-                </div>                
             </div>
+            
+            <h2>{{ userProfile?.username }}</h2>
+            <p>{{ userProfile?.bio }}</p> 
+            <div class="profile-stats">
+              <span class="ratings">
+                <img src="assets/images/star.png"
+                     alt="Star" 
+                     class="star-icon"> 
+                      Ratings
+              </span>   
+              <span class="likes">
+                <img src="assets/images/heart.png" 
+                     alt="Heart" 
+                     class="heart-icon"> 
+                      Likes
+              </span>
+                  
+              <button class="edit-profile" 
+                      (click)="openEditModal()">
+                <img src="assets/images/edit-icon.png" 
+                     alt="Edit Icon" 
+                     class="edit-icon"> 
+                      Edit User Profile
+              </button>
+            </div>                 
+          </div>                
         </div>
-        
-        <div class="section">
-            <button class="section-button" 
+      </div>
+          
+      <div class="section">
+        <button class="section-button" 
                 (click)="toggleSavedRecipes()" 
                 [ngClass]="{'active': showSavedRecipes}">
-                <h3>Saved Recipes</h3>
-            </button>
-            <button class="section-button" 
+          <h3>Saved Recipes</h3>
+        </button>
+              
+        <button class="section-button" 
                 (click)="toggleMealPlanning()" 
                 [ngClass]="{'active': showMealPlanning}">
-                <h3>Interaction</h3>
-            </button>
-        </div>
-
-        <div class="profile-content">
-            @if (showSavedRecipes) {
-            <div class="recipe-list">
-                 @for (recipe of savedRecipes; track recipe) {
-                    <div class="recipe-card">
-                        <a [routerLink]="['/recipe-details', recipe.recipe_id]">
-                        <img [src]="'data:image/jpeg;base64,' + recipe.picture"
-                            alt="{{ recipe.name }}">
-                        </a>
-                        <a [routerLink]="['/recipe-details', recipe.recipe_id]">
-                            {{ recipe.name }}
-                        </a>
+          <h3>Interaction</h3>
+        </button>
+      </div>
+  
+      <div class="profile-content">
+        @if (showSavedRecipes) {
+          <div class="recipe-list">
+            @for (recipe of savedRecipes; track recipe) {
+              <div class="recipe-card">
+                <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                  <img [src]="'data:image/jpeg;base64,' + recipe.picture"
+                       alt="{{ recipe.name }}">
+                </a>
+                
+                <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                    {{ recipe.name }}
+                </a>
+              </div>
+            }
+            
+            <div class="pagination-controls">
+              <button (click)="previousPage()" 
+                      [disabled]="currentPage === 1">
+                        Previous
+              </button>
+              <span>Page {{ currentPage }} / {{ totalPages }}</span>
+              <button (click)="nextPage()" 
+                      [disabled]="currentPage === totalPages">
+                        Next
+              </button>
+            </div>
+          </div>
+        }
+  
+        @if (showMealPlanning) {
+          <div class="recipe-list">
+            <div *ngFor="let post of userPosts" 
+                 class="recipe-card">
+              <img [src]="post.image" 
+                   alt="Post Image">
+              <p>{{ post.caption }}</p>
+            </div>
+                      
+            <div class="pagination-controls">
+              <button (click)="previousPostPage()" 
+                      [disabled]="currentPostPage === 1">
+                        Previous
+              </button>
+              <span>Page {{ currentPostPage }} / {{ totalPostPages }}</span>
+              
+              <button (click)="nextPostPage()"
+                      [disabled]="currentPostPage === totalPostPages">
+                        Next
+              </button>
+            </div>
+          </div>
+        }
+      
+        @if (showEditModal) {
+          <div class="modal">
+            <div class="modal-content">
+              <span class="close" 
+                    (click)="closeEditModal()">&times;
+              </span>
+              <h2>Edit Profile</h2>
+              <form (ngSubmit)="saveChanges()">
+                <div class="form-group">
+                  <label for="username">
+                      Username:
+                  </label>
+                  <input type="text" 
+                         id="username" 
+                         name="username" 
+                         [(ngModel)]="userProfile.username" 
+                         required>
+                </div>
+  
+                <div class="form-group">
+                  <label for="bio">Bio:</label>
+                  <textarea id="bio" 
+                            name="bio"
+                            [(ngModel)]="userProfile.bio">
+                  </textarea>
+                </div>
+                <button type="submit">Save Changes</button>
+              </form>
+            </div>
+          </div>
+        }
+  
+        @if (showAvatarModal) {
+          <div class="modal">
+            <div class="modal-content">
+              <span class="close" 
+                    (click)="closeAvatarModal()">&times;
+              </span>
+              <h2>Change Avatar</h2>
+              <input type="file" (change)="onAvatarSelected($event)">
+              <button type="submit" (click)="uploadAvatar()">Upload</button>
+            </div>
+          </div>
+        }
+  
+        @if (showShareRecipeModal) {
+          <div class="modal-add">
+            <div class="modal-content">
+              <span class="close" 
+                    (click)="closeShareRecipeModal()">&times;
+              </span>
+              <h2>Share Recipe</h2>
+              <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+              <div class="container">
+                <div class="header"></div>
+                <div class="form-body">
+                  <div class="form-section">
+                    <div class="title-description-container">
+                      <label for="title">Title:</label>
+                      <input type="text" id="title"
+                             formControlName="title" 
+                             required>
+                    </div>
+                                  
+                    <div class="title-description-container">
+                      <label for="description">Description:</label>
+                      <textarea id="description" 
+                                formControlName="description">
+                      </textarea>
+                    </div>
+                                  
+                    <div class="form-group">
+                      <label>Meal Type</label>
+                      <select formControlName="mealType">
+                        <option value="">Select Meal Type</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="snacks">Snacks</option>
+                      </select>
+                    
+                      @if (recipeForm.get('mealType').hasError('required') && recipeForm.get('mealType').touched) {
+                        <div class="error-message">
+                          Meal type is required
                         </div>
-                    }
-                <div class="pagination-controls">
-                    <button (click)="previousPage()" 
-                    [disabled]="currentPage === 1">Previous</button>
-                    <span>Page {{ currentPage }} / {{ totalPages }}</span>
-                    <button (click)="nextPage()" 
-                    [disabled]="currentPage === totalPages">Next</button>
+                      }
                     </div>
-                </div>
-            }
-
-            @if (showMealPlanning) {
-                <div class="recipe-list">
-                    <div *ngFor="let post of userPosts" class="recipe-card">
-                        <img [src]="post.image" alt="Post Image">
-                        <p>{{ post.caption }}</p>
-                    </div>
-                    <div class="pagination-controls">
-                        <button (click)="previousPostPage()" 
-                        [disabled]="currentPostPage === 1">Previous</button>
-                        <span>Page {{ currentPostPage }} / {{ totalPostPages }}
-                        </span>
-                        <button (click)="nextPostPage()"
-                         [disabled]="currentPostPage === totalPostPages">
-                         Next</button>
-                    </div>
-                </div>
-            }
-    
-    @if (showEditModal) {
-        <div class="modal">
-            <div class="modal-content">
-                <span class="close" (click)="closeEditModal()">&times;</span>
-                <h2>Edit Profile</h2>
-                <form (ngSubmit)="saveChanges()">
+                                  
                     <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" 
-                        [(ngModel)]="userProfile.username" required>
+                      <label>Dietary Preferences</label>
+                      <select formControlName="dietaryPreferences">
+                        <option value="">Select Dietary Preference</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="glutenFree">Gluten Free</option>
+                        <option value="lowCarb">Low Carb</option>
+                        <option value="nutFree">Nut Free</option>
+                      </select>
+                                      
+                      @if (recipeForm.get('dietaryPreferences').hasError('required') && recipeForm.get('dietaryPreferences').touched) {
+                        <div class="error-message">
+                          Dietary preference is required
+                        </div>
+                      }
                     </div>
-
-                    <div class="form-group">
-                        <label for="bio">Bio:</label>
-                        <textarea id="bio" name="bio"
-                         [(ngModel)]="userProfile.bio"></textarea>
+  
+                    <div class="form-group form-group-inline time-servings-container">
+                      <div class="form-group">
+                        <label>Time:</label>
+                        <span>:</span>
+                        <input type="number" 
+                              formControlName="minutes" 
+                              class="small-input" 
+                              required placeholder="MM">
+                      </div>
+                                      
+                      <div class="form-group">
+                        <label>Servings:</label>
+                        <input type="number" 
+                               formControlName="servings" 
+                               class="small-input" 
+                               required>
+                      </div>
                     </div>
-                    <button type="submit">Save Changes</button>
-                </form>
-            </div>
-        </div>
-    }
-
-    @if (showAvatarModal) {
-        <div class="modal">
-            <div class="modal-content">
-                <span class="close" (click)="closeAvatarModal()">&times;</span>
-                <h2>Change Avatar</h2>
-                <input type="file" (change)="onAvatarSelected($event)">
-                <button type="submit" (click)="uploadAvatar()">Upload</button>
-            </div>
-        </div>
-    }
-
-    @if (showShareRecipeModal) {
-        <div class="modal-add">
-            <div class="modal-content">
-                <span class="close" (click)="closeShareRecipeModal()">&times;</span>
-                <h2>Share Recipe</h2>
-                <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-                    <div class="container">
-                        <div class="header"></div>
-                        <div class="form-body">
-                            <div class="form-section">
-                                <div class="title-description-container">
-                                    <label for="title">Title:</label>
-                                    <input type="text" id="title"
-                                     formControlName="title" required>
-                                </div>
-                                <div class="title-description-container">
-                                    <label for="description">Description:</label>
-                                    <textarea id="description" 
-                                    formControlName="description"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Meal Type</label>
-                                    <select formControlName="mealType">
-                                        <option value="">Select Meal Type</option>
-                                        <option value="breakfast">Breakfast</option>
-                                        <option value="lunch">Lunch</option>
-                                        <option value="dinner">Dinner</option>
-                                        <option value="dessert">Dessert</option>
-                                        <option value="snacks">Snacks</option>
-                                    </select>
-                                    @if (recipeForm.get('mealType').hasError('required') && recipeForm.get('mealType').touched) {
-                                        <div class="error-message">
-                                            Meal type is required
-                                        </div>
-                                    }
-                                </div>
-                                <div class="form-group">
-                                    <label>Dietary Preferences</label>
-                                    <select formControlName="dietaryPreferences">
-                                        <option value="">Select Dietary Preference</option>
-                                        <option value="vegetarian">Vegetarian</option>
-                                        <option value="vegan">Vegan</option>
-                                        <option value="glutenFree">Gluten Free</option>
-                                        <option value="lowCarb">Low Carb</option>
-                                        <option value="nutFree">Nut Free</option>
-                                    </select>
-                                    @if (recipeForm.get('dietaryPreferences').hasError('required') && recipeForm.get('dietaryPreferences').touched) {
-                                        <div class="error-message">
-                                            Dietary preference is required
-                                        </div>
-                                    }
-                                </div>
-                                <div class="form-group form-group-inline time-servings-container">
-                                    <div class="form-group">
-                                        <label>Time:</label>
-                                        <span>:</span>
-                                        <input type="number" formControlName="minutes" class="small-input" required placeholder="MM">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Servings:</label>
-                                        <input type="number" formControlName="servings" class="small-input" required>
-                                    </div>
-                                </div>
-                                <div class="ingredients-quantity">
-                                    <div formArrayName="ingredients">
-                                        @for (ingredient of recipeForm.controls.ingredients.controls; track $index) {
-                                            <div [formGroupName]="$index" class="form-group">
-                                                <label>Ingredients</label>
-                                                <div class="input-with-icon">
-                                                    <input formControlName="name" required placeholder="Enter ingredient">
-                                                    <input type="number" formControlName="quantity" placeholder="Quantity" required>
-                                                    <button type="button" (click)="removeIngredient($index)" class="delete-button">
-                                                        <i class="material-icons">delete</i>
-                                                    </button>
-                                                </div>
-                                                @if (ingredient.get('name').hasError('required') && ingredient.get('name').touched) {
-                                                    <div class="error-message">
-                                                        Ingredient name is required
-                                                    </div>
-                                                }
-                                                @if (ingredient.get('quantity').hasError('required') && ingredient.get('quantity').touched) {
-                                                    <div class="error-message">
-                                                        Quantity is required
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                    <button type="button" class="add-button" (click)="addIngredient()">Add Ingredient</button>
-                                    <div formArrayName="instructions">
-                                        @for (instruction of recipeForm.controls.instructions.controls; track $index) {
-                                            <div [formGroupName]="$index" class="form-group">
-                                                <label>Instruction</label>
-                                                <div class="input-with-icon">
-                                                    <input formControlName="step" required>
-                                                    <button type="button" (click)="removeInstruction($index)" class="delete-button">
-                                                        <i class="material-icons">delete</i>
-                                                    </button>
-                                                </div>
-                                                @if (instruction.get('step').hasError('required') && instruction.get('step').touched) {
-                                                    <div class="error-message">
-                                                        Instruction step is required
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                    <button type="button" class="add-button" (click)="addInstruction()">Add Instruction</button>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Image:</label>
-                                    <input type="file" formControlName="image" (change)="onImageSelected($event)" accept="image/*">
-                                    @if (imageUrl) {
-                                        <img [src]="imageUrl" alt="Recipe Image" class="preview-image">
-                                    }
-                                    @if (!recipeForm.valid && recipeForm.get('image').touched) {
-                                        <div class="error-message">
-                                            Please select an image file (JPEG, PNG, or GIF).
-                                        </div>
-                                    }
-                                    @if (!recipeForm.valid && recipeForm.touched) {
-                                        <div class="error-message">
-                                            Mandatory information is missing. Please update before saving.
-                                        </div>
-                                    }
-                                </div>
-                                
-                                <div class="actions">
-                                    <button type="submit" [disabled]="!recipeForm.valid" class="publish">Publish</button>
-                                </div>
+                                  
+                    <div class="ingredients-quantity">
+                      <div formArrayName="ingredients">
+                        @for (ingredient of recipeForm.controls.ingredients.controls; track $index) {
+                          <div [formGroupName]="$index" class="form-group">
+                            <label>Ingredients</label>
+                            <div class="input-with-icon">
+                              <input formControlName="name" 
+                                     required placeholder="Enter ingredient">
+                              <input type="number" 
+                                     formControlName="quantity" 
+                                     placeholder="Quantity" 
+                                     required>
+                              <button type="button" 
+                                      (click)="removeIngredient($index)" 
+                                      class="delete-button">
+                                <i class="material-icons">delete</i>
+                              </button>
                             </div>
-                        </div>
+                                                  
+                            @if (ingredient.get('name').hasError('required') && ingredient.get('name').touched) {
+                              <div class="error-message">
+                                Ingredient name is required
+                              </div>
+                            }
+                                                  
+                            @if (ingredient.get('quantity').hasError('required') && ingredient.get('quantity').touched) {
+                              <div class="error-message">
+                                Quantity is required
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                                      
+                      <button type="button" 
+                              class="add-button" 
+                              (click)="addIngredient()">
+                                Add Ingredient
+                      </button>
+                                      
+                      <div formArrayName="instructions">
+                        @for (instruction of recipeForm.controls.instructions.controls; track $index) {
+                          <div [formGroupName]="$index" class="form-group">
+                            <label>Instruction</label>
+                            <div class="input-with-icon">
+                              <input formControlName="step" required>
+                                <button type="button" 
+                                        (click)="removeInstruction($index)" 
+                                        class="delete-button">
+                                  <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                                                  
+                            @if (instruction.get('step').hasError('required') && instruction.get('step').touched) {
+                              <div class="error-message">
+                                Instruction step is required
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                        
+                      <button type="button" 
+                              class="add-button" 
+                              (click)="addInstruction()">
+                                Add Instruction
+                      </button>
                     </div>
-                </form>
+                                  
+                    <div class="form-group">
+                      <label>Image:</label>
+                      <input type="file" 
+                             formControlName="image" 
+                             (change)="onImageSelected($event)" 
+                             accept="image/*">
+                      @if (imageUrl) {
+                        <img [src]="imageUrl" 
+                             alt="Recipe Image" 
+                             class="preview-image">
+                      }
+                                      
+                      @if (!recipeForm.valid && recipeForm.get('image').touched) {
+                        <div class="error-message">
+                          Please select an image file (JPEG, PNG, or GIF).
+                        </div>
+                      }
+                                      
+                      @if (!recipeForm.valid && recipeForm.touched) {
+                        <div class="error-message">
+                          Mandatory information is missing. 
+                          Please update before saving.
+                        </div>
+                      }
+                    </div>
+                                  
+                    <div class="actions">
+                      <button type="submit" 
+                              [disabled]="!recipeForm.valid" 
+                              class="publish">
+                                Publish
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                  </form>
             </div>
-        </div>
-    }
-</div>
+          </div>
+        }
+      </div>
+  
