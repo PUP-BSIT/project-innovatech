@@ -7,4 +7,5 @@ export interface Recipe {
     description: string;
     picture: string;
     averageRating?: number;
+    ratingCount?: number;
 }

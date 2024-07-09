@@ -32,12 +32,14 @@
     font-size: larger;
 }
 
-.rating .fa {
-    color: gold;
+.rating .fa-star,
+.rating .fa-star-half-alt,
+.rating .fa-star-o {
+  color: #ffcc00; 
 }
 
-.fa-star-o, .fa-star-half-o {
-    color: lightgray;
+.rating .fa {
+    color: gold;
 }
 
 .fa-star {
@@ -50,6 +52,16 @@
   
 .fa-star-o {
     color: lightgray;
+}
+
+.rating-text {
+    margin-left: 10px; 
+}
+
+.user-count {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
 }
 
 @media (max-width: 1200px) {
