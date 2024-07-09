@@ -18,4 +18,9 @@ Step into our live Production environment where flavors come to life. Whether yo
 
 Explore our staging environment, where we're cooking up new ideas and perfecting recipes. It's the playground where flavors meet innovation.
 
+## Credentials:
+
+📧 **Email:** malaluankylarica@gmail.com  
+🔒 **Password:** `12345678`
+
 </div>
