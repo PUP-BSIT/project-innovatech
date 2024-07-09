@@ -173,7 +173,6 @@ export class ProfileComponent implements OnInit {
 
   onSubmit(): void {
     if (this.recipeForm.valid) {
-      console.log("Form is valid, submitting...");
       const formData = this.createFormData(this.recipeForm.value);
 
       if (this.selectedFile) {
