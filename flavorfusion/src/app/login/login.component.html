@@ -12,33 +12,39 @@
           to transform your culinary skills today!
         </p>
         <label for="email">Email:</label>
-        @if (email.invalid && (email.dirty || email.touched)) {
-          <div class="error-message">
-            @if (email.errors?.required) {
-              <p class="validation-error">Email is required.</p>
-            }
-            @if (email.errors?.email) {
-              <p class="validation-error">Please enter a valid email address.</p>
-            }
-          </div>
-        }
         <input 
           type="email" 
           id="email"
           formControlName="email"
-          placeholder="e.g. hello@reallygreatsite.com">
-
+          placeholder="e.g. hello@reallygreatsite.com"
+          maxlength="50"
+          [ngClass]="{'input-error': email.invalid && (email.dirty || email.touched)}"/>
+          @if (email.invalid && (email.dirty || email.touched)) {
+            <div class="error-message">
+              @if (email.errors?.required) {
+                <p class="validation-error">Email is required.</p>
+              }
+              @if (email.errors?.email) {
+                <p class="validation-error">Please enter a valid email address.</p>
+              }
+            </div>
+          }
+          
         <label for="password">Password:</label>
-        @if (password.invalid && (password.dirty || password.touched)) {
-          <div class="error-message">
-            <p class="validation-error">Password is required.</p>
-          </div>
-        }
         <input 
           type="password" 
           id="password"
           formControlName="password"
-          placeholder="Password">
+          placeholder="Password"
+          maxlength="50"
+          [ngClass]="{'input-error': password.invalid && (password.dirty || password.touched)}"/>
+          @if (password.invalid && (password.dirty || password.touched)) {
+            <div class="error-message">
+              @if (password.errors?.required) {
+                <p class="validation-error">Password is required.</p>
+              }
+            </div>
+          }
 
         <div class="form-bottom">
           <div class="error-message">
@@ -67,11 +73,14 @@
       @if (showModal) {
         <div class="modal" (click)="closeModal()">
           <div class="modal-content">
-            <span class="close">&times;</span>
+            <div class="checkmark-container">
+              <mat-icon class="checkmark-icon">check_circle</mat-icon>
+            </div>
+
             <p class="login-success">Login successful!</p>
             <button (click)="closeModal()">Close</button>
           </div>
-        </div>
+        </div>        
       }
       <div class="terms">By continuing, you agree to our 
         <a href="#">Terms of Service</a> and
