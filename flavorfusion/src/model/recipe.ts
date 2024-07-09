@@ -6,4 +6,5 @@ export interface Recipe {
     rating: number;
     description: string;
     picture: string;
+    averageRating?: number;
 }

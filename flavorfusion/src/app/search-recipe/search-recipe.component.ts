@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
 import { Recipe } from '../../model/recipe'; 
+import { RecipeRatingService } from '../../services/recipe-rating.service';
 
 @Component({
   selector: 'app-search-recipe',
@@ -19,7 +20,8 @@ export class SearchRecipeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private searchService: SearchService, 
-    private router: Router
+    private router: Router,
+    private recipeRatingService: RecipeRatingService
   ) {}
 
   ngOnInit(): void {
@@ -55,9 +57,23 @@ export class SearchRecipeComponent implements OnInit {
     ).subscribe(
       (results: Recipe[]) => {
         this.searchResults = results || [];
+        this.searchResults.forEach(result => this.fetchAverageRating(result));
       },
       error => {
         console.error('Error fetching recipes: ', error);
+      }
+    );
+  }
+
+  fetchAverageRating(recipe: Recipe): void {
+    this.recipeRatingService.getAverageRating(recipe.recipe_id).subscribe(
+      (averageRating: number) => {
+        console.log('Fetched average rating for recipe', recipe.recipe_id, ':', averageRating);
+        recipe.averageRating = averageRating;
+      },
+      error => {
+        console.error('Error fetching average rating: ', error);
+        recipe.averageRating = 0;
       }
     );
   }
