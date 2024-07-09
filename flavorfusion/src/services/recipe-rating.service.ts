@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -21,5 +21,17 @@ export class RecipeRatingService {
       user_id: userId, 
       rating 
     });
+  }
+
+  getAverageRating(
+    recipeId: number
+  ): Observable<number> {
+    const url = `${this.apiUrl}/get_average_rating.php`;
+    return this.http.get<{ averageRating: number }>(
+      `${url}?recipe_id=${recipeId}`
+    )
+    .pipe(
+      map(response => response.averageRating) 
+    );
   }
 }

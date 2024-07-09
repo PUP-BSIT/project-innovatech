@@ -40,6 +40,18 @@
     color: lightgray;
 }
 
+.fa-star {
+    color: gold;
+}
+  
+.fa-star-half-alt {
+    color: gold;
+}
+  
+.fa-star-o {
+    color: lightgray;
+}
+
 @media (max-width: 1200px) {
     .recipe-container {
         width: 30%;

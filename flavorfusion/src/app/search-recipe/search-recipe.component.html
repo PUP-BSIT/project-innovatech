@@ -16,10 +16,10 @@
           @for (i of [1, 2, 3, 4, 5]; track i) {
             <i class="fa"
                [ngClass]="{
-                 'fa-star': i <= result.rating,
-                 'fa-star-half-alt': i <= result.rating && i > 
-                  result.rating - 1,
-                 'fa-star-o': i > result.rating
+                'fa-star': i <= result.averageRating,
+                'fa-star-half-alt': (i - 0.5) <= result.averageRating 
+                                    && i > result.averageRating,
+                'fa-star-o': i > result.averageRating
                }">
             </i>
           }
