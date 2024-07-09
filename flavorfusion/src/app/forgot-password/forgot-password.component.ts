@@ -27,7 +27,8 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.forgotPasswordForm.invalid || !this.isValidEmail(this.forgotPasswordForm.value.email)) {
+    if (this.forgotPasswordForm.invalid || 
+          !this.isValidEmail(this.forgotPasswordForm.value.email)) {
       this.snackBar.open('Please enter a valid email address', 'Close', {
         duration: 3000,
         panelClass: 'snackbar-error'
@@ -49,7 +50,8 @@ export class ForgotPasswordComponent implements OnInit {
       error => {
         this.isLoading = false; 
         console.error('Error sending email', error);
-        this.snackBar.open('There was an error sending the password reset link', 'Close', {
+        this.snackBar.open('There was an error sending the password reset link', 
+              'Close', {
           duration: 3000,
           panelClass: 'snackbar-error'
         });

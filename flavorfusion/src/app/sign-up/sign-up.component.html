@@ -1,97 +1,122 @@
 @if (!showVerificationForm) {
-    <div class="signup-container">
-      <div class="logo">
-        <img src="assets/images/logo-text.png" alt="FlavorFusion-Logo">
-      </div>
-      <div class="signup-content">
-        <div class="signup-form">
-          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-            <h2>Create an account</h2>
-            <p class="description">
-              Get access to our expert-curated recipes, inspiring cooking guides, and interactive features to transform your culinary skills today!
-            </p>
-  
-            <label for="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              placeholder="e.g. hello@reallygreatsite.com"
-              required>
-            @if (signupForm.get('email').invalid && (signupForm.get('email').dirty || signupForm.get('email').touched)) {
-              <div class="error-message">
-                @if (signupForm.get('email').errors?.required) {
-                  <div>Email is required.</div>
-                }
-                @if (signupForm.get('email').errors?.email) {
-                  <div>Invalid email format.</div>
-                }
-              </div>
-            }
-  
-            <label for="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              formControlName="password"
-              placeholder="******"
-              (blur)="onBlurPassword()"
-              required>
-            @if (passwordError) {
-              <div class="error-message">
-                @if (signupForm.get('password').errors?.required) {
-                  <div>Password is required.</div>
-                }
-                @if (signupForm.get('password').errors?.minlength) {
-                  <div>Password must be at least 8 characters long.</div>
-                }
-              </div>
-            }
-  
-            <label for="confirm-password">Retype Password:</label>
-            <input
-              type="password"
-              id="confirm-password"
-              formControlName="confirmPassword"
-              placeholder="******"
-              (blur)="onBlurConfirmPassword()"
-              required>
-            @if (confirmPasswordError) {
-              <div class="error-message">
-                @if (signupForm.errors?.mismatch) {
-                  <div>Passwords do not match.</div>
-                }
-              </div>
-            }
-  
-            <button type="submit" [disabled]="signupForm.invalid">
-              Create my account
-            </button>
-            <div class="login-link">
-              <p>Already have an account? <a routerLink="/login">Log In</a></p>
+  <div class="signup-container">
+    <div class="logo">
+      <img src="assets/images/logo-text.png" alt="FlavorFusion-Logo">
+    </div>
+    <div class="signup-content">
+      <div class="signup-form">
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <h2>Create an account</h2>
+          <p class="description">
+            Get access to our expert-curated recipes, inspiring cooking guides, 
+            and interactive features to transform your culinary skills today!
+          </p>
+
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="e.g. hello@reallygreatsite.com"
+            maxlength="50"
+            required
+            [ngClass]="{'input-error': signupForm.get('email').invalid && 
+                (signupForm.get('email').dirty || 
+                    signupForm.get('email').touched)}">
+          @if (signupForm.get('email').invalid && (signupForm.get('email').dirty 
+              || signupForm.get('email').touched)) {
+            <div class="error-message">
+              @if (signupForm.get('email').errors?.required) {
+                <div>Email is required.</div>
+              }
+              @if (signupForm.get('email').errors?.email) {
+                <div>Invalid email format.</div>
+              }
             </div>
-          </form>
-          <div class="terms">
-            By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          }
+
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="********"
+            maxlength="50"
+            required
+            (blur)="onBlurPassword()"
+            [ngClass]="{'input-error': signupForm.get('password').invalid && 
+                (signupForm.get('password').dirty || 
+                    signupForm.get('password').touched)}">
+          @if (passwordError) {
+            <div class="error-message">
+              @if (signupForm.get('password').errors?.required) {
+                <div>Password is required.</div>
+              }
+              @if (signupForm.get('password').errors?.minlength) {
+                <div>Password must be at least 8 characters long.</div>
+              }
+            </div>
+          }
+
+          <label for="confirm-password">Retype Password:</label>
+          <input
+            type="password"
+            id="confirm-password"
+            formControlName="confirmPassword"
+            placeholder="********"
+            maxlength="50"
+            required
+            (blur)="onBlurConfirmPassword()"
+            [ngClass]="{'input-error': confirmPasswordError}">
+          @if (confirmPasswordError) {
+            <div class="error-message">
+              @if (signupForm.errors?.mismatch) {
+                <div>Passwords do not match.</div>
+              }
+              @if (signupForm.get('confirmPassword').errors?.required) {
+                <div>Confirm password is required.</div>
+              }
+            </div>
+          }
+
+          <button type="submit" [disabled]="signupForm.invalid">
+            Create my account
+          </button>
+          <div class="login-link">
+            <p>Already have an account? <a routerLink="/login">Log In</a></p>
           </div>
-        </div>
-        <div class="signup-graphic">
-          <img src="assets/images/frontpage_colored.PNG" alt="FlavorFusion-Graphic">
+        </form>
+        <div class="terms">
+          By continuing, you agree to our <a href="#">Terms of Service</a> 
+          and <a href="#">Privacy Policy</a>
         </div>
       </div>
+      <div class="signup-graphic">
+        <img src="assets/images/frontpage_colored.PNG" 
+        alt="FlavorFusion-Graphic">
+      </div>
     </div>
-  }
-  
-  @if (showVerificationForm) {
-    <div class="verification-container">
-      <h2>Email Verification</h2>
-      <form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
-        <label for="otp">Enter the OTP sent to your email:</label>
-        <input type="text" id="otp" formControlName="otp" maxlength="6" required>
-        <button type="button" (click)="emailOTP()">Send Verification Code</button>
-        <button type="submit" [disabled]="verificationForm.invalid">Verify OTP</button>
-      </form>
-    </div>
-  }
-  
-  
+  </div>
+}
+
+@if (showVerificationForm) {
+  <div class="logo-verification">
+    <img src="assets/images/logo.png" alt="Logo">
+  </div>
+  <div class="verification-container">
+    <h2>Email Verification</h2>
+    <form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
+      <label for="otp">Enter the OTP sent to your email:</label>
+      <input type="text" id="otp" formControlName="otp" maxlength="6" required>
+      <button type="button" (click)="emailOTP()" [disabled]="isLoading">
+            Send Verification Code</button>
+      <button type="submit" [disabled]="verificationForm.invalid || isLoading">
+            Verify OTP</button>
+    </form>
+  </div>
+  <div class="spinner">
+    @if(isLoading){
+      <mat-spinner></mat-spinner>
+    }
+  </div>
+}

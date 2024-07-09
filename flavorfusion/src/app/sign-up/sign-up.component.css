@@ -1,18 +1,18 @@
 body {
     overflow: hidden;
-}
-
-.logo {
+  }
+  
+  .logo {
     position: absolute;
     top: 20px;
     left: 40px;
-}
-
-.logo img {
+  }
+  
+  .logo img {
     width: 150px;
-}
-
-.signup-container {
+  }
+  
+  .signup-container {
     display: flex;
     align-items: flex-start;
     width: 100%;
@@ -20,9 +20,9 @@ body {
     background-color: #f9f9f9;
     padding-bottom: 0;
     margin-bottom: -40px; 
-}
-
-.signup-content {
+  }
+  
+  .signup-content {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -30,43 +30,48 @@ body {
     background: #ffffff;
     border-radius: 8px;
     padding: 50px;
-}
-
-.signup-form {
+  }
+  
+  .signup-form {
     flex: 1;
     padding: 40px;
     margin-top: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.signup-form h2 {
+  }
+  
+  .signup-form h2 {
     font-size: 24px;
     margin-bottom: 20px;
-}
-
-.login-form p.description {
+  }
+  
+  .login-form p.description {
     max-width: 315px;
     margin-bottom: 15px;
     color: #666666;
-}
-
-.signup-form label {
+  }
+  
+  .signup-form label {
     display: block;
     margin-bottom: 5px;
     color: #333333;
-}
-
-.signup-form input {
+  }
+  
+  .signup-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #cccccc;
     border-radius: 4px;
-}
-
-.signup-form button {
+  }
+  
+  .signup-form input.input-error {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+  }
+  
+  .signup-form button {
     width: 100%;
     padding: 10px;
     background-color: #ff9800;
@@ -76,37 +81,37 @@ body {
     border-radius: 100px;
     cursor: pointer;
     justify-content: center;
-}
-
-.signup-form button:hover {
+  }
+  
+  .signup-form button:hover {
     background-color: #e68900;
-}
-
-.login-link {
+  }
+  
+  .login-link {
     text-align: center;
     margin-top: 10px;
-}
-
-.signup-form p:last-of-type {
+  }
+  
+  .signup-form p:last-of-type {
     font-size: 12px;
     color: #999999;
-}
-
-.signup-form p a {
+  }
+  
+  .signup-form p a {
     color: #0292B7;
     text-decoration: none;
-}
-
-.signup-graphic {
+  }
+  
+  .signup-graphic {
     flex: 2;
     text-align: center;
     padding: 0;
     margin-top: 0;
     display: flex;
     align-items: flex-start;
-}
-
-.signup-graphic img {
+  }
+  
+  .signup-graphic img {
     width: 100%;
     height: auto;
     max-height: 90vh;
@@ -115,86 +120,86 @@ body {
     margin-top: -27px;
     padding-right: 12px;
     margin-right: -48px;
-}
-
-.signup-form .terms {
+  }
+  
+  .signup-form .terms {
     font-size: 12px;
     color: #999999;
     position: absolute;
     bottom: 25px;
     left: 10%; 
     text-align: center;
-}
-
-.signup-form .terms a {
+  }
+  
+  .signup-form .terms a {
     color: #0292B7;
     text-decoration: none;
-}
-
-@media (max-width: 767px) {
+  }
+  
+  @media (max-width: 767px) {
     .logo {
-        top: 10px;
-        left: 20px;
+      top: 10px;
+      left: 20px;
     }
-
+  
     .signup-container {
-        height: auto;
+      height: auto;
     }
-
+  
     .signup-content {
-        flex-direction: column;
-        padding: 20px;
+      flex-direction: column;
+      padding: 20px;
     }
-
+  
     .signup-form {
-        padding: 20px;
+      padding: 20px;
     }
-
+  
     .signup-graphic {
-        display: none; 
+      display: none; 
     }
-}
-.error-message {
+  }
+  
+  .error-message {
     color: red;
     font-size: 0.9em;
     margin-top: 0.5em;
     margin-bottom: 1em;
-}
+  }
   
-.signup-container {
+  .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+  }
   
-.signup-content {
+  .signup-content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
+  }
   
-.signup-form {
+  .signup-form {
     width: 50%;
     padding: 2em;
-}
+  }
   
-.signup-form form {
+  .signup-form form {
     display: flex;
     flex-direction: column;
-}
+  }
   
-.signup-form label {
+  .signup-form label {
     margin-top: 1em;
     margin-bottom: 0.5em;
-}
+  }
   
-.signup-form input {
+  .signup-form input {
     padding: 0.5em;
     margin-bottom: 1em;
-}
+  }
   
-/* Adjust colors and layout to match your design */
-.verification-container {
+  .verification-container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -202,7 +207,9 @@ body {
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+    margin-top: 5%;
+    align-items: center;
+}
   
   .verification-container h2 {
     font-size: 1.5rem;
@@ -217,47 +224,59 @@ body {
   }
   
   .verification-container label {
-    font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+    color: #333;
   }
   
-  .verification-container input[type="text"] {
-    width: 100%;
+  .verification-container input {
+    width: calc(100% - 20px);
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
     border-radius: 4px;
-    font-size: 1rem;
   }
   
   .verification-container button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    font-size: 1rem;
-    cursor: pointer;
+    width: calc(100% - 20px);
+    padding: 10px;
+    background-color: #ff9800;
     border: none;
+    color: white;
+    font-size: 16px;
     border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    
+  }
+  
+  .verification-container button:hover {
     background-color: #e68900;
-    color: #fff;
-    transition: background-color 0.3s ease;
   }
   
   .verification-container button:disabled {
-    background-color: #ccc;
+    background-color: #cccccc;
     cursor: not-allowed;
   }
-  
-  .verification-container button:not(:disabled):hover {
-    background-color: #e68900;
+
+.logo-verification {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.logo-verification img {
+  max-width: 300px;
+  height: auto;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 10px; 
+    z-index: 100;
   }
-  
-  @media (max-width: 600px) {
-    .verification-container {
-      max-width: 100%;
-      padding: 10px;
-    }
-  }
-  
   
 
   

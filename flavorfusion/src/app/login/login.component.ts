@@ -23,7 +23,8 @@ export class LoginComponent {
     this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
 
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email, Validators
+            .maxLength(50)]],
       password: ['', [Validators.required, Validators.maxLength(50)]]
     });
   }
