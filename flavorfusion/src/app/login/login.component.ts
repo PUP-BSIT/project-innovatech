@@ -11,9 +11,9 @@ import { LoginAuthentication } from '../../services/login-authentication.service
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  errorMessage: string = '';
+  errorMessage = '';
   isLoggedIn$: Observable<boolean>;
-  showModal: boolean = false;
+  showModal = false;
 
   constructor(
     private router: Router,
@@ -23,8 +23,8 @@ export class LoginComponent {
     this.isLoggedIn$ = this.loginAuthService.isLoggedIn$;
 
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.maxLength(50)]]
     });
   }
 

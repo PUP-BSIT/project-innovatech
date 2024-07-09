@@ -65,6 +65,11 @@ body {
   border-radius: 4px;
 }
 
+.login-form input.input-error {
+  border: 1px solid red;
+  box-shadow: 0 0 5px red;
+}
+
 .login-form button {
   width: 100%;
   padding: 10px;
@@ -154,7 +159,6 @@ body {
   }
 }
 
-
 .modal {
   display: block; 
   position: fixed;
@@ -167,7 +171,6 @@ body {
   background-color: rgba(0,0,0,0.4); 
 }
 
-
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -175,6 +178,7 @@ body {
   border: 1px solid #888;
   border-radius: 25px;
   width: 50%;
+  max-width: 350px;
   text-align: center;
 }
 
@@ -182,8 +186,16 @@ body {
   font-size: large;
 }
 
+.checkmark-container {
+  color: rgb(42, 181, 42);
+  background-color: white;
+  border-radius: 50%;
+}
+
 .login-success {
-  color: green;
+  color: rgb(42, 181, 42);
+  font-size: 25px !important;
+  font-weight: bold;
 }
 
 .close {
@@ -200,8 +212,14 @@ body {
   cursor: pointer;
 }
 
-.error-message {
-  margin-top: 5px;
+.error-message p {
+  margin-top: -9px !important;
+  margin-bottom: 15px;
+}
+
+.incorrect-credentials {
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 
 .validation-error {
@@ -241,6 +259,3 @@ body {
   color: red;
   text-align: center; 
 }
-
-
-

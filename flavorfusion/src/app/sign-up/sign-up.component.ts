@@ -109,7 +109,6 @@ export class SignUpComponent {
     const enteredOTP = this.verificationForm.get('otp')?.value;
     if (enteredOTP === this.otp) {
       console.log('OTP verified successfully.');
-
       // Proceed with user signup
       this.completeSignup();
     } else {
