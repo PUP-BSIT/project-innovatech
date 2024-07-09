@@ -12,13 +12,13 @@
       </button>
       <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;">
       <button mat-raised-button color="primary" class="post-button" (click)="addPost()"> Post </button>
+      @if (newPostImageSrc) {
+        <div>
+          <img [src]="newPostImageSrc" class="preview-image" alt="Image preview"/>
+        </div>
+      }
     </mat-form-field>
 
-    @if (newPostImageSrc) {
-      <div>
-        <img [src]="newPostImageSrc" class="preview-image" alt="Image preview"/>
-      </div>
-    }
   </div>
 
   <div class="posts">

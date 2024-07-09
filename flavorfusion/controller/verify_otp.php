@@ -15,21 +15,24 @@ $email = $_POST['email'];
 $otp = $_POST['otp'];
 
 if (empty($email) || empty($otp)) {
-    echo json_encode(['success' => false, 'message' => 
-        'Email and OTP are required.']);
+    echo json_encode(['success' => false, 'message' => 'Email and OTP are required.']);
     exit;
 }
 
-$stmt = $conn->prepare("SELECT * FROM verification_temp 
-    WHERE email = ? AND otp_code = ?");
+$stmt = $conn->prepare("SELECT * FROM verification_temp WHERE email = ? AND otp_code = ?");
 $stmt->bind_param("ss", $email, $otp);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
     // OTP matched, proceed with user registration
-    echo json_encode(['success' => true, 'message' => 
-        'OTP verified successfully.']);
+    echo json_encode(['success' => true, 'message' => 'OTP verified successfully.']);
+
+    // Delete the verified OTP entry from verification_temp
+    $delete_stmt = $conn->prepare("DELETE FROM verification_temp WHERE email = ?");
+    $delete_stmt->bind_param("s", $email);
+    $delete_stmt->execute();
+    $delete_stmt->close();
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid OTP.']);
 }

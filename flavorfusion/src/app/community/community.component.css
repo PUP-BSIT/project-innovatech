@@ -382,3 +382,10 @@ button.close-button:hover {
     font-size: 8px;
   }
 }
+
+.preview-image {
+  max-width: 100px;
+  max-height: 200px; 
+  margin-left: 50px;
+  border-radius: 15%;
+}

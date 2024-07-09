@@ -29,20 +29,22 @@ if (!$email) {
     exit;
 }
 
-// Check if the user exists in the database
-$sel_query = "SELECT * FROM `users` WHERE email='" . $email . "'";
-$results = mysqli_query($conn, $sel_query);
+// Check if the user exists only if it's a forgot_password request
+if ($type == 'forgot_password') {
+    $sel_query = "SELECT * FROM `users` WHERE email='" . $email . "'";
+    $results = mysqli_query($conn, $sel_query);
 
-if (!$results) {
-    echo json_encode(['status' => 'error', 'message' => 'Database query failed: ' 
-            . mysqli_error($conn)]);
-    exit;
-}
+    if (!$results) {
+        echo json_encode(['status' => 'error', 'message' => 'Database query failed: ' 
+                . mysqli_error($conn)]);
+        exit;
+    }
 
-$row = mysqli_num_rows($results);
-if ($row == 0) {
-    echo json_encode(['status' => 'error', 'message' => 'User not found']);
-    exit;
+    $row = mysqli_num_rows($results);
+    if ($row == 0) {
+        echo json_encode(['status' => 'error', 'message' => 'User not found']);
+        exit;
+    }
 }
 
 // Generate a unique token and expiration date
