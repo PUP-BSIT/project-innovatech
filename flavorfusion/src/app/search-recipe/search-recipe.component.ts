@@ -67,13 +67,14 @@ export class SearchRecipeComponent implements OnInit {
 
   fetchAverageRating(recipe: Recipe): void {
     this.recipeRatingService.getAverageRating(recipe.recipe_id).subscribe(
-      (averageRating: number) => {
-        console.log('Fetched average rating for recipe', recipe.recipe_id, ':', averageRating);
-        recipe.averageRating = averageRating;
+      (data: { averageRating: number, ratingCount: number }) => {
+        recipe.averageRating = data.averageRating;
+        recipe.ratingCount = data.ratingCount;
       },
       error => {
-        console.error('Error fetching average rating: ', error);
+        console.error('Error fetching average rating and count: ', error);
         recipe.averageRating = 0;
+        recipe.ratingCount = 0;
       }
     );
   }

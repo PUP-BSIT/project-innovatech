@@ -16,13 +16,27 @@
           @for (i of [1, 2, 3, 4, 5]; track i) {
             <i class="fa"
                [ngClass]="{
-                'fa-star': i <= result.averageRating,
-                'fa-star-half-alt': (i - 0.5) <= result.averageRating 
-                                    && i > result.averageRating,
-                'fa-star-o': i > result.averageRating
+                'fa-star': i <= (result.averageRating || 0),
+                'fa-star-half-alt': (i - 0.5) <= (result.averageRating || 0) 
+                                  && i > (result.averageRating || 0),
+                'fa-star-o': i > (result.averageRating || 0)
                }">
             </i>
           }
+
+          <span class="rating-text">
+            {{ result.averageRating }} out of 5
+          </span>
+        </div>
+
+        <div class="user-count">
+          <span>
+            ({{ result.ratingCount }} 
+            {{ result.ratingCount === 1 ? 
+              'user rated this' : 
+              'users rated this' 
+            }})
+          </span>
         </div>
       </div>
     }

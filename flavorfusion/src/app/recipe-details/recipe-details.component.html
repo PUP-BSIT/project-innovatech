@@ -21,26 +21,33 @@
           <div class="icon-item">
             <p class="prep-time"><i class="fas fa-concierge-bell"></i>
               <strong>Preparation Time: </strong>
-              {{ recipe.prep_time }}
+              {{ recipe.prep_time }} 
+              {{ recipe.prep_time === 1 ? 'minute' : 'minutes' }}
             </p>
           </div>
 
           <div class="icon-item">
             <p class="servings"><i class="fas fa-utensils"></i>
               <strong>Servings: </strong>
-              {{ recipe.servings }}
+              {{ recipe.servings }} 
+              {{ recipe.servings === 1 ? 'person' : 'persons' }}
             </p>
           </div>
         </div>
 
         <div class="actions">
-          <button class="save" (click)="toggleSave()">
-            <i class="fas fa-heart"></i> {{ saved ? 'Already Saved' : 'Save' }}
+          <button class="save" 
+              [ngClass]="{'saved': saved}" 
+              (click)="toggleSave()">
+            <i class="fas fa-heart"></i> 
+            {{ saved ? 'Saved' : 'Save' }}
           </button>
 
-          <button class="rate" (click)="openRateModal()">
+          <button class="rate" 
+              [ngClass]="{'rated': hasRated}" 
+              (click)="openRateModal()">
             <i class="fas fa-star"></i>
-            Rate
+            {{ hasRated ? 'Rated' : 'Rate' }}
           </button>
 
           <button class="share" (click)="shareToCommunity()">

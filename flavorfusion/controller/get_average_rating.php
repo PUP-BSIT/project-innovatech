@@ -14,7 +14,9 @@ include 'db_connection.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $recipe_id = $_GET['recipe_id'];
 
-    $sql = "SELECT AVG(rating) as averageRating 
+    $sql = "SELECT 
+            AVG(rating) as averageRating, 
+            COUNT(rating) as ratingCount 
             FROM ratings 
             WHERE recipe_id = ?";
     $stmt = $conn->prepare($sql);
@@ -24,9 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $row = $result->fetch_assoc();
 
     $averageRating = $row['averageRating'] ? (float)$row['averageRating'] : 0;
+    $ratingCount = $row['ratingCount'] ? (int)$row['ratingCount'] : 0;
 
-    echo json_encode(['averageRating' => $averageRating]);
-
+    echo json_encode(['averageRating' => $averageRating, 
+                      'ratingCount' => $ratingCount]);
     $stmt->close();
     $conn->close();
 } else {
