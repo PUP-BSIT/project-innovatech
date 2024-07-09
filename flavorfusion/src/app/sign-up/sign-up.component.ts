@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SignupService } from '../../services/signup.service';
 import { ForgotPasswordService } from '../../services/forgot-password.service';
 
@@ -12,17 +13,19 @@ import { ForgotPasswordService } from '../../services/forgot-password.service';
 export class SignUpComponent {
   signupForm: FormGroup;
   verificationForm: FormGroup;
-  passwordError: boolean = false;
-  confirmPasswordError: boolean = false;
-  showVerificationForm: boolean = false;
-  email: string = '';
-  otp: string = '';
+  passwordError = false;
+  confirmPasswordError = false;
+  showVerificationForm = false;
+  email = '';
+  otp = '';
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private signupService: SignupService,
     private forgotPasswordService: ForgotPasswordService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,8 +34,7 @@ export class SignUpComponent {
     }, { validators: this.passwordsMatchValidator });
 
     this.verificationForm = this.fb.group({
-      otp: ['', [Validators.required, Validators.minLength(6), 
-        Validators.maxLength(6)]]
+      otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
     });
   }
 
@@ -49,8 +51,7 @@ export class SignUpComponent {
 
   onBlurConfirmPassword() {
     const confirmPasswordControl = this.signupForm.get('confirmPassword');
-    this.confirmPasswordError = confirmPasswordControl?.errors || 
-        this.signupForm.errors?.mismatch;
+    this.confirmPasswordError = confirmPasswordControl?.errors || this.signupForm.errors?.mismatch;
   }
 
   onSubmit() {
@@ -91,16 +92,28 @@ export class SignUpComponent {
   }
 
   emailOTP() {
+    this.isLoading = true;
     this.forgotPasswordService.verifyUser(this.email, this.otp).subscribe({
       next: (emailResponse) => {
+        this.isLoading = false;
         if (emailResponse.status === 'success') {
           console.log('Verification email sent successfully.');
+          this.snackBar.open('Verification email sent successfully', 'Close', {
+            duration: 3000
+          });
         } else {
           console.error('Failed to send verification email.');
+          this.snackBar.open('Failed to send verification email', 'Close', {
+            duration: 3000
+          });
         }
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error sending verification email:', error);
+        this.snackBar.open('Error sending verification email', 'Close', {
+          duration: 3000
+        });
       }
     });
   }
@@ -109,6 +122,7 @@ export class SignUpComponent {
     const enteredOTP = this.verificationForm.get('otp')?.value;
     if (enteredOTP === this.otp) {
       console.log('OTP verified successfully.');
+
       // Proceed with user signup
       this.completeSignup();
     } else {
@@ -134,7 +148,6 @@ export class SignUpComponent {
       },
       error: (err) => {
         console.error('Signup error:', err);
-        
       }
     });
   }
