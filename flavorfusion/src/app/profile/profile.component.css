@@ -1502,3 +1502,127 @@ button[type="submit"]:hover {
     color: #333;
     padding: 0 10px;
 }
+
+.custom-multiselect {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.selected-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.selected-options span {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.selected-options span .remove-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.selected-options input {
+  border: none;
+  outline: none;
+  flex: 1;
+  cursor: pointer;
+}
+
+.options-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.options-dropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.options-dropdown div:hover,
+.options-dropdown div.selected {
+  background-color: #f0f0f0;
+}
+
+.error-message {
+  color: red;
+}
+.custom-multiselect {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+  
+.selected-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+  
+.selected-options span {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+  
+.selected-options span .remove-icon {
+    margin-left: 5px;
+    cursor: pointer;
+}
+  
+.selected-options input {
+    border: none;
+    outline: none;
+    flex: 1;
+    cursor: pointer;
+}
+  
+.options-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+  
+.options-dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+  
+.options-dropdown div:hover,
+  .options-dropdown div.selected {
+background-color: #f0f0f0;
+}
+  
+.error-message {
+    color: red;
+}
+  
