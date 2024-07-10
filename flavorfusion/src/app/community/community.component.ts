@@ -15,7 +15,8 @@ import { Recipe } from '../../model/recipe';
   styleUrls: ['./community.component.css']
 })
 export class CommunityComponent implements OnInit {
-  @ViewChild('postDetailTemplate', { static: true }) postDetailTemplate: TemplateRef<any>;
+  @ViewChild('postDetailTemplate', 
+        { static: true }) postDetailTemplate: TemplateRef<any>;
   dialogRef: MatDialogRef<any> | null = null;
   newPostText: string = '';
   newPostImage: File | null = null;
@@ -60,8 +61,10 @@ export class CommunityComponent implements OnInit {
   }
 
   loadPosts(): void {
-    const userId = this.loginAuthService.getUserId();
-    this.communityService.getPosts().subscribe(
+    const userId = this.loginAuthService.isLoggedIn() ? this.loginAuthService
+        .getUserId() : null;
+  
+    this.communityService.getPosts(userId).subscribe(
       (response: any) => {
         if (response.success) {
           this.posts = response.posts.map(post => {
@@ -76,7 +79,7 @@ export class CommunityComponent implements OnInit {
         console.error('HTTP error:', error);
       }
     );
-  }
+  }  
 
   openPostDetail(post: Post, template: TemplateRef<any>): void {
     if (!this.dialogRef) { 
