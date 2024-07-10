@@ -18,7 +18,6 @@
         </div>
       }
     </mat-form-field>
-
   </div>
 
   <div class="posts">
@@ -67,20 +66,15 @@
             <button (click)="addComment(data.post)" class="post-comment-button">Comment</button>
           </div>
         @for (comment of data.post.comments; track comment) {
-          <div class="comment">
-            <div class="user-info">
+            <div class="comment">
               <img [src]="comment.userAvatar" class="avatar" alt="avatar"/>
-              <div class="user-details">
+              <div class="comment-content">
                 <span class="username">{{ comment.username }}</span>
                 <span class="time">{{ comment.time }}</span>
+                <p class="text">{{ comment.text }}</p>
               </div>
-              <button class="like-button" (click)="toggleLike(comment)">
-                <mat-icon>{{ comment.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
-              </button>
             </div>
-            <div class="text">{{ comment.text }}</div>
-          </div>
-        }
+          }
         </div>
       </div>
     </div>

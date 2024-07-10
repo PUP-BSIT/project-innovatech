@@ -25,6 +25,8 @@ function timeAgo($time) {
     }
 }
 
+$userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+
 try {
     $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.recipe_id, cr.caption,
          cr.image, cr.shared_at, up.username, up.profile_picture 
@@ -49,13 +51,16 @@ try {
         $likeCount = $likeResult->fetch_assoc()['like_count'];
         $stmt->close();
 
-        $stmt = $conn->prepare("SELECT COUNT(*) as liked FROM reactions 
-            WHERE community_recipe_id = ? AND user_id = ?");
-        $stmt->bind_param("ii", $postId, $userId);
-        $stmt->execute();
-        $likedResult = $stmt->get_result();
-        $liked = $likedResult->fetch_assoc()['liked'] > 0;
-        $stmt->close();
+        $liked = false;
+        if ($userId) {
+            $stmt = $conn->prepare("SELECT COUNT(*) as liked FROM reactions 
+                WHERE community_recipe_id = ? AND user_id = ?");
+            $stmt->bind_param("ii", $postId, $userId);
+            $stmt->execute();
+            $likedResult = $stmt->get_result();
+            $liked = $likedResult->fetch_assoc()['liked'] > 0;
+            $stmt->close();
+        }
 
         $comments = [];
         $stmt = $conn->prepare("SELECT c.comment_id, c.comment, 
