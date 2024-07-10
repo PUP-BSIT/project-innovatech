@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
-import { Recipe } from '../../model/recipe';  
+import { Recipe } from '../../model/recipe';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, AfterViewInit {
   modalText: string = '';
   inputFields: string[] = [''];
   selectedCategories: { title: string, items: string[] }[] = [];
@@ -22,12 +22,17 @@ export class SearchComponent implements OnInit {
   dietaryPref: string = '';
   ingredient: string = '';
   isLoading: boolean = false;
-  searchResults: Recipe[] = [];  
+  searchResults: Recipe[] = [];
+  focusIndex: number = 0; 
+
+  @ViewChildren('inputField', { read: ElementRef }) 
+                inputElements: QueryList<ElementRef>;
 
   constructor(
     private route: ActivatedRoute,
     private searchService: SearchService,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2 
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +52,12 @@ export class SearchComponent implements OnInit {
       if (this.query || this.mealType || this.dietaryPref || this.ingredient) {
         this.searchRecipes();
       }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.inputElements.changes.subscribe(() => {
+      this.setFocus();
     });
   }
 
@@ -95,7 +106,7 @@ export class SearchComponent implements OnInit {
       }
     });
     this.closeModal();
-  }  
+  }
 
   onSearch(event: KeyboardEvent): void {
     if (event.key === 'Enter' && this.query) {
@@ -113,10 +124,14 @@ export class SearchComponent implements OnInit {
   addInputField(event: Event) {
     event.preventDefault();
     this.inputFields.push('');
+    this.focusIndex = this.inputFields.length - 1;
   }
 
   removeInputField(index: number) {
     this.inputFields.splice(index, 1);
+    if (this.focusIndex >= this.inputFields.length) {
+      this.focusIndex = this.inputFields.length - 1;
+    }
   }
 
   toggleCategory(category: string) {
@@ -174,5 +189,19 @@ export class SearchComponent implements OnInit {
 
   trackByFn(index: number, item: any): number {
     return index;
+  }
+
+  setFocus() {
+    const inputArray = this.inputElements.toArray();
+    if (inputArray[this.focusIndex]) {
+      this.renderer.selectRootElement(inputArray[this.focusIndex].nativeElement).focus();
+    }
+  }
+
+  keepFocus(index?: number) {
+    if (index !== undefined) {
+      this.focusIndex = index;
+    }
+    this.setFocus();
   }
 }
