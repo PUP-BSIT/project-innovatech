@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
+import { Recipe } from '../../model/recipe';  
 
 @Component({
   selector: 'app-search',
@@ -20,6 +21,8 @@ export class SearchComponent implements OnInit {
   mealType: string = '';
   dietaryPref: string = '';
   ingredient: string = '';
+  isLoading: boolean = false;
+  searchResults: Recipe[] = [];  
 
   constructor(
     private route: ActivatedRoute,
@@ -65,6 +68,13 @@ export class SearchComponent implements OnInit {
   }
 
   searchRecipes(): void {
+    this.isLoading = true;
+    this.searchService.searchRecipes(
+      this.query, this.mealType, this.dietaryPref, this.ingredient)
+      .subscribe((results: Recipe[]) => {
+        this.searchResults = results;
+        this.isLoading = false;
+      });
     this.router.navigate(['/search-recipe'], {
       queryParams: {
         query: this.query,

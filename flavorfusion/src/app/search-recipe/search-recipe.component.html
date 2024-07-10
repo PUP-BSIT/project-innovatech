@@ -2,47 +2,50 @@
   <h3 class="category-heading">{{ dynamicHeading }}</h3>
 
   <div class="recipe-grid">
-    @for (result of searchResults; track result.recipe_id) {
-      <div class="recipe-container" 
-        (click)="viewRecipeDetails(result.recipe_id)">
-        <img 
-          [src]="'data:image/jpeg;base64,' + result.image" 
-          alt="{{ result.name }}" 
-          class="recipe-image"
-        >
-        <h3>{{ result.name }}</h3>
+    @if (loading) {
+      <p>Loading recipes...</p>
+    } @else {
+      @for (result of searchResults; track result.recipe_id) {
+        <div class="recipe-container" 
+          (click)="viewRecipeDetails(result.recipe_id)">
+          <img 
+            [src]="'data:image/jpeg;base64,' + result.image" 
+            alt="{{ result.name }}" 
+            class="recipe-image">
+          <h3>{{ result.name }}</h3>
 
-        <div class="rating">
-          @for (i of [1, 2, 3, 4, 5]; track i) {
-            <i class="fa"
-               [ngClass]="{
-                'fa-star': i <= (result.averageRating || 0),
-                'fa-star-half-alt': (i - 0.5) <= (result.averageRating || 0) 
-                                  && i > (result.averageRating || 0),
-                'fa-star-o': i > (result.averageRating || 0)
-               }">
-            </i>
-          }
+          <div class="rating">
+            @for (i of [1, 2, 3, 4, 5]; track i) {
+              <i class="fa"
+                 [ngClass]="{
+                  'fa-star': i <= (result.averageRating || 0),
+                  'fa-star-half-alt': (i - 0.5) <= (result.averageRating || 0) 
+                                    && i > (result.averageRating || 0),
+                  'fa-star-o': i > (result.averageRating || 0)
+                 }">
+              </i>
+            }
 
-          <span class="rating-text">
-            {{ result.averageRating }} out of 5
-          </span>
+            <span class="rating-text">
+              {{ result.averageRating }} out of 5
+            </span>
+          </div>
+
+          <div class="user-count">
+            <span>
+              ({{ result.ratingCount }} 
+              {{ result.ratingCount === 1 ? 
+                'user rated this' : 
+                'users rated this' 
+              }})
+            </span>
+          </div>
         </div>
-
-        <div class="user-count">
-          <span>
-            ({{ result.ratingCount }} 
-            {{ result.ratingCount === 1 ? 
-              'user rated this' : 
-              'users rated this' 
-            }})
-          </span>
-        </div>
-      </div>
+      }
     }
   </div>
-  
-  @if (!searchResults.length) {
+
+  @if (!loading && !searchResults.length) {
     <p>No recipes found for "{{ query }}"</p>
   }
 </div>

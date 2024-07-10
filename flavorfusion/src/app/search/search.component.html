@@ -124,13 +124,14 @@
 
     <div *ngIf="query" class="search-results">
         <h3>Search Results for "{{ query }}":</h3>
-        <div *ngIf="searchResults.length">
+        <div *ngIf="isLoading">Loading recipes...</div>
+        <div *ngIf="!isLoading && searchResults.length">
             <div *ngFor="let result of searchResults">
               <h2>{{ result.name }}</h2>
               <p>{{ result.description }}</p>
             </div>
         </div>
-        <div *ngIf="!searchResults.length">
+        <div *ngIf="!isLoading && !searchResults.length">
             <p>No results found for "{{ query }}"</p>
         </div>
     </div>

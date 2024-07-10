@@ -16,6 +16,7 @@ export class SearchRecipeComponent implements OnInit {
   dietaryPref: string = '';
   ingredient: string = '';
   dynamicHeading: string = '';
+  loading: boolean = false; 
 
   constructor(
     private route: ActivatedRoute, 
@@ -35,6 +36,8 @@ export class SearchRecipeComponent implements OnInit {
       
       if (this.query || this.mealType || this.dietaryPref || this.ingredient) {
         this.searchRecipes();
+      } else {
+        this.loading = false;  
       }
     });
   }
@@ -52,15 +55,18 @@ export class SearchRecipeComponent implements OnInit {
   }
 
   searchRecipes(): void {
+    this.loading = true;  
     this.searchService.searchRecipes(
       this.query, this.mealType, this.dietaryPref, this.ingredient
     ).subscribe(
       (results: Recipe[]) => {
         this.searchResults = results || [];
         this.searchResults.forEach(result => this.fetchAverageRating(result));
+        this.loading = false;  
       },
       error => {
         console.error('Error fetching recipes: ', error);
+        this.loading = false;  
       }
     );
   }
