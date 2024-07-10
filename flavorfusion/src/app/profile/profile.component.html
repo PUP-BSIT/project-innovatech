@@ -183,22 +183,38 @@
                     </div>
                                   
                     <div class="form-group">
-                      <label>Meal Type</label>
-                      <select formControlName="mealType">
-                        <option value="">Select Meal Type</option>
-                        <option value="breakfast">Breakfast</option>
-                        <option value="lunch">Lunch</option>
-                        <option value="dinner">Dinner</option>
-                        <option value="dessert">Dessert</option>
-                        <option value="snacks">Snacks</option>
-                      </select>
-                    
-                      @if (recipeForm.get('mealType').hasError('required') && recipeForm.get('mealType').touched) {
+                      <label for="mealTypes">Meal Type</label>
+                      <div class="custom-multiselect">
+                        <div class="selected-options">
+                          <!-- Use @for for looping through selectedMealTypes with track expression -->
+                          @for (mealType of selectedMealTypes; track mealType) {
+                            <span (click)="removeMealType(mealType)">
+                              {{ mealType }} <span class="remove-icon">x</span>
+                            </span>
+                          }
+                          <input type="text" (click)="toggleDropdown()" readonly placeholder="Select Meal Type">
+                        </div>
+                        <!-- Use @if for conditional rendering -->
+                        @if (showMealTypeDropdown) {
+                          <div class="options-dropdown">
+                            <!-- Use @for for looping through mealTypes with track expression -->
+                            @for (mealType of mealTypes; track mealType) {
+                              <div (click)="selectMealType(mealType)" [class.selected]="isSelected(mealType)">
+                                {{ mealType }}
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                      <input type="hidden" formControlName="mealTypes" [value]="selectedMealTypes">
+                      <!-- Use @if for conditional rendering -->
+                      @if (recipeForm.get('mealTypes').hasError('required') && recipeForm.get('mealTypes').touched) {
                         <div class="error-message">
                           Meal type is required
                         </div>
                       }
                     </div>
+                    
                                   
                     <div class="form-group">
                       <label>Dietary Preferences</label>

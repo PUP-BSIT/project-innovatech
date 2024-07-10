@@ -49,6 +49,10 @@ export class ProfileComponent implements OnInit {
   totalPosts: number = 0;
   totalPostPages: number = 1;
 
+  selectedMealTypes: string[] = [];
+  mealTypes: string[] = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks'];
+  showMealTypeDropdown = false;
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -60,9 +64,11 @@ export class ProfileComponent implements OnInit {
   ) {
     this.recipeForm = this.createRecipeForm();
     this.profileForm = this.fb.group({
+      mealTypes: [[], Validators.required],
       username: ['', Validators.required],
       bio: ['', Validators.required],
     });
+
   }
 
   ngOnInit(): void {
@@ -83,7 +89,7 @@ export class ProfileComponent implements OnInit {
     return this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      mealType: ['', Validators.required],
+      mealTypes: [[], Validators.required],
       dietaryPreferences: ['', Validators.required],
       minutes: [null, Validators.required],
       servings: ['', Validators.required],
@@ -174,12 +180,13 @@ export class ProfileComponent implements OnInit {
 
   onSubmit(): void {
     if (this.recipeForm.valid) {
-      const formData = this.createFormData(this.recipeForm.value);
-
+      const formValue = this.recipeForm.value;
+      const formData = this.createFormData(formValue);
+  
       if (this.selectedFile) {
         formData.append('image', this.selectedFile, this.selectedFile.name);
       }
-
+  
       this.recipeService.addRecipe(formData).subscribe({
         next: (response: any) => {
           console.log(response);
@@ -193,14 +200,15 @@ export class ProfileComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error adding recipe:', error);
+          console.log('Full error response:', error);
           this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
             duration: 3000,
           });
-        }
+        },
       });
     }
   }
-
+  
   showSnackBar(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
   }
@@ -208,13 +216,8 @@ export class ProfileComponent implements OnInit {
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
     Object.keys(formValue).forEach((key) => {
-      if (key === 'ingredients') {
+      if (key === 'ingredients' || key === 'instructions' || key === 'mealTypes') {
         formData.append(key, JSON.stringify(formValue[key]));
-      } else if (key === 'instructions') {
-        const instructions = formValue[key].split('\n').map((step: string, index: number) => ({
-          step: step.trim(),
-        }));
-        formData.append(key, JSON.stringify(instructions));
       } else {
         formData.append(key, formValue[key]);
       }
@@ -228,7 +231,7 @@ export class ProfileComponent implements OnInit {
   
     return formData;
   }
-
+  
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
   }
@@ -379,4 +382,26 @@ export class ProfileComponent implements OnInit {
       this.fetchUserPosts(this.currentPostPage - 1);
     }
   }
+
+  toggleDropdown(): void {
+    this.showMealTypeDropdown = !this.showMealTypeDropdown;
+  }
+
+  selectMealType(mealType: string): void {
+    if (!this.selectedMealTypes.includes(mealType)) {
+      this.selectedMealTypes.push(mealType);
+      this.recipeForm.patchValue({ mealTypes: this.selectedMealTypes });
+    }
+    this.showMealTypeDropdown = false;
+  }
+
+  removeMealType(mealType: string): void {
+    this.selectedMealTypes = this.selectedMealTypes.filter(mt => mt !== mealType);
+    this.recipeForm.patchValue({ mealTypes: this.selectedMealTypes });
+  }
+
+  isSelected(mealType: string): boolean {
+    return this.selectedMealTypes.includes(mealType);
+  }
 }
+
