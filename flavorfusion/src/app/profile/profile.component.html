@@ -1,183 +1,169 @@
 <div class="user-profile">
-    <div class="profile-title">
-      <h1>User Profile</h1>
-    </div>
-  
-    <div class="profile-container">
-      <div class="profile-header"> 
-        <div class="profile-box">
-          <div class="avatar-container">
-            <img [src]="userProfile?.profile_picture || 
-                      'assets/images/default-avatar.png'"
-                 alt="User Avatar" 
-                 class="avatar">
-            <img src="assets/images/avatar-icon.png"
-                 alt="Change Avatar Icon" 
-                 class="change-avatar-icon"
-                 (click)="triggerAvatarInput()">
-            
-            <input type="file" 
-                   id="avatarInput" 
-                   #avatarInput (change)="onAvatarSelected($event)"
-                   style="display: none;">
-          </div>
-  
-          <div class="profile-info">
-            <div class="share-recipe-container">
-              <button class="share-recipe-button" 
-                      (click)="openShareRecipeModal()">
-                        + Share Recipe</button>
-            </div>
-            
-            <h2>{{ userProfile?.username }}</h2>
-            <p>{{ userProfile?.bio }}</p> 
-            <div class="profile-stats">
-              <span class="ratings">
-                <img src="assets/images/star.png"
-                     alt="Star" 
-                     class="star-icon"> 
-                      Ratings
-              </span>   
-              <span class="likes">
-                <img src="assets/images/heart.png" 
-                     alt="Heart" 
-                     class="heart-icon"> 
-                      Likes
-              </span>
-                  
-              <button class="edit-profile" 
-                      (click)="openEditModal()">
-                <img src="assets/images/edit-icon.png" 
-                     alt="Edit Icon" 
-                     class="edit-icon"> 
-                      Edit User Profile
-              </button>
-            </div>                 
-          </div>                
-        </div>
-      </div>
+  <div class="profile-title">
+    <h1>User Profile</h1>
+  </div>
+
+  <div class="profile-container">
+    <div class="profile-header"> 
+      <div class="profile-box">
+        <div class="avatar-container">
+          <img [src]="userProfile?.profile_picture || 'assets/images/default-avatar.png'"
+               alt="User Avatar" 
+               class="avatar">
+          <img src="assets/images/avatar-icon.png"
+               alt="Change Avatar Icon" 
+               class="change-avatar-icon"
+               (click)="triggerAvatarInput()">
           
-      <div class="section">
-        <button class="section-button" 
-                (click)="toggleSavedRecipes()" 
-                [ngClass]="{'active': showSavedRecipes}">
-          <h3>Saved Recipes</h3>
-        </button>
-              
-        <button class="section-button" 
-                (click)="toggleMealPlanning()" 
-                [ngClass]="{'active': showMealPlanning}">
-          <h3>Interaction</h3>
-        </button>
+          <input type="file" 
+                 id="avatarInput" 
+                 #avatarInput (change)="onAvatarSelected($event)"
+                 style="display: none;">
+        </div>
+
+        <div class="profile-info">
+          <div class="share-recipe-container">
+            <button class="share-recipe-button" 
+                    (click)="openShareRecipeModal()">
+                      + Share Recipe</button>
+          </div>
+          
+          <h2>{{ userProfile?.username }}</h2>
+          <p>{{ userProfile?.bio }}</p> 
+          <div class="profile-stats">
+            <button class="edit-profile" 
+                    (click)="openEditModal()">
+              <img src="assets/images/edit-icon.png" 
+                   alt="Edit Icon" 
+                   class="edit-icon"> 
+                    Edit User Profile
+            </button>
+          </div>                 
+        </div>                
       </div>
-  
-      <div class="profile-content">
-        @if (showSavedRecipes) {
-          <div class="recipe-list">
-            @for (recipe of savedRecipes; track recipe) {
-              <div class="recipe-card">
-                <a [routerLink]="['/recipe-details', recipe.recipe_id]">
-                  <img [src]="'data:image/jpeg;base64,' + recipe.picture"
-                       alt="{{ recipe.name }}">
-                </a>
-                
-                <a [routerLink]="['/recipe-details', recipe.recipe_id]">
-                    {{ recipe.name }}
-                </a>
-              </div>
-            }
+    </div>
+        
+    <div class="section">
+      <button class="section-button" 
+              (click)="toggleSavedRecipes()" 
+              [ngClass]="{'active': showSavedRecipes}">
+        <h3>Saved Recipes</h3>
+      </button>
             
-            <div class="pagination-controls">
-              <button (click)="previousPage()" 
-                      [disabled]="currentPage === 1">
-                        Previous
-              </button>
-              <span>Page {{ currentPage }} / {{ totalPages }}</span>
-              <button (click)="nextPage()" 
-                      [disabled]="currentPage === totalPages">
-                        Next
-              </button>
-            </div>
-          </div>
-        }
-  
-        @if (showMealPlanning) {
-          <div class="recipe-list">
-            <div *ngFor="let post of userPosts" 
-                 class="recipe-card">
-              <img [src]="post.image" 
-                   alt="Post Image">
-              <p>{{ post.caption }}</p>
-            </div>
-                      
-            <div class="pagination-controls">
-              <button (click)="previousPostPage()" 
-                      [disabled]="currentPostPage === 1">
-                        Previous
-              </button>
-              <span>Page {{ currentPostPage }} / {{ totalPostPages }}</span>
+      <button class="section-button" 
+              (click)="toggleMealPlanning()" 
+              [ngClass]="{'active': showMealPlanning}">
+        <h3>Interaction</h3>
+      </button>
+    </div>
+
+    <div class="profile-content">
+      @if (showSavedRecipes) {
+        <div class="recipe-list">
+          @for (recipe of savedRecipes; track recipe) {
+            <div class="recipe-card">
+              <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                <img [src]="'data:image/jpeg;base64,' + recipe.picture"
+                     alt="{{ recipe.name }}">
+              </a>
               
-              <button (click)="nextPostPage()"
-                      [disabled]="currentPostPage === totalPostPages">
-                        Next
-              </button>
+              <a [routerLink]="['/recipe-details', recipe.recipe_id]">
+                  {{ recipe.name }}
+              </a>
             </div>
+          }
+          
+          <div class="pagination-controls">
+            <button (click)="previousPage()" 
+                    [disabled]="currentPage === 1">
+                      Previous
+            </button>
+            <span>Page {{ currentPage }} / {{ totalPages }}</span>
+            <button (click)="nextPage()" 
+                    [disabled]="currentPage === totalPages">
+                      Next
+            </button>
           </div>
-        }
-      
-        @if (showEditModal) {
-          <div class="modal">
-            <div class="modal-content">
-              <span class="close" 
-                    (click)="closeEditModal()">&times;
-              </span>
-              <h2>Edit Profile</h2>
-              <form (ngSubmit)="saveChanges()">
-                <div class="form-group">
-                  <label for="username">
-                      Username:
-                  </label>
-                  <input type="text" 
-                         id="username" 
-                         name="username" 
-                         [(ngModel)]="userProfile.username" 
-                         required>
-                </div>
-  
-                <div class="form-group">
-                  <label for="bio">Bio:</label>
-                  <textarea id="bio" 
-                            name="bio"
-                            [(ngModel)]="userProfile.bio">
-                  </textarea>
-                </div>
-                <button type="submit">Save Changes</button>
-              </form>
-            </div>
+        </div>
+      }
+
+      @if (showMealPlanning) {
+        <div class="recipe-list">
+          <div *ngFor="let post of userPosts" 
+               class="recipe-card">
+            <img [src]="post.image" 
+                 alt="Post Image">
+            <p>{{ post.caption }}</p>
           </div>
-        }
-  
-        @if (showAvatarModal) {
-          <div class="modal">
-            <div class="modal-content">
-              <span class="close" 
-                    (click)="closeAvatarModal()">&times;
-              </span>
-              <h2>Change Avatar</h2>
-              <input type="file" (change)="onAvatarSelected($event)">
-              <button type="submit" (click)="uploadAvatar()">Upload</button>
-            </div>
+                    
+          <div class="pagination-controls">
+            <button (click)="previousPostPage()" 
+                    [disabled]="currentPostPage === 1">
+                      Previous
+            </button>
+            <span>Page {{ currentPostPage }} / {{ totalPostPages }}</span>
+            
+            <button (click)="nextPostPage()"
+                    [disabled]="currentPostPage === totalPostPages">
+                      Next
+            </button>
           </div>
-        }
-  
-        @if (showShareRecipeModal) {
-          <div class="modal-add">
-            <div class="modal-content">
-              <span class="close" 
-                    (click)="closeShareRecipeModal()">&times;
-              </span>
-              <h2>Share Recipe</h2>
-              <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+        </div>
+      }
+    
+      @if (showEditModal) {
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close" 
+                  (click)="closeEditModal()">&times;
+            </span>
+            <h2>Edit Profile</h2>
+            <form (ngSubmit)="saveChanges()">
+              <div class="form-group">
+                <label for="username">
+                    Username:
+                </label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       [(ngModel)]="userProfile.username" 
+                       required>
+              </div>
+
+              <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" 
+                          name="bio"
+                          [(ngModel)]="userProfile.bio">
+                </textarea>
+              </div>
+              <button type="submit">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      }
+
+      @if (showAvatarModal) {
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close" 
+                  (click)="closeAvatarModal()">&times;
+            </span>
+            <h2>Change Avatar</h2>
+            <input type="file" (change)="onAvatarSelected($event)">
+            <button type="submit" (click)="uploadAvatar()">Upload</button>
+          </div>
+        </div>
+      }
+
+      @if (showShareRecipeModal) {
+        <div class="modal-add">
+          <div class="modal-content">
+            <span class="close" 
+                  (click)="closeShareRecipeModal()">&times;
+            </span>
+            <h2>Share Recipe</h2>
+            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
               <div class="container">
                 <div class="header"></div>
                 <div class="form-body">
@@ -231,7 +217,7 @@
                         </div>
                       }
                     </div>
-  
+
                     <div class="form-group form-group-inline time-servings-container">
                       <div class="form-group">
                         <label>Time:</label>
@@ -291,33 +277,15 @@
                                 Add Ingredient
                       </button>
                                       
-                      <div formArrayName="instructions">
-                        @for (instruction of recipeForm.controls.instructions.controls; track $index) {
-                          <div [formGroupName]="$index" class="form-group">
-                            <label>Instruction</label>
-                            <div class="input-with-icon">
-                              <input formControlName="step" required>
-                                <button type="button" 
-                                        (click)="removeInstruction($index)" 
-                                        class="delete-button">
-                                  <i class="material-icons">delete</i>
-                                </button>
-                            </div>
-                                                  
-                            @if (instruction.get('step').hasError('required') && instruction.get('step').touched) {
-                              <div class="error-message">
-                                Instruction step is required
-                              </div>
-                            }
-                          </div>
+                      <div class="form-group">
+                        <label>Instructions</label>
+                        <textarea formControlName="instructions" 
+                          placeholder="Press Enter to Proceed to next Step. No need to indicate or write the 'step' word ">
+                        </textarea>
+                        @if (recipeForm.get('instructions').hasError('required') && recipeForm.get('instructions').touched) {
+                          <div class="error-message">Instruction step is required</div>
                         }
                       </div>
-                        
-                      <button type="button" 
-                              class="add-button" 
-                              (click)="addInstruction()">
-                                Add Instruction
-                      </button>
                     </div>
                                   
                     <div class="form-group">
@@ -356,9 +324,10 @@
                   </div>
                 </div>
               </div>
-                  </form>
-            </div>
+            </form>
           </div>
-        }
-      </div>
-  
+        </div>
+      }
+    </div>
+  </div>
+</div>

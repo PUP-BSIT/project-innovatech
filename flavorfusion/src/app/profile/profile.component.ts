@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
       minutes: [null, Validators.required],
       servings: ['', Validators.required],
       ingredients: this.fb.array([this.createIngredient()]),
-      instructions: this.fb.array([this.createInstruction()]),
+      instructions: ['', Validators.required], 
       image: [null, Validators.required],
     });
   }
@@ -97,6 +97,7 @@ export class ProfileComponent implements OnInit {
     return this.fb.group({
       name: ['', Validators.required],
       quantity: [null, [Validators.required, Validators.min(0)]],
+      unit: [''], 
     });
   }
 
@@ -207,19 +208,24 @@ export class ProfileComponent implements OnInit {
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
     Object.keys(formValue).forEach((key) => {
-      if (key === 'ingredients' || key === 'instructions') {
+      if (key === 'ingredients') {
         formData.append(key, JSON.stringify(formValue[key]));
+      } else if (key === 'instructions') {
+        const instructions = formValue[key].split('\n').map((step: string, index: number) => ({
+          step: step.trim(),
+        }));
+        formData.append(key, JSON.stringify(instructions));
       } else {
         formData.append(key, formValue[key]);
       }
     });
-
+  
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
     }
-
+  
     formData.append('user_id', this.userProfile.user_id);
-
+  
     return formData;
   }
 
