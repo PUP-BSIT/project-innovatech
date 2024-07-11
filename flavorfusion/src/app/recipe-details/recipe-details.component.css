@@ -14,7 +14,7 @@
 }
 
 .recipe-image {
-  flex: 0 0 auto;
+  flex: 0 0 300px;
   display: flex;
   align-items: stretch;
 } 
@@ -29,6 +29,9 @@
 .recipe-text {
   flex: 1;
   padding: 20px;
+  display: flex;
+  flex-direction: column; 
+  word-break: break-word; 
 }
 
 .recipe-header h1 {
