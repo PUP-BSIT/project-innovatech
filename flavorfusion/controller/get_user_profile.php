@@ -43,7 +43,7 @@ if (isset($_SESSION['user_id'])) {
             $user['profile_picture'] = 'data:image/jpeg;base64,'
                 . base64_encode($user['profile_picture']);
         } else {
-            $user['profile_picture'] = 'assets/images/default-avatar.jpg';
+            $user['profile_picture'] = 'assets/images/default-avatar.png';
         }
     }
 

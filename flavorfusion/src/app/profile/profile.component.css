@@ -700,7 +700,7 @@ button[type="submit"]:hover {
 
 .input-with-icon input[formControlName="name"] {
     margin-right: 10px;
-    padding: 8px;
+    padding: 50px;
     border: 1px solid #ccc;
     border-radius: 4px;
     flex: 2;
@@ -708,7 +708,7 @@ button[type="submit"]:hover {
 
 .input-with-icon input[formControlName="quantity"] {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -1435,7 +1435,7 @@ button[type="submit"]:hover {
 
 .input-with-icon input[formControlName="name"] {
     margin-right: 10px;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     flex: 2;
@@ -1452,7 +1452,7 @@ button[type="submit"]:hover {
     background: none;
     border: none;
     cursor: pointer;
-    margin-left: -35px;
+    margin-left: -50px;
     display: flex;
     align-items: center;
 }

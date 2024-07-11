@@ -68,7 +68,6 @@ export class ProfileComponent implements OnInit {
       username: ['', Validators.required],
       bio: ['', Validators.required],
     });
-
   }
 
   ngOnInit(): void {
@@ -103,22 +102,12 @@ export class ProfileComponent implements OnInit {
     return this.fb.group({
       name: ['', Validators.required],
       quantity: [null, [Validators.required, Validators.min(0)]],
-      unit: [''], 
-    });
-  }
-
-  private createInstruction(): FormGroup {
-    return this.fb.group({
-      step: ['', Validators.required],
+      unit: [''],
     });
   }
 
   get ingredients(): FormArray {
     return this.recipeForm.get('ingredients') as FormArray;
-  }
-
-  get instructions(): FormArray {
-    return this.recipeForm.get('instructions') as FormArray;
   }
 
   addIngredient(): void {
@@ -127,14 +116,6 @@ export class ProfileComponent implements OnInit {
 
   removeIngredient(index: number): void {
     this.ingredients.removeAt(index);
-  }
-
-  addInstruction(): void {
-    this.instructions.push(this.createInstruction());
-  }
-
-  removeInstruction(index: number): void {
-    this.instructions.removeAt(index);
   }
 
   getUserProfile(): void {
@@ -187,6 +168,13 @@ export class ProfileComponent implements OnInit {
         formData.append('image', this.selectedFile, this.selectedFile.name);
       }
   
+      // Convert instructions to array
+      const instructionsArray = formValue.instructions.split('\n').map
+        ((step: string, index: number) => ({
+        step: ` ${step}`
+      }));
+      formData.append('instructions', JSON.stringify(instructionsArray));
+  
       this.recipeService.addRecipe(formData).subscribe({
         next: (response: any) => {
           console.log(response);
@@ -201,14 +189,16 @@ export class ProfileComponent implements OnInit {
         error: (error: any) => {
           console.error('Error adding recipe:', error);
           console.log('Full error response:', error);
-          this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
-            duration: 3000,
+          this.snackBar.open('Error adding recipe. Please try again.', 
+            'Close', { duration: 3000,
           });
         },
       });
     }
   }
   
+  
+
   showSnackBar(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
   }
@@ -217,21 +207,25 @@ export class ProfileComponent implements OnInit {
     const formData = new FormData();
     Object.keys(formValue).forEach((key) => {
       if (key === 'ingredients' || key === 'instructions' || key === 'mealTypes') {
-        formData.append(key, JSON.stringify(formValue[key]));
+        if (Array.isArray(formValue[key])) {
+          formData.append(key, JSON.stringify(formValue[key]));
+        } else {
+          console.error(`Expected array for ${key} but got:`, formValue[key]);
+        }
       } else {
         formData.append(key, formValue[key]);
       }
     });
-  
+
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
     }
-  
+
     formData.append('user_id', this.userProfile.user_id);
-  
+
     return formData;
   }
-  
+
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
   }
@@ -404,4 +398,3 @@ export class ProfileComponent implements OnInit {
     return this.selectedMealTypes.includes(mealType);
   }
 }
-
