@@ -31,7 +31,7 @@
           <img [src]="post.userAvatar" class="avatar" alt="avatar"/>
           <div class="user-details">
             <span class="username">{{ post.username }}</span>
-            <span class="time"> {{ post.time }}</span>
+            <span class="time">{{ post.time }}</span>
           </div>
         </div>
         
@@ -59,7 +59,16 @@
       </div>
     }
   </div>
- 
+  <div #sentinel class="sentinel"></div> <!-- Sentinel element -->
+
+  @if (loading) {
+    <div class="spinner-container">
+      <div class="spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    </div>
+  }
+
   <ng-template #postDetailTemplate let-data>
     <div class="post-detail">
       <button class="close-button" (click)="closeDialog()">x</button>
@@ -78,15 +87,20 @@
               class="post-comment-button">Comment</button>
           </div>
         @for (comment of data.post.comments; track comment) {
-            <div class="comment">
+          <div class="comment">
+            <div class="user-info">
               <img [src]="comment.userAvatar" class="avatar" alt="avatar"/>
-              <div class="comment-content">
+              <div class="user-details">
                 <span class="username">{{ comment.username }}</span>
                 <span class="time">{{ comment.time }}</span>
-                <p class="text">{{ comment.text }}</p>
               </div>
+              <button class="like-button" (click)="toggleLike(comment)">
+                <mat-icon>{{ comment.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+              </button>
             </div>
-          }
+            <div class="text">{{ comment.text }}</div>
+          </div>
+        }
         </div>
       </div>
     </div>
