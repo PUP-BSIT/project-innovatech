@@ -8,6 +8,8 @@ import { Post } from '../../model/posts';
 import { Comment } from '../../model/comments';
 import { Router } from '@angular/router';
 import { Recipe } from '../../model/recipe';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-community',
@@ -38,7 +40,8 @@ export class CommunityComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private shareCommunity: ShareCommunityService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -214,6 +217,14 @@ export class CommunityComponent implements OnInit {
     const userId = this.loginAuthService.getUserId();
     if (!userId) {
       console.error('User not logged in');
+      const snackBarRef = this.snackBar.open('Log in to add a post', 
+        'Click to Login', {
+        duration: 3000,
+      });
+  
+      snackBarRef.onAction().subscribe(() => {
+        this.router.navigate(['/login']); 
+      });
       return;
     }
     if (this.newPostText.trim()) {
@@ -254,6 +265,14 @@ export class CommunityComponent implements OnInit {
     const userId = this.loginAuthService.getUserId();
     if (!userId) {
       console.error('User not logged in');
+      const snackBarRef = this.snackBar.open('Log in to add a comment', 
+        ' Click to Login', {
+        duration: 3000,
+      });
+  
+      snackBarRef.onAction().subscribe(() => {
+        this.router.navigate(['/login']);  
+      });
       return;
     }
     this.userService.getUserProfile().subscribe(
