@@ -114,14 +114,22 @@
 }
 
 .recipe-procedures .steps .step {
-  display: flex;
-  align-items: center;
   margin-left: 30px;
   font-size: 17px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start; 
 }
 
 .recipe-procedures .steps .step-number {
-  margin-right: 10px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.recipe-procedures .steps .step-instruction {
+  margin: 0;
+  flex: 1; 
+  display: inline-block;
 }
   
 .recipe-procedures .steps strong {
