@@ -6,7 +6,6 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 include_once 'db_connection.php';
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
@@ -22,8 +21,9 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $total = $result->fetch_assoc()['total'];
+$stmt->close();
 
-$sql = "SELECT * FROM community_recipes WHERE user_id = ? LIMIT ?, ?";
+$sql = "SELECT * FROM community_recipes WHERE user_id = ? ORDER BY shared_at DESC LIMIT ?, ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("iii", $userId, $offset, $pageSize);
 $stmt->execute();

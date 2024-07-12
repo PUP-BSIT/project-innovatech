@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service.service';
 import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -101,9 +101,17 @@ export class ProfileComponent implements OnInit {
   private createIngredient(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      quantity: [null, [Validators.required, Validators.min(0)]],
+      
+      quantity: ['', [Validators.required, this.fractionValidator]],
       unit: [''],
     });
+  }
+
+  fractionValidator(control: FormControl) {
+    const value = control.value;
+    if (!value) return null;
+    const fractionPattern = /^(\d+\/\d+|\d+(\.\d+)?)(\s*\w+)?$/; 
+    return fractionPattern.test(value) ? null : { invalidFraction: true };
   }
 
   get ingredients(): FormArray {
@@ -168,7 +176,6 @@ export class ProfileComponent implements OnInit {
         formData.append('image', this.selectedFile, this.selectedFile.name);
       }
   
-      // Convert instructions to array
       const instructionsArray = formValue.instructions.split('\n').map
         ((step: string, index: number) => ({
         step: ` ${step}`

@@ -27,6 +27,11 @@ function send_json_response($success, $message, $data = null)
     exit;
 }
 
+function is_valid_fraction($quantity)
+{
+    return preg_match('/^(\d+\/\d+|\d+(\.\d+)?)(\s*\w+)?$/', $quantity);
+}
+
 $title = isset($_POST['title']) ? $_POST['title'] : '';
 $description = isset($_POST['description']) ? $_POST['description'] : '';
 $mealTypes = isset($_POST['mealTypes']) ? validate_json($_POST['mealTypes']) : [];
@@ -58,6 +63,7 @@ if ($userId === 0)
     $missingFields[] = 'user_id';
 if (is_null($image))
     $missingFields[] = 'image';
+
 
 if (!empty($missingFields)) {
     $message = "Missing required data for fields: " . implode(', ', $missingFields);
@@ -110,12 +116,14 @@ try {
     foreach ($ingredients as $ingredient) {
         $ingredient_name = isset($ingredient['name']) ? $ingredient['name'] : '';
         $quantity = isset($ingredient['quantity']) ? $ingredient['quantity'] : '';
-        if (!empty($ingredient_name)) {
+        if (!empty($ingredient_name) && is_valid_fraction($quantity)) {
             $stmt = $conn->prepare("INSERT INTO recipe_ingredients (recipe_id, ingredient, quantity) VALUES (?, ?, ?)");
             $stmt->bind_param("iss", $recipe_id, $ingredient_name, $quantity);
             if (!$stmt->execute()) {
                 throw new Exception("Error inserting ingredient: " . $stmt->error);
             }
+        } else {
+            throw new Exception("Invalid ingredient quantity: " . $quantity);
         }
     }
 
