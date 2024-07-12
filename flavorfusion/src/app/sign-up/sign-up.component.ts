@@ -19,6 +19,8 @@ export class SignUpComponent {
   email = '';
   otp = '';
   isLoading = false;
+  otpError = false;
+  showModal = false;
 
   constructor(
     private fb: FormBuilder,
@@ -111,44 +113,41 @@ export class SignUpComponent {
       error: (error) => {
         this.isLoading = false;
         console.error('Error sending verification email:', error);
-        this.snackBar.open('Error sending verification email', 'Close', {
-          duration: 3000
-        });
       }
     });
   }
 
   onVerify() {
-    const enteredOTP = this.verificationForm.get('otp')?.value;
-    if (enteredOTP === this.otp) {
-      console.log('OTP verified successfully.');
-
-      // Proceed with user signup
-      this.completeSignup();
-    } else {
-      console.error('Invalid OTP.');
-      // Handle invalid OTP scenario
+    if (this.verificationForm.invalid) {
+      return;
     }
-  }
 
-  completeSignup() {
-    const user = {
-      email: this.signupForm.get('email').value,
-      password: this.signupForm.get('password').value
-    };
+    this.isLoading = true;
+    const enteredOTP = this.verificationForm.get('otp')?.value;
 
-    this.signupService.signup(user).subscribe({
+    this.signupService.verifyOTP(this.email, enteredOTP).subscribe({
       next: (response) => {
-        console.log('Signup response:', response);
+        this.isLoading = false;
         if (response.success) {
-          this.router.navigate(['/login']);
+          console.log('OTP verified successfully.');
+          this.showModal = true;
         } else {
-          console.error('Signup failed:', response.message);       
+          console.error('Invalid OTP.');
+          this.otpError = true;
+          this.snackBar.open('Invalid OTP', 'Close', {
+            duration: 3000
+          });
         }
       },
-      error: (err) => {
-        console.error('Signup error:', err);
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error verifying OTP:', error);
       }
     });
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.router.navigate(['/login']);
   }
 }
