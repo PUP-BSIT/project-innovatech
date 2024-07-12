@@ -15,7 +15,8 @@ import { Recipe } from '../../model/recipe';
   styleUrls: ['./community.component.css']
 })
 export class CommunityComponent implements OnInit {
-  @ViewChild('postDetailTemplate', { static: true }) postDetailTemplate: TemplateRef<any>;
+  @ViewChild('postDetailTemplate', { static: true }) 
+      postDetailTemplate: TemplateRef<any>;
   @ViewChild('sentinel', { static: true }) sentinel: ElementRef;
   dialogRef: MatDialogRef<any> | null = null;
   newPostText: string = '';
@@ -27,7 +28,7 @@ export class CommunityComponent implements OnInit {
   newRecipeId: number | null = null;
   newRecipe: Recipe | null = null;
   page: number = 1; 
-  pageSize: number = 10; // Number of posts per page
+  pageSize: number = 8; // Number of posts per page
   loading: boolean = false;
 
   constructor(

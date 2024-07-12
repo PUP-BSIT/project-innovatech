@@ -59,7 +59,7 @@
       </div>
     }
   </div>
-  <div #sentinel class="sentinel"></div> <!-- Sentinel element -->
+  <div #sentinel class="sentinel"></div>
 
   @if (loading) {
     <div class="spinner-container">
@@ -95,7 +95,9 @@
                 <span class="time">{{ comment.time }}</span>
               </div>
               <button class="like-button" (click)="toggleLike(comment)">
-                <mat-icon>{{ comment.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+                <mat-icon>
+                  {{ comment.liked ? 'favorite' : 'favorite_border' }}
+                </mat-icon>
               </button>
             </div>
             <div class="text">{{ comment.text }}</div>

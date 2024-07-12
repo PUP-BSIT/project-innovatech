@@ -10,7 +10,8 @@ export class CommunityService {
   constructor(private http: HttpClient) {}
 
   getPosts(userId?: string): Observable<any> {
-    const url = userId ? `${this.apiUrl}/get_posts.php?user_id=${userId}` : `${this.apiUrl}/get_posts.php`;
+    const url = userId ? `${this.apiUrl}/get_posts.php?user_id=${userId}` : 
+        `${this.apiUrl}/get_posts.php`;
     return this.http.get(url);
   }
 
@@ -31,11 +32,18 @@ export class CommunityService {
   }
 
   getUserPosts(userId: number, page: number, pageSize: number): Observable<any> {
-    return this.http.get<any[]>(`${this.apiUrl}/get_user_posts.php?user_id=${userId}&page=${page}&pageSize=${pageSize}`);
+    return this.http.get<any[]>(`${this.apiUrl}/get_user_posts.php?user_id=
+          ${userId}&page=${page}&pageSize=${pageSize}`);
   }
 
-  getPaginatedPosts(userId?: string, page: number = 1, pageSize: number = 10): Observable<any> {
-    const url = userId ? `${this.apiUrl}/get_posts.php?user_id=${userId}&page=${page}&pageSize=${pageSize}` : `${this.apiUrl}/get_posts.php?page=${page}&pageSize=${pageSize}`;
+  getPaginatedPosts(userId?: string, page: number = 1, pageSize: number = 10): 
+      Observable<any> {
+    const url = userId 
+        ? `${this.apiUrl}/get_posts.php?user_id=${userId}&page=${page}
+        &pageSize=${pageSize}` 
+        : `${this.apiUrl}/get_posts.php?page=${page}
+        &pageSize=${pageSize}`;
+
     return this.http.get(url);
   }
 
