@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Observable, timer } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { LoginAuthentication } from '../../services/login-authentication.service';
@@ -30,17 +30,27 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Subscribe to router events to reset search
     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && 
-            !this.router.url.includes('/search')) {
+      if (event instanceof NavigationEnd && !this.router.url.includes('/search')) {
         this.resetSearch();
       }
       this.getLoginLogoutText();
     });
 
+    // Fetch user profile if already logged in
+    this.loginAuthService.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.fetchUserProfile();
+      }
+    });
+
+    // Update user avatar based on login status
     this.isLoggedIn$.subscribe(isLoggedIn => {
       if (isLoggedIn) {
         this.fetchUserProfile();
+      } else {
+        this.userAvatar = 'assets/images/profile.png'; // Reset to default if logged out
       }
     });
   }
@@ -71,22 +81,20 @@ export class HeaderComponent implements OnInit {
 
     const trimmedQuery = this.searchText.trim();
     if (trimmedQuery) {
-      this.router.navigate(['/search-recipe'], 
-            { queryParams: { query: trimmedQuery } });
+      this.router.navigate(['/search-recipe'], { queryParams: { query: trimmedQuery } });
     }
   }
 
   getProfileRouterlink(): Observable<string> {
     return this.loginAuthService.isLoggedIn$.pipe(
-      map((isLoggedIn: boolean) => (isLoggedIn ? '/profile': '/login'))
+      map((isLoggedIn: boolean) => (isLoggedIn ? '/profile' : '/login'))
     );
   }
 
   @ViewChild('logInLogOut', { static: false }) logInLogOut: ElementRef;
   getLoginLogoutText() {
     this.loginAuthService.isLoggedIn$.subscribe((isLoggedIn: boolean) => {
-      this.logInLogOut.nativeElement.innerHTML 
-          = isLoggedIn ? 'Log Out' : 'Log In';
+      this.logInLogOut.nativeElement.innerHTML = isLoggedIn ? 'Log Out' : 'Log In';
     });
   }
 
@@ -96,7 +104,6 @@ export class HeaderComponent implements OnInit {
         this.showModal();
         this.loginAuthService.logout();
         this.router.navigate(['/home']);
-        
       } else {
         this.router.navigate(['/login']);
       }
@@ -105,16 +112,18 @@ export class HeaderComponent implements OnInit {
 
   showModal() {
     this.isLoggedIn$.subscribe(isLoggedIn => {
-      if (isLoggedIn) {this.isShown = true;}
+      if (isLoggedIn) {
+        this.isShown = true;
+      }
     });
   }
 
   closeModal(): void {
     this.isShown = false;
-}
+  }
 
   fetchUserProfile() {
-    this.userService.userProfile$.subscribe(profile => {
+    this.userService.getUserProfile().subscribe(profile => {
       this.userAvatar = profile?.profile_picture || 'assets/images/profile.png';
     });
   }
