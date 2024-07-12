@@ -29,7 +29,7 @@ if (
         $data['servings'], 
         $data['ingredients'], 
         $data['procedures'], 
-        $data['meal_type'], 
+        $data['meal_types'], 
         $data['dietary_preference']
     )
 ) {
@@ -44,8 +44,9 @@ $prep_time = $data['prep_time'];
 $servings = $data['servings'];
 $ingredients = $data['ingredients'];
 $procedures = $data['procedures'];
-$meal_type = $data['meal_type'];
+$meal_types = explode(',', $data['meal_types']);
 $dietary_preference = $data['dietary_preference'];
+$newIngredients = isset($data['newIngredients']) ? $data['newIngredients'] : [];
 $picture = isset($data['picture']) ? base64_decode($data['picture']) : null;
 
 $sql = "UPDATE recipes SET 
@@ -71,15 +72,17 @@ if ($stmt->execute()) {
     $stmt->close();
 
     $conn->query("DELETE FROM recipe_meal_types WHERE recipe_id = $recipe_id");
-    $meal_type_sql = "
-        INSERT INTO recipe_meal_types 
-        (recipe_id, meal_type) 
-        VALUES (?, ?)
-    ";
-    $meal_type_stmt = $conn->prepare($meal_type_sql);
-    $meal_type_stmt->bind_param('is', $recipe_id, $meal_type);
-    $meal_type_stmt->execute();
-    $meal_type_stmt->close();
+    foreach ($meal_types as $meal_type) {
+        $meal_type_sql = "
+            INSERT INTO recipe_meal_types 
+            (recipe_id, meal_type) 
+            VALUES (?, ?)
+        ";
+        $meal_type_stmt = $conn->prepare($meal_type_sql);
+        $meal_type_stmt->bind_param('is', $recipe_id, $meal_type);
+        $meal_type_stmt->execute();
+        $meal_type_stmt->close();
+    }
 
     $conn->query(
         "DELETE FROM recipe_dietary_prefs WHERE recipe_id = $recipe_id"
@@ -96,6 +99,23 @@ if ($stmt->execute()) {
 
     $conn->query("DELETE FROM recipe_ingredients WHERE recipe_id = $recipe_id");
     foreach ($ingredients as $ingredient) {
+        $ingredient_sql = "
+            INSERT INTO recipe_ingredients 
+            (recipe_id, ingredient, quantity) 
+            VALUES (?, ?, ?)
+        ";
+        $ingredient_stmt = $conn->prepare($ingredient_sql);
+        $ingredient_stmt->bind_param(
+            'iss', 
+            $recipe_id, 
+            $ingredient['ingredient'], 
+            $ingredient['quantity']
+        );
+        $ingredient_stmt->execute();
+        $ingredient_stmt->close();
+    }
+
+    foreach ($newIngredients as $ingredient) {
         $ingredient_sql = "
             INSERT INTO recipe_ingredients 
             (recipe_id, ingredient, quantity) 

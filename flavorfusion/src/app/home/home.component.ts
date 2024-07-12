@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   showModal = false;
   editRecipe: any = {};
+  newIngredients = [];
 
   constructor(
     private homeService: HomeService,
@@ -309,7 +310,7 @@ export class HomeComponent implements OnInit {
       (recipe) => {
         this.editRecipe = {
           ...recipe,
-          meal_type: recipe.meal_types ? recipe.meal_types.split(',')[0] : '',
+          meal_types: recipe.meal_types ? recipe.meal_types.split(',') : [],
           dietary_preference: recipe.dietary_prefs 
             ? recipe.dietary_prefs.split(',')[0] 
             : '',
@@ -326,6 +327,11 @@ export class HomeComponent implements OnInit {
   }
 
   updateRecipe(): void {
+    if (typeof this.editRecipe.meal_types === 'string') {
+      this.editRecipe.meal_types = this.editRecipe.meal_types.split(',');
+    }
+    this.editRecipe.meal_types = this.editRecipe.meal_types.join(',');
+    this.editRecipe.newIngredients = this.newIngredients;
     this.homeService.updateRecipe(this.editRecipe).subscribe(
       (response) => {
         if (response.success) {
@@ -347,7 +353,7 @@ export class HomeComponent implements OnInit {
         });
       }
     );
-  }
+  }   
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files[0];
@@ -357,6 +363,14 @@ export class HomeComponent implements OnInit {
     };
     reader.readAsDataURL(file);
     this.editRecipe.pictureFile = file;
+  }
+
+  addNewIngredient(): void {
+    this.editRecipe.ingredients.push({ ingredient: '', quantity: '' });
+  }
+
+  removeIngredient(index: number): void {
+    this.editRecipe.ingredients.splice(index, 1);
   }
 
   logout(): void {
