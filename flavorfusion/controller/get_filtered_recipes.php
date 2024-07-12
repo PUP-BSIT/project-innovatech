@@ -69,7 +69,8 @@ if (!empty($selected_filters)) {
                 SELECT ri.recipe_id 
                 FROM recipe_ingredients ri 
                 WHERE $conditions
-              )";
+              )
+              ORDER BY r.created_at DESC";
     
     $stmt = $conn->prepare($query);
     $stmt->execute();

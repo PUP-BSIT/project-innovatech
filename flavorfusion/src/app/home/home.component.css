@@ -56,7 +56,7 @@ h2 {
 .recipe h3:hover {
     color: #D82B1E;
 }
-  
+
 .personalize-taste-content, 
 .latest-recipes-content {
     background-color: #fff8e1;
@@ -68,19 +68,30 @@ h2 {
     flex-direction: column;
 }
 
+.share-recipe {
+    display: contents;
+}
+
 .share-recipe-btn, 
 .login-btn {
-    margin-top: 10px;
-    background: none;
-    border: none;
-    font-family: math;
-    color: #D82B1E;
+    background-color: #ff6f61;
+    color: white;
+    font-family: "Poppins", sans-serif;
     font-weight: bold;
+    padding: 6px 13px;
+    border: none;
+    border-radius: 5px;
+    width: fit-content;
+    align-self: center;
     cursor: pointer;
-    background-color: rgba(230, 132, 72, 0.3);
-    border-radius: 8px;
-    font-size: 16px;
-    width: 100%;
+    font-size: 13px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-btn:hover {
+    background-color: #e55b50;
+    transform: scale(1.05);
 }
   
 .personalize-taste {
@@ -211,8 +222,6 @@ label.meal-type,
 label.dietary-preference,
 label.time,
 label.servings,
-label.ingredient,
-label.quantity,
 label.step,
 label.image {
     margin-right: 1rem;
@@ -237,8 +246,6 @@ label.image {
 .dietary-preference-container select,
 .time-container input,
 .servings-container input,
-.ingredient-container input,
-.quantity-container input,
 .instructions-container textarea,
 .image-container input {
     flex: 1;
@@ -248,25 +255,20 @@ label.image {
 }
 
 .time-container,
-.servings-container,
-.ingredient-container, 
-.quantity-container {
+.servings-container {
     display: flex;
     align-items: center;
     flex: 1;
     margin-right: 10px;
 }
 
-.servings-container,
-.quantity-container {
+.servings-container {
     margin-right: 0;
     margin-left: 10px;
 }
 
 .time-container input,
-.servings-container input,
-.ingredient-container input,
-.quantity-container input {
+.servings-container input {
     width: 100%;
 }
 
@@ -306,6 +308,69 @@ label.image {
     width: 100%;
 }  
 
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-icon input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+.input-with-icon input[placeholder="Quantity"] {
+    flex: 1;
+    max-width: 15%;
+    margin-right: 3px;
+}
+
+.input-with-icon input[placeholder="Enter ingredient"] {
+    flex: 3;
+    max-width: 100%;
+}
+
+.input-with-icon .delete-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.input-with-icon .delete-button i {
+    color: #888;
+}
+
+.input-with-icon .delete-button:hover i {
+    color: #333;
+}
+
+.add-button {
+    background-color: #f88166;
+    color: white;
+    padding: 6px 8px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.update-action {
+    display: flex;
+}
+
 button.update, button.delete {
     background-color: #FFCE38;
     border: none;
@@ -320,7 +385,7 @@ button.update, button.delete {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-button.update:hover, button.delete:hover {
+button.update:hover, button.delete:hover, .add-button:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -335,21 +400,22 @@ button.delete {
 }
 
 button.update-recipe {
-    background-color: #ffb9a9;
+    background-color: #fcaf9d;
     border: 3px solid #ccccccd9;
     color: black;
+    padding: 6px;
     border-radius: 18px;
     cursor: pointer;
     font-size: 13px;
-    width: 100%;
     font-weight: bold;
+    margin: 0 auto;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: -6px;
 }
   
 .pagination button {
