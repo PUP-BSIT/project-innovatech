@@ -101,7 +101,6 @@ export class ProfileComponent implements OnInit {
   private createIngredient(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      
       quantity: ['', [Validators.required, this.fractionValidator]],
       unit: [''],
     });
@@ -178,13 +177,12 @@ export class ProfileComponent implements OnInit {
   
       const instructionsArray = formValue.instructions.split('\n').map
         ((step: string, index: number) => ({
-        step: ` ${step}`
+        step: step.trim() 
       }));
       formData.append('instructions', JSON.stringify(instructionsArray));
   
       this.recipeService.addRecipe(formData).subscribe({
         next: (response: any) => {
-          console.log(response);
           this.recipeForm.reset();
           this.imageUrl = null;
           this.selectedFile = null;
@@ -195,7 +193,6 @@ export class ProfileComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error adding recipe:', error);
-          console.log('Full error response:', error);
           this.snackBar.open('Error adding recipe. Please try again.', 
             'Close', { duration: 3000,
           });
@@ -203,8 +200,6 @@ export class ProfileComponent implements OnInit {
       });
     }
   }
-  
-  
 
   showSnackBar(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
@@ -213,12 +208,14 @@ export class ProfileComponent implements OnInit {
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
     Object.keys(formValue).forEach((key) => {
-      if (key === 'ingredients' || key === 'instructions' || key === 'mealTypes') {
-        if (Array.isArray(formValue[key])) {
-          formData.append(key, JSON.stringify(formValue[key]));
-        } else {
-          console.error(`Expected array for ${key} but got:`, formValue[key]);
-        }
+      if (key === 'ingredients') {
+        formData.append(key, JSON.stringify(formValue[key]));
+      } else if (key === 'instructions') {
+        const instructionsArray = formValue[key].split('\n').map
+          ((step: string) => step.trim());
+        formData.append(key, JSON.stringify(instructionsArray));
+      } else if (key === 'mealTypes') {
+        formData.append(key, JSON.stringify(formValue[key]));
       } else {
         formData.append(key, formValue[key]);
       }
@@ -265,7 +262,6 @@ export class ProfileComponent implements OnInit {
   saveChanges(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: (response: any) => {
-        console.log('Profile updated successfully');
         this.userProfile = response.user;
         this.closeEditModal();
         this.snackBar.open('User Profile Successfully Edited', 'Close', {
@@ -328,7 +324,6 @@ export class ProfileComponent implements OnInit {
       .getSavedRecipes(userId, page, this.pageSize)
       .subscribe({
         next: (data: any) => {
-          console.log('Fetched saved recipes:', data);
           this.savedRecipes = data.recipes.reverse();
           this.currentPage = page;
           this.totalRecipes = data.total;
