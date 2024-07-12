@@ -66,12 +66,14 @@ body {
     border-radius: 4px;
   }
   
-  .signup-form input.input-error {
+  .signup-form input.input-error,
+  .verification-container input.input-error {
     border-color: red;
     box-shadow: 0 0 5px red;
   }
   
-  .signup-form button {
+  .signup-form button,
+  .modal button {
     width: 100%;
     padding: 10px;
     background-color: #ff9800;
@@ -278,5 +280,55 @@ body {
     z-index: 100;
   }
   
-
+  .modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 25px;
+    width: 50%;
+    max-width: 350px;
+    text-align: center;
+  }
+  
+  .modal-content a {
+    font-size: large;
+  }
+  
+  .checkmark-container {
+    color: rgb(42, 181, 42);
+    background-color: white;
+    
+  }
+  
+  .checkmark-icon {
+    font-size: 2em;
+    padding: 7px;
+    margin-bottom: 1px;
+  }
+  
+  .account-success {
+    color: rgb(42, 181, 42);
+    font-size: 25px !important;
+    font-weight: bold;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
   

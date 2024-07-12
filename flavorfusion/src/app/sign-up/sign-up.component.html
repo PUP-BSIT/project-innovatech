@@ -107,16 +107,49 @@
     <h2>Email Verification</h2>
     <form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
       <label for="otp">Enter the OTP sent to your email:</label>
-      <input type="text" id="otp" formControlName="otp" maxlength="6" required>
+      <input
+        type="text"
+        id="otp"
+        formControlName="otp"
+        maxlength="6"
+        required
+        [ngClass]="{'input-error': verificationForm.get('otp').invalid && 
+            (verificationForm.get('otp').dirty || 
+                verificationForm.get('otp').touched) || otpError}">
+      @if (verificationForm.get('otp').hasError('required') && 
+          (verificationForm.get('otp').dirty || verificationForm.get('otp').touched)) {
+        <div class="error-message">OTP is required.</div>
+      }
+      @if (verificationForm.get('otp').hasError('minlength') || 
+          verificationForm.get('otp').hasError('maxlength')) {
+        <div class="error-message">OTP must be 6 digits.</div>
+      }
+      @if (otpError) {
+        <div class="error-message">Invalid OTP.</div>
+      }
       <button type="button" (click)="emailOTP()" [disabled]="isLoading">
-            Send Verification Code</button>
+        Send Verification Code
+      </button>
       <button type="submit" [disabled]="verificationForm.invalid || isLoading">
-            Verify OTP</button>
+        Verify OTP
+      </button>
     </form>
   </div>
   <div class="spinner">
-    @if(isLoading){
+    @if (isLoading) {
       <mat-spinner></mat-spinner>
     }
+  </div>
+}
+
+@if (showModal) {
+  <div class="modal" (click)="closeModal()">
+    <div class="modal-content">
+      <div class="checkmark-container">
+        <mat-icon class="checkmark-icon">check_circle</mat-icon>
+      </div>
+      <p class="account-success">Account successfully created!</p>
+      <button (click)="closeModal()">Close</button>
+    </div>
   </div>
 }
