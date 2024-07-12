@@ -255,9 +255,9 @@
                                   
                     <div class="ingredients-quantity">
                       <div formArrayName="ingredients">
+                        <label>Ingredients</label>
                         @for (ingredient of recipeForm.controls.ingredients.controls; track $index) {
                           <div [formGroupName]="$index" class="form-group">
-                            <label>Ingredients</label>
                             <div class="input-with-icon">
                               <input type="text" 
                                      formControlName="quantity" 
@@ -308,15 +308,17 @@
                                   
                     <div class="form-group">
                       <label>Image:</label>
+                      @if (imageUrl) {
+                        <div class="image-box">
+                          <img [src]="imageUrl" 
+                               alt="Recipe Image" 
+                               class="preview-image">
+                        </div>
+                      }
                       <input type="file" 
                              formControlName="image" 
                              (change)="onImageSelected($event)" 
                              accept="image/*">
-                      @if (imageUrl) {
-                        <img [src]="imageUrl" 
-                             alt="Recipe Image" 
-                             class="preview-image">
-                      }
                                       
                       @if (!recipeForm.valid && recipeForm.get('image').touched) {
                         <div class="error-message">
