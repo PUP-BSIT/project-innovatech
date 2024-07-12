@@ -13,24 +13,21 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUserProfile(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/get_user_profile.php`, 
-          { withCredentials: true })
+    return this.http.get<any>(`${this.apiUrl}/get_user_profile.php`, { withCredentials: true })
       .pipe(tap(profile => this.userProfileSubject.next(profile)));
   }
 
   updateUserProfile(profile: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/update_user_profile.php`, 
-          profile, { withCredentials: true })
+    return this.http.post<any>(`${this.apiUrl}/update_user_profile.php`, profile, { withCredentials: true })
       .pipe(tap(() => this.fetchUserProfile()));
   }
 
   updateUserAvatar(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/update_user_avatar.php`, 
-          formData, { withCredentials: true })
+    return this.http.post<any>(`${this.apiUrl}/update_user_avatar.php`, formData, { withCredentials: true })
       .pipe(tap(() => this.fetchUserProfile()));
   }
 
-  private fetchUserProfile() {
+  fetchUserProfile() {
     this.getUserProfile().subscribe();
   }
 }
