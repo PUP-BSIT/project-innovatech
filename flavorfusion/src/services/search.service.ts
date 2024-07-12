@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Recipe } from '../model/recipe';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SearchService {
 
   private searchUrl = `${environment.apiUrl}/search.php`;

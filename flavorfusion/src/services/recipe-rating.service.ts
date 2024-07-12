@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecipeRatingService {
   private apiUrl = environment.apiUrl;
 

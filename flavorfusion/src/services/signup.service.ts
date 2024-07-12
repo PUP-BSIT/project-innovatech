@@ -3,9 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SignupService {
   private signupUrl = `${environment.apiUrl}/signup.php`;
   private storeOtpUrl = `${environment.apiUrl}/store_otp.php`;

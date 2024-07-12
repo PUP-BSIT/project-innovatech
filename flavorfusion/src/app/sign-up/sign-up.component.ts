@@ -129,8 +129,9 @@ export class SignUpComponent {
       next: (response) => {
         this.isLoading = false;
         if (response.success) {
+          this.completeSignup();
           console.log('OTP verified successfully.');
-          this.showModal = true;
+         
         } else {
           console.error('Invalid OTP.');
           this.otpError = true;
@@ -142,6 +143,27 @@ export class SignUpComponent {
       error: (error) => {
         this.isLoading = false;
         console.error('Error verifying OTP:', error);
+      }
+    });
+  }
+
+  completeSignup() {
+    const user = {
+      email: this.signupForm.get('email').value,
+      password: this.signupForm.get('password').value
+    };
+
+    this.signupService.signup(user).subscribe({
+      next: (response) => {
+        console.log('Signup response:', response);
+        if (response.success) {
+          this.showModal = true;
+        } else {
+          console.error('Signup failed:', response.message);       
+        }
+      },
+      error: (err) => {
+        console.error('Signup error:', err);
       }
     });
   }
