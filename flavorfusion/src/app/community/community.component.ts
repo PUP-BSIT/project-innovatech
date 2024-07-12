@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommunityService } from '../../services/community-service.service';
 import { LoginAuthentication } from '../../services/login-authentication.service';
@@ -15,8 +15,9 @@ import { Recipe } from '../../model/recipe';
   styleUrls: ['./community.component.css']
 })
 export class CommunityComponent implements OnInit {
-  @ViewChild('postDetailTemplate', 
-        { static: true }) postDetailTemplate: TemplateRef<any>;
+  @ViewChild('postDetailTemplate', { static: true }) 
+      postDetailTemplate: TemplateRef<any>;
+  @ViewChild('sentinel', { static: true }) sentinel: ElementRef;
   dialogRef: MatDialogRef<any> | null = null;
   newPostText: string = '';
   newPostImage: File | null = null;
@@ -26,6 +27,9 @@ export class CommunityComponent implements OnInit {
   currentPost: Post | null = null;
   newRecipeId: number | null = null;
   newRecipe: Recipe | null = null;
+  page: number = 1; 
+  pageSize: number = 8; // Number of posts per page
+  loading: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -39,6 +43,16 @@ export class CommunityComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPosts();
+
+    // IntersectionObserver for lazy loading
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        this.loadMorePosts();
+      }
+    }, { threshold: 1.0 });
+
+    observer.observe(this.sentinel.nativeElement);
+
     this.shareCommunity.sharedRecipe$.subscribe(recipe => {
       if (recipe) {
         this.newRecipe = recipe;
@@ -63,8 +77,10 @@ export class CommunityComponent implements OnInit {
   loadPosts(): void {
     const userId = this.loginAuthService.isLoggedIn() ? this.loginAuthService
         .getUserId() : null;
-  
-    this.communityService.getPosts(userId).subscribe(
+    this.loading = true;
+
+    this.communityService.getPaginatedPosts(userId, this.page, this.pageSize)
+        .subscribe(
       (response: any) => {
         if (response.success) {
           this.posts = response.posts.map(post => {
@@ -74,12 +90,41 @@ export class CommunityComponent implements OnInit {
         } else {
           console.error('Error fetching posts:', response.message);
         }
+        this.loading = false; 
       },
       error => {
         console.error('HTTP error:', error);
+        this.loading = false;
       }
     );
-  }  
+  }
+
+  loadMorePosts(): void {
+    this.page++;
+    const userId = this.loginAuthService.isLoggedIn() ? this.loginAuthService
+        .getUserId() : null;
+    this.loading = true; 
+
+    this.communityService.getPaginatedPosts(userId, this.page, this.pageSize)
+        .subscribe(
+      (response: any) => {
+        if (response.success) {
+          const newPosts = response.posts.map(post => {
+            post.recipeId = post.recipeId || post.newRecipeId || post.recipe_id;
+            return post;
+          });
+          this.posts = [...this.posts, ...newPosts];
+        } else {
+          console.error('Error fetching more posts:', response.message);
+        }
+        this.loading = false; 
+      },
+      error => {
+        console.error('HTTP error:', error);
+        this.loading = false; 
+      }
+    );
+  }
 
   openPostDetail(post: Post, template: TemplateRef<any>): void {
     if (!this.dialogRef) { 
@@ -186,7 +231,8 @@ export class CommunityComponent implements OnInit {
       this.communityService.addPost(formData).subscribe(
         response => {
           if (response.success) {
-            this.loadPosts();
+// TODO: find a more optimized approach than reload for getting newly added post
+            location.reload();
             this.newPostText = '';
             this.newPostImage = null;
             this.newPostImageSrc = null;
@@ -235,20 +281,22 @@ export class CommunityComponent implements OnInit {
             if (response.success) {
               post.comments.push(commentData);
               this.newCommentText = '';
-              this.loadPosts();
+             
             } else {
               console.error('Error adding comment:', response.message);
             }
           },
           error => {
             console.error('HTTP error:', error);
-            alert('An error occurred while adding the comment: ' + error.message);
+            alert('An error occurred while adding the comment: ' 
+                  + error.message);
           }
         );
       },
       error => {
         console.error('Error fetching user profile:', error);
-        alert('An error occurred while fetching user profile: ' + error.message);
+        alert('An error occurred while fetching user profile: ' 
+              + error.message);
       }
     );
   }

@@ -391,3 +391,15 @@ button.close-button:hover {
   margin-left: 50px;
   border-radius: 15%;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  margin-top: 20px;
+}
+
+.spinner {
+  width: fit-content; 
+}
