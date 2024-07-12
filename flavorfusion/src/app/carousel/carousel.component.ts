@@ -28,33 +28,26 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   fetchDailyMeals(): void {
-    const storedMeals = localStorage.getItem('dailyMeals');
-    const storedDate = localStorage.getItem('mealsDate');
-    const today = new Date().toLocaleDateString();
-    if (storedMeals && storedDate === today) {
-      this.slides = JSON.parse(storedMeals);
+    this.homeService.getDailyMeals().subscribe(data => {
+      this.slides = [
+        { 
+          meal: 'BREAKFAST', 
+          ...data.Breakfast, 
+          image: 'data:image/jpeg;base64,' + data.Breakfast.image 
+        },
+        { 
+          meal: 'LUNCH', 
+          ...data.Lunch, 
+          image: 'data:image/jpeg;base64,' + data.Lunch.image 
+        },
+        { 
+          meal: 'DINNER', 
+          ...data.Dinner, 
+          image: 'data:image/jpeg;base64,' + data.Dinner.image 
+        }
+      ];
       this.showSlide(this.currentSlide);
-    } else {
-      this.homeService.getDailyMeals().subscribe(data => {
-        this.slides = [
-          { meal: 'BREAKFAST', 
-            ...data.Breakfast, 
-            image: 'data:image/jpeg;base64,' + data.Breakfast.image 
-          },
-          { meal: 'LUNCH', 
-            ...data.Lunch, 
-            image: 'data:image/jpeg;base64,' + data.Lunch.image 
-          },
-          { meal: 'DINNER', 
-            ...data.Dinner, 
-            image: 'data:image/jpeg;base64,' + data.Dinner.image 
-          }
-        ];
-        localStorage.setItem('dailyMeals', JSON.stringify(this.slides));
-        localStorage.setItem('mealsDate', today);
-        this.showSlide(this.currentSlide);
-      });
-    }
+    });
   }
 
   setSlide(index: number): void {
