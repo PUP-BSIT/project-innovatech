@@ -26,18 +26,23 @@ import { SearchRecipeComponent } from './search-recipe/search-recipe.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserVerificationComponent } from './user-verification/user-verification.component';
+
 import { HomeService } from '../services/home.service';
 import { LoginAuthentication } from '../services/login-authentication.service';
 import { SignupService } from '../services/signup.service';
 import { ForgotPasswordService } from '../services/forgot-password.service';
 import { UserService } from '../services/user-service.service';
 import { CommunityService } from '../services/community-service.service';
-
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { UserVerificationComponent } from './user-verification/user-verification.component';
-
+import { ShareCommunityService } from '../services/share-community.service';
+import { SearchService } from '../services/search.service';
+import { SavedRecipesService } from '../services/saved-recipes.service';
+import { RecipeService } from '../services/recipe-service.service';
+import { RecipeResultService } from '../services/recipe-result.service';
+import { RecipeRatingService } from '../services/recipe-rating.service';
 
 
 @NgModule({
@@ -78,7 +83,7 @@ import { UserVerificationComponent } from './user-verification/user-verification
   ],
   providers: [
     provideAnimationsAsync(),
-    HomeService,
+    
     LoginAuthentication,
     SignupService,
     LoginAuthentication,
@@ -86,6 +91,13 @@ import { UserVerificationComponent } from './user-verification/user-verification
     ForgotPasswordService,
     UserService,
     CommunityService,
+    ShareCommunityService,
+    SearchService,
+    SavedRecipesService,
+    RecipeService,
+    RecipeResultService,
+    RecipeRatingService,
+    HomeService,
   ],
   bootstrap: [AppComponent]
 })

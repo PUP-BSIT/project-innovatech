@@ -6,9 +6,7 @@ import { Recipe } from '../model/recipe';
 import { environment } from '../environments/environment';
 import { LoginAuthentication } from './login-authentication.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecipeResultService {
   private apiUrl = environment.apiUrl;
 
