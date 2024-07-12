@@ -19,10 +19,12 @@
                             <span>
                                 <i class="fas fa-clock"></i> 
                                 {{ slide.time }}
+                                {{ slide.time > 1 ? 'minutes' : 'minute' }}
                             </span>
                             <span>
                                 <i class="fas fa-utensils"></i> 
                                 {{ slide.servings }}
+                                {{ slide.servings > 1 ? 'persons' : 'person' }}
                             </span>
                         </div>
                     </div>

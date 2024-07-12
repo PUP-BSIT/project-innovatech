@@ -148,3 +148,97 @@ span {
 .carousel-btn i {
     pointer-events: none;
 }
+
+@media (max-width: 768px) {
+    .carousel {
+        height: 200px;
+        border-radius: 20px;
+    }
+
+    .label-wrapper {
+        border-width: 1.2px;
+        border-radius: 20px 0;
+    }
+
+    .label {
+        font-size: 18px;
+        padding: 8px;
+    }
+
+    .text-content h1 {
+        margin: 30px 0 0;
+        width: 90%;
+        font-size: 1.2rem;
+    }
+
+    .text-content p {
+        width: 90%;
+        font-size: 0.9rem;
+    }
+
+    .details span {
+        font-size: 0.9rem;
+    }
+
+    .image-content {
+        width: 250px;
+        height: 180px;
+    }
+
+    .carousel-btn {
+        font-size: 1.5rem;
+    }
+
+    .carousel-indicators .dot {
+        width: 8px;
+        height: 8px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        height: 150px;
+        border-radius: 15px;
+    }
+
+    .label-wrapper {
+        border-width: 1px;
+        border-radius: 15px 0;
+    }
+
+    .label {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .text-content h1 {
+        margin: 20px 0 0;
+        width: 95%;
+        font-size: 1rem;
+    }
+
+    .text-content p {
+        width: 95%;
+        font-size: 0.8rem;
+    }
+
+    .details span {
+        font-size: 0.8rem;
+    }
+
+    .image-content {
+        width: 200px;
+        height: 140px;
+    }
+
+    .carousel-btn {
+        font-size: 1.2rem;
+    }
+
+    .carousel-indicators .dot {
+        width: 6px;
+        height: 6px;
+        margin: 2px;
+    }
+}
