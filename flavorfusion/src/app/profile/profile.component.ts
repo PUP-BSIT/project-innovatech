@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { RecipeService } from '../../services/recipe-service.service';
 import { UserService } from '../../services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -68,7 +68,6 @@ export class ProfileComponent implements OnInit {
       username: ['', Validators.required],
       bio: ['', Validators.required],
     });
-
   }
 
   ngOnInit(): void {
@@ -102,23 +101,20 @@ export class ProfileComponent implements OnInit {
   private createIngredient(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      quantity: [null, [Validators.required, Validators.min(0)]],
-      unit: [''], 
+      quantity: ['', [Validators.required, this.fractionValidator]],
+      unit: [''],
     });
   }
 
-  private createInstruction(): FormGroup {
-    return this.fb.group({
-      step: ['', Validators.required],
-    });
+  fractionValidator(control: FormControl) {
+    const value = control.value;
+    if (!value) return null;
+    const fractionPattern = /^(\d+\/\d+|\d+(\.\d+)?)(\s*\w+)?$/; 
+    return fractionPattern.test(value) ? null : { invalidFraction: true };
   }
 
   get ingredients(): FormArray {
     return this.recipeForm.get('ingredients') as FormArray;
-  }
-
-  get instructions(): FormArray {
-    return this.recipeForm.get('instructions') as FormArray;
   }
 
   addIngredient(): void {
@@ -127,14 +123,6 @@ export class ProfileComponent implements OnInit {
 
   removeIngredient(index: number): void {
     this.ingredients.removeAt(index);
-  }
-
-  addInstruction(): void {
-    this.instructions.push(this.createInstruction());
-  }
-
-  removeInstruction(index: number): void {
-    this.instructions.removeAt(index);
   }
 
   getUserProfile(): void {
@@ -187,9 +175,14 @@ export class ProfileComponent implements OnInit {
         formData.append('image', this.selectedFile, this.selectedFile.name);
       }
   
+      const instructionsArray = formValue.instructions.split('\n').map
+        ((step: string, index: number) => ({
+        step: step.trim() 
+      }));
+      formData.append('instructions', JSON.stringify(instructionsArray));
+  
       this.recipeService.addRecipe(formData).subscribe({
         next: (response: any) => {
-          console.log(response);
           this.recipeForm.reset();
           this.imageUrl = null;
           this.selectedFile = null;
@@ -200,15 +193,14 @@ export class ProfileComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error adding recipe:', error);
-          console.log('Full error response:', error);
-          this.snackBar.open('Error adding recipe. Please try again.', 'Close', {
-            duration: 3000,
+          this.snackBar.open('Error adding recipe. Please try again.', 
+            'Close', { duration: 3000,
           });
         },
       });
     }
   }
-  
+
   showSnackBar(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
   }
@@ -216,22 +208,28 @@ export class ProfileComponent implements OnInit {
   private createFormData(formValue: any): FormData {
     const formData = new FormData();
     Object.keys(formValue).forEach((key) => {
-      if (key === 'ingredients' || key === 'instructions' || key === 'mealTypes') {
+      if (key === 'ingredients') {
+        formData.append(key, JSON.stringify(formValue[key]));
+      } else if (key === 'instructions') {
+        const instructionsArray = formValue[key].split('\n').map
+          ((step: string) => step.trim());
+        formData.append(key, JSON.stringify(instructionsArray));
+      } else if (key === 'mealTypes') {
         formData.append(key, JSON.stringify(formValue[key]));
       } else {
         formData.append(key, formValue[key]);
       }
     });
-  
+
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
     }
-  
+
     formData.append('user_id', this.userProfile.user_id);
-  
+
     return formData;
   }
-  
+
   openShareRecipeModal(): void {
     this.showShareRecipeModal = true;
   }
@@ -264,7 +262,6 @@ export class ProfileComponent implements OnInit {
   saveChanges(): void {
     this.userService.updateUserProfile(this.userProfile).subscribe({
       next: (response: any) => {
-        console.log('Profile updated successfully');
         this.userProfile = response.user;
         this.closeEditModal();
         this.snackBar.open('User Profile Successfully Edited', 'Close', {
@@ -327,7 +324,6 @@ export class ProfileComponent implements OnInit {
       .getSavedRecipes(userId, page, this.pageSize)
       .subscribe({
         next: (data: any) => {
-          console.log('Fetched saved recipes:', data);
           this.savedRecipes = data.recipes.reverse();
           this.currentPage = page;
           this.totalRecipes = data.total;
@@ -404,4 +400,3 @@ export class ProfileComponent implements OnInit {
     return this.selectedMealTypes.includes(mealType);
   }
 }
-

@@ -23,4 +23,21 @@ Explore our staging environment, where we're cooking up new ideas and perfecting
 📧 **Email:** malaluankylarica@gmail.com  
 🔒 **Password:** `12345678`
 
+
+## Meet our Project Team
+
+**👩‍💼 Project Manager:**  
+    Kyla Rica Catu Malaluan
+
+**👩‍💻 Tech Leads:**  
+    Chrystine Noelle Monterola Asebuque  
+    Mark Angelo Mabagos Manzanas
+
+**🧪 Tester:**  
+    Samantha Nicole Aldea Sanchez
+
+**🎨 UI/UX Designer:**  
+    Via Clariz Abrilla Rasquero
+
+
 </div>

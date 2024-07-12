@@ -26,14 +26,21 @@ function timeAgo($time) {
 }
 
 $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$pageSize = isset($_GET['pageSize']) ? intval($_GET['pageSize']) : 10;
+$offset = ($page - 1) * $pageSize;
 
 try {
     $sql = "SELECT cr.community_recipe_id, cr.user_id, cr.recipe_id, cr.caption,
          cr.image, cr.shared_at, up.username, up.profile_picture 
             FROM community_recipes cr 
             JOIN user_profiles up ON cr.user_id = up.user_id 
-            ORDER BY cr.shared_at DESC";
-    $result = $conn->query($sql);
+            ORDER BY cr.shared_at DESC
+            LIMIT ?, ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $offset, $pageSize);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $posts = [];
     while ($row = $result->fetch_assoc()) {

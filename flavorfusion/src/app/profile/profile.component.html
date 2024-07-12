@@ -7,7 +7,8 @@
     <div class="profile-header"> 
       <div class="profile-box">
         <div class="avatar-container">
-          <img [src]="userProfile?.profile_picture || 'assets/images/default-avatar.png'"
+          <img [src]="userProfile?.profile_picture || 
+              'assets/images/default-avatar.png'"
                alt="User Avatar" 
                class="avatar">
           <img src="assets/images/avatar-icon.png"
@@ -186,28 +187,27 @@
                       <label for="mealTypes">Meal Type</label>
                       <div class="custom-multiselect">
                         <div class="selected-options">
-                          <!-- Use @for for looping through selectedMealTypes with track expression -->
                           @for (mealType of selectedMealTypes; track mealType) {
                             <span (click)="removeMealType(mealType)">
                               {{ mealType }} <span class="remove-icon">x</span>
                             </span>
                           }
-                          <input type="text" (click)="toggleDropdown()" readonly placeholder="Select Meal Type">
+                          <input type="text" (click)="toggleDropdown()"
+                           readonly placeholder="Select Meal Type">
                         </div>
-                        <!-- Use @if for conditional rendering -->
                         @if (showMealTypeDropdown) {
                           <div class="options-dropdown">
-                            <!-- Use @for for looping through mealTypes with track expression -->
                             @for (mealType of mealTypes; track mealType) {
-                              <div (click)="selectMealType(mealType)" [class.selected]="isSelected(mealType)">
+                              <div (click)="selectMealType(mealType)" 
+                              [class.selected]="isSelected(mealType)">
                                 {{ mealType }}
                               </div>
                             }
                           </div>
                         }
                       </div>
-                      <input type="hidden" formControlName="mealTypes" [value]="selectedMealTypes">
-                      <!-- Use @if for conditional rendering -->
+                      <input type="hidden" formControlName="mealTypes" 
+                        [value]="selectedMealTypes">
                       @if (recipeForm.get('mealTypes').hasError('required') && recipeForm.get('mealTypes').touched) {
                         <div class="error-message">
                           Meal type is required
@@ -234,10 +234,10 @@
                       }
                     </div>
 
-                    <div class="form-group form-group-inline time-servings-container">
+                    <div class="form-group form-group-inline 
+                      time-servings-container">
                       <div class="form-group">
                         <label>Time:</label>
-                        <span>:</span>
                         <input type="number" 
                               formControlName="minutes" 
                               class="small-input" 
@@ -255,16 +255,16 @@
                                   
                     <div class="ingredients-quantity">
                       <div formArrayName="ingredients">
+                        <label>Ingredients</label>
                         @for (ingredient of recipeForm.controls.ingredients.controls; track $index) {
                           <div [formGroupName]="$index" class="form-group">
-                            <label>Ingredients</label>
                             <div class="input-with-icon">
-                              <input formControlName="name" 
-                                     required placeholder="Enter ingredient">
-                              <input type="number" 
+                              <input type="text" 
                                      formControlName="quantity" 
                                      placeholder="Quantity" 
                                      required>
+                              <input formControlName="name" 
+                                     required placeholder="Enter ingredient">
                               <button type="button" 
                                       (click)="removeIngredient($index)" 
                                       class="delete-button">
@@ -295,26 +295,30 @@
                                       
                       <div class="form-group">
                         <label>Instructions</label>
-                        <textarea formControlName="instructions" 
-                          placeholder="Press Enter to Proceed to next Step. No need to indicate or write the 'step' word ">
+                        <textarea formControlName="instructions"
+                          placeholder="Enter steps, each on a new line">
                         </textarea>
                         @if (recipeForm.get('instructions').hasError('required') && recipeForm.get('instructions').touched) {
-                          <div class="error-message">Instruction step is required</div>
+                          <div class="error-message">
+                            Dietary preference is required
+                          </div>
                         }
                       </div>
                     </div>
                                   
                     <div class="form-group">
                       <label>Image:</label>
+                      @if (imageUrl) {
+                        <div class="image-box">
+                          <img [src]="imageUrl" 
+                               alt="Recipe Image" 
+                               class="preview-image">
+                        </div>
+                      }
                       <input type="file" 
                              formControlName="image" 
                              (change)="onImageSelected($event)" 
                              accept="image/*">
-                      @if (imageUrl) {
-                        <img [src]="imageUrl" 
-                             alt="Recipe Image" 
-                             class="preview-image">
-                      }
                                       
                       @if (!recipeForm.valid && recipeForm.get('image').touched) {
                         <div class="error-message">
