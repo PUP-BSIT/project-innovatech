@@ -20,7 +20,8 @@ $sql = "
         r.recipe_id, 
         r.name, 
         r.picture AS image, 
-        COALESCE(AVG(rt.rating), 0) AS rating 
+        COALESCE(AVG(rt.rating), 0) AS rating,
+        r.created_at
     FROM 
         recipes r
     LEFT JOIN recipe_meal_types mt ON r.recipe_id = mt.recipe_id
@@ -66,6 +67,7 @@ if (!empty($ingredient)) {
 
 $sql .= " WHERE " . implode(" AND ", $whereClauses);
 $sql .= " GROUP BY r.recipe_id";
+$sql .= " ORDER BY r.created_at DESC";
 
 $stmt = $conn->prepare($sql);
 if ($stmt) {
