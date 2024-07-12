@@ -68,7 +68,7 @@
           </button>          
         </div>
       </div>
-      <div class="pagination">
+      <div class="pagination" *ngIf="displayedLatestRecipes.length > 0">
         <button 
           (click)="prevPageLatest()" 
           [disabled]="currentPageLatest === 1">
@@ -82,7 +82,7 @@
         </button>
       </div>
       <ng-template #noRecipes>
-        <div>
+        <div class="share-recipe">
           <p>
             Want to share your recipes? Add your own creations to inspire others!
           </p>

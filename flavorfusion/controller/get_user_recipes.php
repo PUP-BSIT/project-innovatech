@@ -18,7 +18,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$query = "SELECT recipe_id, name, picture FROM recipes WHERE user_id = ?";
+$query = "SELECT recipe_id, name, picture 
+          FROM recipes 
+          WHERE user_id = ? 
+          ORDER BY created_at DESC";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
