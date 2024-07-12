@@ -76,7 +76,7 @@ button[mat-icon-button] {
   background-color: #fbd5c0;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added this line */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .post:hover {

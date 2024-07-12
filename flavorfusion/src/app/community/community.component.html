@@ -7,14 +7,18 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Write your post ...</mat-label>
       <textarea matInput rows="2" [(ngModel)]="newPostText"></textarea>
-      <button mat-icon-button class="add-photo-button" (click)="fileInput.click()">
+      <button mat-icon-button class="add-photo-button"
+        (click)="fileInput.click()">
         <mat-icon>add_a_photo</mat-icon>
       </button>
-      <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;">
-      <button mat-raised-button color="primary" class="post-button" (click)="addPost()"> Post </button>
+      <input #fileInput type="file" (change)="onFileSelected($event)"
+         style="display: none;">
+      <button mat-raised-button color="primary" class="post-button" 
+        (click)="addPost()"> Post </button>
       @if (newPostImageSrc) {
         <div>
-          <img [src]="newPostImageSrc" class="preview-image" alt="Image preview"/>
+          <img [src]="newPostImageSrc" class="preview-image"
+           alt="Image preview"/>
         </div>
       }
     </mat-form-field>
@@ -31,11 +35,15 @@
           </div>
         </div>
         
-        <img [src]="post.image || post.image_src" class="post-image" alt="post image" (click)="openPostDetail(post, postDetailTemplate)"/>
+        <img [src]="post.image || post.image_src" class="post-image"
+           alt="post image" (click)="openPostDetail(post, postDetailTemplate)"/>
         <div class="post-footer">
           <div class="actions">
             <span (click)="likePost(post, $event)" [class.liked]="post.liked">
-              {{ post.likes }} <mat-icon>{{ post.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+              {{ post.likes }} 
+              <mat-icon>
+                {{ post.liked ? 'favorite' : 'favorite_border' }}
+              </mat-icon>
             </span>
             <span (click)="commentOnPost(post, $event)">
               {{ post.comments.length }} <mat-icon>comment</mat-icon>
@@ -43,7 +51,8 @@
           </div>
           <div class="caption">
             <span class="username">{{ post.username }}:</span>
-            <span class="caption-text" (click)="navigateToRecipe(post, $event)">{{ post.caption }}</span>
+            <span class="caption-text" 
+              (click)="navigateToRecipe(post, $event)">{{ post.caption }}</span>
           </div>
           <hr class="footer-line"/>
         </div>
@@ -61,9 +70,12 @@
           <div class="new-comment">
             <mat-form-field class="full-width">
               <mat-label>Add a comment</mat-label>
-              <textarea matInput [(ngModel)]="newCommentText" rows="2"></textarea>
+              <textarea matInput [(ngModel)]="newCommentText"
+                rows="2">
+              </textarea>
             </mat-form-field>
-            <button (click)="addComment(data.post)" class="post-comment-button">Comment</button>
+            <button (click)="addComment(data.post)" 
+              class="post-comment-button">Comment</button>
           </div>
         @for (comment of data.post.comments; track comment) {
             <div class="comment">
