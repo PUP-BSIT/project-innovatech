@@ -64,7 +64,7 @@ header {
 }
 
 .search-box input[type="text"] {
-    width: calc(100% - 40px); 
+    width: 100%;    
     padding: 10px 10px 10px 33px;
     border: 3px solid #FFD700;
     border-radius: 33px;
@@ -78,14 +78,14 @@ header {
 .search-box .close-search {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 15px ;
     transform: translateY(-50%);
     background: #fab1a1;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 6px;
     font-weight: bold;
-    padding: 1px 5px;
+    padding: 5px;
     z-index: 1;
 }
 
@@ -234,7 +234,7 @@ header {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        right: 10px;
+        right: 50px;
     }
 
     .user-actions {
