@@ -67,7 +67,7 @@ if (!empty($ingredient)) {
 
 $sql .= " WHERE " . implode(" AND ", $whereClauses);
 $sql .= " GROUP BY r.recipe_id";
-$sql .= " ORDER BY r.created_at DESC"; // Added ORDER BY clause to sort by creation date
+$sql .= " ORDER BY r.created_at DESC";
 
 $stmt = $conn->prepare($sql);
 if ($stmt) {
