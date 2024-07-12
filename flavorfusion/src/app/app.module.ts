@@ -83,7 +83,6 @@ import { RecipeRatingService } from '../services/recipe-rating.service';
   ],
   providers: [
     provideAnimationsAsync(),
-    
     LoginAuthentication,
     SignupService,
     LoginAuthentication,

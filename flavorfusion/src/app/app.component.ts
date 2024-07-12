@@ -13,8 +13,8 @@ export class AppComponent implements OnInit {
   pageWithoutHeader = [
     '/login',
     '/sign-up',
-    '/forgot-password',
-    '/reset-password',
+    '/forgot_password',
+    '/reset_password',
   ];
   
   constructor(private router: Router, 
@@ -23,15 +23,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (!(event instanceof NavigationEnd)) return;
-  
-      this.showHeaderFooter = !this.pageWithoutHeader
-          .some(url => this.router.url.startsWith(url));
-  
-      this.isLoginOrSignupRoute = ['/login', '/sign-up']
-          .includes(this.router.url);
+
+        this.showHeaderFooter = !this.pageWithoutHeader
+            .some(url => event.url.startsWith(url));
+
+        this.isLoginOrSignupRoute = ['/login', '/sign-up']
+            .includes(event.url);  
     });
-  
-    // Check authentication status
     this.loginAuthService.checkAuthentication();
   }
 }

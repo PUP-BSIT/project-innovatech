@@ -289,20 +289,17 @@ export class ProfileComponent implements OnInit {
 
   uploadAvatar(): void {
     if (!this.selectedAvatarFile) return;
-
+  
     const formData = new FormData();
-    formData.append(
-      'avatar',
-      this.selectedAvatarFile,
-      this.selectedAvatarFile.name
-    );
+    formData.append('avatar', this.selectedAvatarFile, 
+          this.selectedAvatarFile.name);
     formData.append('user_id', this.userProfile.user_id);
-
+  
     this.userService.updateUserAvatar(formData).subscribe({
       next: (response: any) => {
         this.userProfile.profile_picture = response.profile_picture;
-        this.avatarImageUrl =
-          response.profile_picture || 'assets/images/default-avatar.jpg';
+        this.avatarImageUrl = response.profile_picture || 
+            'assets/images/default-avatar.jpg';
         this.showSnackBar('Avatar updated successfully!');
       },
       error: (error: any) => {
@@ -311,6 +308,7 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+  
 
   triggerAvatarInput(): void {
     this.avatarInput.nativeElement.click();

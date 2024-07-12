@@ -10,7 +10,9 @@ export class UserService {
   private userProfileSubject = new BehaviorSubject<any>(null);
   userProfile$ = this.userProfileSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.fetchUserProfile();
+  }
 
   getUserProfile(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get_user_profile.php`, { withCredentials: true })
